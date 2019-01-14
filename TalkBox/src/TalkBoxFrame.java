@@ -4,7 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
-	//Test
+	
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
