@@ -7,7 +7,6 @@ public class TalkBoxApp {
 		TalkBoxFrame frame = new TalkBoxFrame();
 		frame.pack();
 		frame.setVisible(true);
-		//test12
-		
+		//test13
 }
 }
