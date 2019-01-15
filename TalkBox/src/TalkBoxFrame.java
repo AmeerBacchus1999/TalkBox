@@ -5,6 +5,8 @@ import javax.swing.*;
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 	
+	
+	
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
@@ -33,26 +35,33 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		
 		washroom = new JButton (createImageIcon("washroom.jpg"));
+		washroom.setBackground(Color.WHITE);
 		food = new JButton (createImageIcon("food.jpg"));
+		food.setBackground(Color.WHITE);
 		drink = new JButton (createImageIcon("drink.jpg"));
+		drink.setBackground(Color.WHITE);
 		play = new JButton (createImageIcon("play.jpg"));
+		play.setBackground(Color.WHITE);
 		sick = new JButton (createImageIcon("sick.jpg"));
+		sick.setBackground(Color.WHITE);
 		tired = new JButton (createImageIcon("tired.jpg"));
+		tired.setBackground(Color.WHITE);
 		record_pic = new JButton (createImageIcon("record_pic.jpg"));
+		record_pic.setBackground(Color.WHITE);
 		
-		B1 = new JButton (createImageIcon("2.jpg"));
+		B1 = new JButton (createImageIcon("button.jpg"));
 		B1.addActionListener(this);
-		B2 = new JButton (createImageIcon("2.jpg"));
+		B2 = new JButton (createImageIcon("button.jpg"));
 		B2.addActionListener(this);
-		B3 = new JButton (createImageIcon("2.jpg"));
+		B3 = new JButton (createImageIcon("button.jpg"));
 		B3.addActionListener(this);
-		B4 = new JButton (createImageIcon("2.jpg"));
+		B4 = new JButton (createImageIcon("button.jpg"));
 		B4.addActionListener(this);
-		B5 = new JButton (createImageIcon("2.jpg"));
+		B5 = new JButton (createImageIcon("button.jpg"));
 		B5.addActionListener(this);
-		B6 = new JButton (createImageIcon("2.jpg"));
+		B6 = new JButton (createImageIcon("button.jpg"));
 		B6.addActionListener(this);
-		B7 = new JButton (createImageIcon("2.jpg"));
+		B7 = new JButton (createImageIcon("button.jpg"));
 		B7.addActionListener(this);
 		
 		
@@ -95,37 +104,37 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		if (source == B1) {
 			
-			System.out.println("Button 1 pressed");
+			System.out.println("Washroom");
 			
 		}
 		else if (source == B2) {
 			
-			System.out.println("Button 2 pressed");
+			System.out.println("Food");
 			
 		}
 		else if (source == B3) {
 			
-			System.out.println("Button 3 pressed");
+			System.out.println("Drink");
 			
 		}
 		else if (source == B4) {
 			
-			System.out.println("Button 4 pressed");
+			System.out.println("Play");
 			
 		}
 		else if (source == B5) {
 			
-			System.out.println("Button 5 pressed");
+			System.out.println("Sick");
 			
 		}
 		else if (source == B6) {
 			
-			System.out.println("Button 6 pressed");
+			System.out.println("Tired");
 			
 		}
 		else if (source == B7) {
 			
-			System.out.println("Button 7 pressed");
+			System.out.println("Record");
 			
 		}
 		
