@@ -12,7 +12,7 @@ public class TalkBoxPanel extends JPanel {
 		
 		super();
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
-		color = Color.RED;
+		color = Color.RED;//this is not doing anything right now
 		
 		
 	}

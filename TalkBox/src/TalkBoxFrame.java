@@ -4,26 +4,26 @@ import java.awt.event.*;
 import javax.swing.*;
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
-	
-	
-	
+
+	//These are the images for the buttons below (B1-B7) (not actual buttons)
+
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
 	private JButton play;
 	private JButton sick;
 	private JButton tired;
+	private JButton record_pic;
 	
-	
+	//B1-B6 are the buttons for the words/expressions, which will have pre-recorded audio files attached to them 
 	private JButton B1;
 	private JButton B2;
 	private JButton B3;
 	private JButton B4;
 	private JButton B5;
 	private JButton B6;
-	private JButton B7;
-	private JButton record_pic;
-	private TalkBoxPanel canvas;
+	private JButton B7; //This will act as the recording/search button
+	private TalkBoxPanel canvas;//This sets up the panel to 
 	
 	
 	
@@ -32,7 +32,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		super();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		canvas = new TalkBoxPanel();
-		
+		setContentPane(canvas); 
+		setResizable(false);//prevents user from resizing the window
 		
 		washroom = new JButton (createImageIcon("washroom.jpg"));
 		washroom.setBackground(Color.WHITE);
@@ -86,18 +87,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		buttonPanel.add(tired);
 		buttonPanel.add(record_pic);
 		
-		
-		
-		setContentPane(buttonPanel);
-		
-		
-		
-		
+		setContentPane(buttonPanel);//adds this panel to the window	
 	}
 	
-	
+	//This method listens for the button to be pressed
 	@Override
-	
 	public void actionPerformed(ActionEvent ae) {
 		
 		Object source = ae.getSource();
@@ -137,12 +131,9 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			System.out.println("Record");
 			
 		}
-		
-		
-		
-		
-		
 	}
+	
+	
 	protected static  ImageIcon createImageIcon (String path)    
 	{
 		java.net.URL imgURL = TalkBoxFrame.class.getResource (path);  
@@ -155,9 +146,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			System.err.println ("Couldn't find file: " + path);
 			return null;
 		}
-	
-	
-	
 	}
 }
 	
