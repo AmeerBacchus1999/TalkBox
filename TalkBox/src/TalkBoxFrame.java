@@ -1,7 +1,11 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
+import javax.sound.sampled.*;
 import javax.swing.*;
+
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 
@@ -95,44 +99,65 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		
 		Object source = ae.getSource();
+		File button = new File("button_sound.wav"); //Creates new file with the audio we want
 		
 		if (source == B1) {
 			
 			System.out.println("Washroom");
+			play_sound(button);
 			
 		}
 		else if (source == B2) {
 			
 			System.out.println("Food");
-			
+			play_sound(button);
 		}
 		else if (source == B3) {
 			
 			System.out.println("Drink");
-			
+			play_sound(button);
 		}
 		else if (source == B4) {
 			
 			System.out.println("Play");
-			
+			play_sound(button);
 		}
 		else if (source == B5) {
 			
 			System.out.println("Sick");
-			
+			play_sound(button);
 		}
 		else if (source == B6) {
 			
 			System.out.println("Tired");
-			
+			play_sound(button);
 		}
 		else if (source == B7) {
 			
 			System.out.println("Record");
-			
+			play_sound(button);
 		}
 	}
 	
+	public static void play_sound(File Sound) {
+		
+		
+		try {
+			
+			Clip clip = AudioSystem.getClip();	//Initializes new audio clip to be played
+			clip.open(AudioSystem.getAudioInputStream(Sound));	//Loads the sound we want to play
+			clip.start();	//Starts playing the clip
+			
+		}
+		
+		catch(Exception e){
+			
+			System.out.println("Audio File Not Found");
+			
+		}
+		
+		
+	}
 	
 	protected static  ImageIcon createImageIcon (String path)    
 	{
