@@ -99,7 +99,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		
 		Object source = ae.getSource();
-		File button = new File("button_sound.wav"); //Creates new file with the sound we want
+		File button = new File("button_sound.wav"); //Creates new file with the audio we want
 		
 		if (source == B1) {
 			
