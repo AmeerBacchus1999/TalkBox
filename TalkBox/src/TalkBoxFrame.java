@@ -1,8 +1,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-
+import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
@@ -10,7 +9,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 
 	//These are the images for the buttons below (B1-B7) (not actual buttons)
-	double i = 0;
+
+	int i = 0;
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
@@ -93,6 +93,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		setContentPane(buttonPanel);//adds this panel to the window	
 	}
+	
+	
 	
 	//This method listens for the button to be pressed
 	@Override
