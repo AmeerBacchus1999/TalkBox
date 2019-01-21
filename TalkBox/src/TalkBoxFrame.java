@@ -10,8 +10,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 
 	//These are the images for the buttons below (B1-B7) (not actual buttons)
 
-	int i =0;
 
+	int i =0;
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
