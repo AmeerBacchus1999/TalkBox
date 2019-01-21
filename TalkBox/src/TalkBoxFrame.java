@@ -12,7 +12,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 
 
 
-	int i =0;
+
 
 
 	private JButton washroom;
