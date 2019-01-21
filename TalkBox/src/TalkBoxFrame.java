@@ -10,12 +10,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 
 	//These are the images for the buttons below (B1-B7) (not actual buttons)
 
-<<<<<<< HEAD
+
 
 	int i =0;
-=======
-	float i = 0;
->>>>>>> branch 'ameer' of https://github.com/AmeerBacchus1999/TalkBox
+
+
 	private JButton washroom;
 	private JButton food;
 	private JButton drink;
