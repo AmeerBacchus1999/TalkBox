@@ -1,3 +1,4 @@
+
 package talkbox;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,10 +12,16 @@ import java.net.URL;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-public class TalkBoxFrame extends JFrame implements ActionListener {
+
 	
 
-	//These are the images for the buttons below (B1-B7) (not actual buttons)
+
+public class TalkBoxFrame extends JFrame implements ActionListener {
+
+
+
+
+
 
 	private JButton washroom;
 	private JButton food;
@@ -99,6 +106,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		setContentPane(buttonPanel);//adds this panel to the window	
 	}
 	
+	
+	
 	//This method listens for the button to be pressed
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -181,5 +190,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	}
 }
 	
+
 
 
