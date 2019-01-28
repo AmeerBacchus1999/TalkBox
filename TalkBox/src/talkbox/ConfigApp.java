@@ -9,7 +9,7 @@ public class ConfigApp {
 		
 		double size;
 	
-		
+		//test
 		Scanner in = new Scanner(System.in);
 		System.out.print("Enter number of buttons: ");
 		size = in.nextInt();
