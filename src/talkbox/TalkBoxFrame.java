@@ -16,11 +16,35 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	Panel screen2;
 	
 	public JPanel buttonPanel;
-	public JPanel buttonPanel1;
+	public JPanel BP;
+	public JPanel[] buttonPanels;
+	public int buttonPanels_counter = 0;
+	public JButton[] left_arrows;
+	
+	public int left_counter = 0;
+	public int right_counter = 0;
+	
+	public int size;
+	public int size_rounded;
+	
+	public JButton[] right_arrows;
+	
+    public JButton[] sound_gif;
+    public int sound_counter = 0;
+    
+    public JButton[] fillers;
+    public int filler_counter = 0;
+    
+    public JButton[] buttons;
+    public int button_counter = 0;
+	
+	
+	
+	
 	
 	CardLayout cdLayout = new CardLayout ();
 	
-	public JButton[] buttons;
+	
 	
 	private JButton washroom;
 	private JButton food;
@@ -38,26 +62,77 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton B5;
 	private JButton B6;
 	private JButton B7; //This will act as the recording/search button
-	private JButton white1;
-	private JButton white2;
+	private JButton sound1;
+	private JButton sound2;
 	private JButton left_arrow;
 	private JButton right_arrow;
-	private JButton left;
+
 	
 	
 	
 	
 	
-	public TalkBoxFrame(JButton[] buttons) {
+	public TalkBoxFrame(int size) {
 		
 		super();
 		
-		this.buttons = new JButton[buttons.length];
-		for (int i = 0; i < buttons.length;i++) {
+		this.size = size;
+		
+		double panels = (double)size/7;
+		
+		size_rounded = (int)Math.ceil(panels);
+		
+		buttonPanels = new JPanel[size_rounded];
+		left_arrows = new JButton[size_rounded];
+		
+		right_arrows = new JButton[size_rounded];
+		
+		
+		for (int i = 0; i < size_rounded;i++) {
 			
-			this.buttons[i] = buttons[i];
+			left_arrows[i] = new JButton(createImageIcon("left_arrow.jpg"));
+			left_arrows[i].addActionListener(this);
+			
+			right_arrows[i] = new JButton(createImageIcon("right_arrow.jpg"));
+			right_arrows[i].addActionListener(this);
+		}
+		
+		
+		sound_gif = new JButton[size_rounded*2];
+		
+		for (int t = 0; t < size_rounded*2; t++) {
+			
+			
+			sound_gif[t] = new JButton(createImageIcon("sound.gif"));
 			
 		}
+		
+		
+		
+		fillers = new JButton[(size_rounded+1)*7];
+		
+		for (int y = 0; y < (size_rounded+1)*7;y++) {
+			
+			fillers[y] = new JButton(createImageIcon("white.jpg"));
+			
+		}
+		
+		
+		buttons = new JButton[size_rounded*7];
+		
+		for (int g = 0; g < size_rounded*7;g++) {
+			
+			
+			
+			
+			buttons[g] = new JButton(createImageIcon("button.jpg"));
+			buttons[g].addActionListener(this);
+		}
+		
+		
+		
+		System.out.println(this.size);
+		System.out.println(size_rounded);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		canvas = new Panel();
@@ -95,8 +170,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		B7 = new JButton (createImageIcon("button.jpg"));
 		B7.addActionListener(this);
 		
-		white1 = new JButton (createImageIcon("sound.gif"));
-		white2 = new JButton (createImageIcon("sound.gif"));
+		sound1 = new JButton (createImageIcon("sound.gif"));
+		sound2 = new JButton (createImageIcon("sound.gif"));
 		
 	
 		
@@ -112,7 +187,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		buttonPanel.setLayout(new GridLayout(2,9));
 		buttonPanel.setPreferredSize(new Dimension(1200,300));
 		
-		buttonPanel.add(white1);
+		buttonPanel.add(sound1);
 		buttonPanel.add(B1);
 		buttonPanel.add(B2);
 		buttonPanel.add(B3);
@@ -120,7 +195,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		buttonPanel.add(B5);
 		buttonPanel.add(B6);
 		buttonPanel.add(B7);
-		buttonPanel.add(white2);
+		buttonPanel.add(sound2);
 		
 		buttonPanel.add(left_arrow);
 		buttonPanel.add(washroom);
@@ -132,67 +207,152 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		buttonPanel.add(record_pic);
 		buttonPanel.add(right_arrow);
 		
-		System.out.println(this.buttons.length);
+
 		setContentPane(buttonPanel);//adds this panel to the window	
 		
 
 		
-		
-		
-		
-		int counter = 0;
-		
-		buttonPanel1 = new JPanel();
-		buttonPanel1.setLayout(new GridLayout(2,9));
-		buttonPanel1.setPreferredSize(new Dimension(1200,300));
-		
-		JButton s1 = new JButton(createImageIcon("sound.gif"));
-		buttonPanel1.add(s1);
-		
-		for (int i = 0; i < this.buttons.length;i++) {
+		for (int k = 0; k < size_rounded; k++) {
 			
-			buttonPanel1.add(this.buttons[i]);
-			counter++;
+			
+			if (k == size_rounded-1) {
+				
+				makeFinalButtonPanel();
+				break;
+			}
+			
+			
+			makeButtonPanel();
+			
+			
 			
 		}
 	
-		JButton[] fillers = new JButton[18-this.buttons.length];
+
 		
-		for (int j = 0; j < 15-this.buttons.length;j++) {
+	
+	}
+	
+	
+	public void makeFinalButtonPanel() {
+		
+		
+		buttonPanels[buttonPanels_counter] = new JPanel();
+		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(2,9));
+		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,300));
+		
+		
+		buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
+		sound_counter++;
+		int left_over = size-(size_rounded-1)*7;
+	
+		for (int i = 0; i < left_over;i++) {
 			
-			if (counter == 7) {
-				JButton s2 = new JButton(createImageIcon("sound.gif"));
-				buttonPanel1.add(s2);
-				left = new JButton(createImageIcon("left_arrow.jpg"));
-				left.addActionListener(this);
-				buttonPanel1.add(left);
+			buttonPanels[buttonPanels_counter].add(buttons[button_counter]);
+			button_counter++;
+			
+		}
+	
+		int rest = 15 - left_over;
+		
+		for (int j = 0; j < rest;j++) {
+			
+			if (j == 7-left_over) {
+				
+				buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
+				sound_counter++;
+			
+				buttonPanels[buttonPanels_counter].add(left_arrows[left_counter]);
+				left_counter++;
 				
 			}
 			
 			
 			else {
-			 fillers[j] = new JButton(createImageIcon("white.jpg"));
-			 buttonPanel1.add(fillers[j]);
+			 
+			 buttonPanels[buttonPanels_counter].add(fillers[filler_counter]);
+			 filler_counter++;
 			}
-			counter++;
 			
+
 		}
 		
 		
 			
-		JButton right = new JButton(createImageIcon("right_arrow.jpg"));
-		buttonPanel1.add(right);
-			
-			
-			
-		
-		
-		buttonPanel1.setVisible(false);
-		
 	
+		buttonPanels[buttonPanels_counter].add(right_arrows[right_counter]);
+		right_counter++;
+		
+		buttonPanels[buttonPanels_counter].setVisible(false);
+		
+		
+		
+		
+		
 	}
 	
+	
+	
+	
+	public void makeButtonPanel() {
+		
 
+		
+		
+		buttonPanels[buttonPanels_counter] = new JPanel();
+		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(2,9));
+		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,300));
+		
+		
+		buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
+		sound_counter++;
+		
+		for (int i = 0; i < 7;i++) {
+			
+			buttonPanels[buttonPanels_counter].add(buttons[button_counter]);
+			button_counter++;
+			
+		}
+	
+		
+		
+		for (int j = 0; j < 8;j++) {
+			
+			if (j == 0) {
+				
+				buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
+				sound_counter++;
+			
+				buttonPanels[buttonPanels_counter].add(left_arrows[left_counter]);
+				left_counter++;
+				
+			}
+			
+			
+			else {
+			 
+			 buttonPanels[buttonPanels_counter].add(fillers[filler_counter]);
+			 filler_counter++;
+			}
+			
+
+		}
+		
+		
+			
+	
+		buttonPanels[buttonPanels_counter].add(right_arrows[right_counter]);
+		right_counter++;
+		
+		buttonPanels[buttonPanels_counter].setVisible(false);
+		buttonPanels_counter++;
+	
+		
+		
+		
+	}
+	
+	
 	
 	
 	
@@ -248,28 +408,65 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		}
 		
 		
-		else if (source == left_arrow) {
-			
-			System.out.println("left arrow");
-			play_sound(click);
-		}
+	
 		
 		else if (source == right_arrow) {
 			
 			buttonPanel.setVisible(false);
-		    setContentPane(buttonPanel1);
-			buttonPanel1.setVisible(true);
-			System.out.println("right arrow");
-			play_sound(click);
-		}
-		else if (source == left) {
+		    setContentPane(buttonPanels[0]);
+			buttonPanels[0].setVisible(true);
 			
-			buttonPanel.setVisible(true);
-		    setContentPane(buttonPanel);
-			buttonPanel1.setVisible(false);
-			System.out.println("left arrow");
 			play_sound(click);
 		}
+		else if (source == left_arrows[0]) {
+			
+			buttonPanels[0].setVisible(false);
+		
+		    setContentPane(buttonPanel);
+		    buttonPanel.setVisible(true);
+			
+			play_sound(click);
+		}
+	
+		for (int k = 0; k < size;k++) {
+			
+			if (source==buttons[k]) {
+				
+				play_sound(button);
+				
+			}
+			
+		}
+		
+		
+		for (int i = 0; i < size_rounded; i++) {
+			
+			
+			if (source == left_arrows[i] && i!=0) {
+				
+				play_sound(click);
+				buttonPanels[i].setVisible(false);
+			
+				setContentPane(buttonPanels[i-1]);
+				buttonPanels[i-1].setVisible(true);
+			}
+			
+			else if(source == right_arrows[i] && i!=size_rounded-1) {
+				
+				play_sound(click);
+				buttonPanels[i].setVisible(false);
+				
+				setContentPane(buttonPanels[i+1]);
+				buttonPanels[i+1].setVisible(true);
+			
+				
+			}
+			
+			
+		}
+		
+		
+		
 	}
 	
 	public static void play_sound(File Sound) {
@@ -306,5 +503,3 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		}
 	}
 }
-	
-
