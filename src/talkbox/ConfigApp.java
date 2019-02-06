@@ -17,8 +17,10 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	/**
 	 * 
 	 */
+	
 	private JButton enter;
 	private JTextField numButtons;
+	
 	
 	public ConfigApp() {
 		super ("Welcome");
@@ -28,14 +30,16 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		numButtons = new JTextField(3); //only enter 3 digit number
 		
 		enter.addActionListener(this);
+		numButtons.addActionListener(this);
 		
 		JPanel welPanel = new JPanel();
-		welPanel.setBackground(Color.cyan);
-		welPanel.setPreferredSize(new Dimension(200, 100));
+		welPanel.setBackground(Color.white);
+		welPanel.setPreferredSize(new Dimension(250, 100));
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(welPanel);
+		contentPane.add(numButtons, BorderLayout.CENTER);
 		contentPane.add(enter, BorderLayout.SOUTH);
 		setContentPane(contentPane);
 	}
