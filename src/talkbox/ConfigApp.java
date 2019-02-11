@@ -25,6 +25,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		super ("Welcome");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//For the Welcome Screen
 		numBLabel = new JLabel("Enter the number of buttons on the device: ");
 		enter = new JButton("ENTER");
 		entNumB = new JTextField(3); //only enter 3 digit number
