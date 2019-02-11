@@ -32,13 +32,15 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		enter.addActionListener(this);
 		entNumB.addActionListener(this);
 		
+		entNumB.setBounds(10, 45, 200, 10);
+		
 		//write object and read object to the file ....for serialization object (contains all fields for the object)
 		
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.setBackground(Color.black);
-		contentPane.setPreferredSize(new Dimension(400, 300));
+		contentPane.setBackground(Color.white);
+		contentPane.setPreferredSize(new Dimension(300, 100));
 		contentPane.add(numBLabel, BorderLayout.NORTH);
 		contentPane.add(entNumB, BorderLayout.CENTER);
 		contentPane.add(enter, BorderLayout.SOUTH);
