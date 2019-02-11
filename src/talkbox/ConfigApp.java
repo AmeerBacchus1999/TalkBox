@@ -9,37 +9,38 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionListener {
-	
-	/**
-	 * 
-	 */
+public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionListener { 
 	
 	private JButton enter;
-	private JTextField numButtons;
+	private JTextField entNumB;
+	public static int numButtons;
+	private JLabel numBLabel; 
 	
 	
 	public ConfigApp() {
 		super ("Welcome");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		numBLabel = new JLabel("Enter the number of buttons on the device: ");
 		enter = new JButton("ENTER");
-		numButtons = new JTextField(3); //only enter 3 digit number
+		entNumB = new JTextField(3); //only enter 3 digit number
 		
 		enter.addActionListener(this);
-		numButtons.addActionListener(this);
+		entNumB.addActionListener(this);
 		
-		JPanel welPanel = new JPanel();
-		welPanel.setBackground(Color.white);
-		welPanel.setPreferredSize(new Dimension(250, 100));
+		//write object and read object to the file ....for serialization object (contains all fields for the object)
+		
 		
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
-		contentPane.add(welPanel);
-		contentPane.add(numButtons, BorderLayout.CENTER);
+		contentPane.setBackground(Color.black);
+		contentPane.setPreferredSize(new Dimension(400, 300));
+		contentPane.add(numBLabel, BorderLayout.WEST);
+		contentPane.add(entNumB, BorderLayout.CENTER);
 		contentPane.add(enter, BorderLayout.SOUTH);
 		setContentPane(contentPane);
 	}
@@ -51,7 +52,12 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	{
 		Object source = e.getSource();
 		if (source == enter) {
-			
+			String text = entNumB.getText();
+		    entNumB.selectAll();
+		    numButtons = Integer.parseInt(text);
+		    TalkBoxFrame frame = new TalkBoxFrame(numButtons);
+			frame.pack();
+			frame.setVisible(true);
 		}
 	}
 	
@@ -62,19 +68,19 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		welFrame.pack();
 		welFrame.setVisible(true);
 		
-		int size;
+		//int size;
 		
 		//test
-		Scanner in = new Scanner(System.in);
+		/*Scanner in = new Scanner(System.in);
 		System.out.print("Enter number of buttons: ");
 		size = in.nextInt();
 		in.close();
 		
 		
-		TalkBoxFrame frame = new TalkBoxFrame(size);
+		TalkBoxFrame frame = new TalkBoxFrame(numButtons);
 		frame.pack();
 		frame.setVisible(true);
-		
+		*/ 
 		
 		
 	}
