@@ -39,7 +39,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(Color.black);
 		contentPane.setPreferredSize(new Dimension(400, 300));
-		contentPane.add(numBLabel, BorderLayout.WEST);
+		contentPane.add(numBLabel, BorderLayout.NORTH);
 		contentPane.add(entNumB, BorderLayout.CENTER);
 		contentPane.add(enter, BorderLayout.SOUTH);
 		setContentPane(contentPane);
