@@ -1,4 +1,6 @@
 package talkbox;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,7 +9,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import javax.swing.BoxLayout;
@@ -22,17 +27,28 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionListener { 
 	
-	private JButton enter;
-	private JTextField entNumB;
-	private JButton openFile;
-	private JLabel fileDescrip ;
-	public static int numButtons;
-	JFileChooser fc;
+	private static final long serialVersionUID = 4L;
+	private transient JButton enter;
+	private transient JTextField entNumB;
+	private transient JButton openFile;
+	private transient JLabel fileDescrip ;
+	public transient static int numButtons;
+	private transient String[][] audioFileNames;
+	private transient Path pathSer;
+	transient JFileChooser fc;
+	private transient Path relativePath;
+	transient File TalkBoxDataFolder;
+	private transient static String PATH = "TalkBoxData"; 
+	transient File[] files;
 	
 	
 	public ConfigApp() {
 		super ("Welcome");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		audioFileNames = new String[1][];
+		new File(PATH).mkdir();
+		this.TalkBoxDataFolder = new File(PATH);
+		this.relativePath = this.TalkBoxDataFolder.toPath();
 		
 		//For the Welcome Screen
 
@@ -93,13 +109,39 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		Object source = e.getSource();
 		if (source == openFile) {
 			int returnFile = fc.showOpenDialog(ConfigApp.this);
+			
 			if (returnFile == JFileChooser.APPROVE_OPTION) {
-				File[] files = fc.getSelectedFiles();
+				files = fc.getSelectedFiles();
+				
 				//want to create a list of opened files
 				//contentPane.setPreferredSize(new Dimension(300, 125));// To increase the length of the window to see the list
 			}
+			
+			
 		}
 		else if (source == enter) {
+			for(int i = 0; i < files.length; i++)
+			{
+				try {
+					Files.copy(files[i].toPath(), new File(PATH + "\\file_" + i).toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			String filename = PATH + "\\TalkBoxObject.tbc";
+			FileOutputStream fos = null;
+			ObjectOutputStream out = null;
+			try {
+				fos = new FileOutputStream(filename);
+				out = new ObjectOutputStream(fos);
+				TalkBoxConfiguration t = (TalkBoxConfiguration) this;
+				out.writeObject(t);
+				out.close();
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
 			String text = entNumB.getText();
 		    entNumB.selectAll();
 		    numButtons = Integer.parseInt(text);
@@ -115,6 +157,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		ConfigApp welFrame = new ConfigApp();
 		welFrame.pack();
 		welFrame.setVisible(true);
+		
 		
 		//int size;
 		
