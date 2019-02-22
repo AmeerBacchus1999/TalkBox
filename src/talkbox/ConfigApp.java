@@ -125,7 +125,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			for(int i = 0; i < files.length; i++)
 			{
 				try {
-					Files.copy(files[i].toPath(), new File(PATH + files[i].getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+					Files.copy(files[i].toPath(), new File(PATH + "\\" + files[i].getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
 					arr[i] = files[i].getName();
 
 				} catch (IOException e1) {
