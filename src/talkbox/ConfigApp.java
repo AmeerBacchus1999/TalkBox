@@ -26,26 +26,27 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionListener { 
-	
 	private static final long serialVersionUID = 4L;
+	
+	private ArrayList<String[]> audioFileNames = new ArrayList<String[]>();
+	private Path pathSer;
+	private int numButtons;
+	
 	private transient JButton enter;
 	private transient JTextField entNumB;
 	private transient JButton openFile;
 	private transient JLabel fileDescrip ;
-	public transient static int numButtons;
-	private transient String[][] audioFileNames;
-	private transient Path pathSer;
 	transient JFileChooser fc;
 	private transient Path relativePath;
 	transient File TalkBoxDataFolder;
-	private transient static String PATH = "TalkBoxData"; 
-	transient File[] files;
+	public transient static String PATH = "TalkBoxData"; 
+	transient File[] files = new File[0];
 	
 	
 	public ConfigApp() {
 		super ("Welcome");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		audioFileNames = new String[1][];
+		
 		new File(PATH).mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
 		this.relativePath = this.TalkBoxDataFolder.toPath();
@@ -120,34 +121,44 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			
 		}
 		else if (source == enter) {
+			String[] arr = new String[files.length];
 			for(int i = 0; i < files.length; i++)
 			{
 				try {
-					Files.copy(files[i].toPath(), new File(PATH + "\\file_" + i).toPath(), StandardCopyOption.REPLACE_EXISTING);
+					Files.copy(files[i].toPath(), new File(PATH + files[i].getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+					arr[i] = files[i].getName();
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				
 			}
-			String filename = PATH + "\\TalkBoxObject.tbc";
-			FileOutputStream fos = null;
-			ObjectOutputStream out = null;
-			try {
-				fos = new FileOutputStream(filename);
-				out = new ObjectOutputStream(fos);
-				TalkBoxConfiguration t = (TalkBoxConfiguration) this;
-				out.writeObject(t);
-				out.close();
-			}
-			catch(IOException ex) {
-				ex.printStackTrace();
-			}
+			this.audioFileNames.add(arr);
+			
 			String text = entNumB.getText();
 		    entNumB.selectAll();
 		    numButtons = Integer.parseInt(text);
 		    TalkBoxFrame frame = new TalkBoxFrame(numButtons);
 			frame.pack();
 			frame.setVisible(true);
+			
+			String filename = PATH + "\\TalkBoxObject.tbc";
+			System.out.println(filename);
+			FileOutputStream fos = null;
+			ObjectOutputStream out = null;
+			try {
+				fos = new FileOutputStream(filename);
+				out = new ObjectOutputStream(fos);
+				TalkBoxConfiguration t = (TalkBoxConfiguration) this;
+				//ConfigApp t = this;
+				System.out.println(t.getNumberOfAudioButtons());
+				out.writeObject(t);
+				out.close();
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
+
 		}
 	}
 	
@@ -182,7 +193,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioButtons() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.numButtons;
 	}
 
 
@@ -191,7 +202,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioSets() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.getAudioFileNames().length;
 	}
 
 
@@ -200,7 +211,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getTotalNumberOfButtons() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 18 + (this.numButtons+1)*2 + (9-(this.numButtons+1))*2;
 	}
 
 
@@ -209,7 +220,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public Path getRelativePathToAudioFiles() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.pathSer;
 	}
 
 
@@ -218,7 +229,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public String[][] getAudioFileNames() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.audioFileNames.toArray(new String[0][0]);
 	}
 	
 	
