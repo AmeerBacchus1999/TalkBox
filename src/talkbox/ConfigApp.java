@@ -55,7 +55,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 
 		enter = new JButton("ENTER");
 		
-		openFile = new JButton("Open files");
+		/*openFile = new JButton("Open files");
 		openFile.setAlignmentX(CENTER_ALIGNMENT);//center the button
 		
 		fileDescrip = new JLabel ("*Name picture files and audio files that go together, with the same name");
@@ -63,6 +63,8 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
+		*/
+		
 		
 		//text field for number of buttons 
 		entNumB = new JTextField(10);
@@ -73,7 +75,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		//add action listener
 		enter.addActionListener(this);
 		entNumB.addActionListener(this);
-		openFile.addActionListener(this);
+		//openFile.addActionListener(this);
 		
 		//write object and read object to the file ....for serialization object (contains all fields for the object)
 		JPanel numBPanel = new JPanel();
@@ -81,17 +83,19 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	    numBPanel.add(entNumB);
 	    numBPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of buttons on device:"));
 		
+	    /*
 	    JPanel filePanel = new JPanel();
 	    filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.Y_AXIS));
 	    filePanel.add(openFile);
 	    filePanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter any files you want to use: "));
-		
+		*/
+	    
 	    JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(Color.gray);
-		contentPane.setPreferredSize(new Dimension(300, 125));
-	    contentPane.add(numBPanel, BorderLayout.NORTH);
-	    contentPane.add(filePanel, BorderLayout.CENTER);
+		contentPane.setPreferredSize(new Dimension(300, 75));
+	    contentPane.add(numBPanel);
+	    //contentPane.add(filePanel, BorderLayout.CENTER);
 	    contentPane.add(enter, BorderLayout.SOUTH);
 		setContentPane(contentPane);
 		
@@ -108,11 +112,12 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
-		if (source == openFile) {
+		/*if (source == openFile) {
 			int returnFile = fc.showOpenDialog(ConfigApp.this);
 			
 			if (returnFile == JFileChooser.APPROVE_OPTION) {
 				files = fc.getSelectedFiles();
+				
 				
 				//want to create a list of opened files
 				//contentPane.setPreferredSize(new Dimension(300, 125));// To increase the length of the window to see the list
@@ -120,7 +125,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			
 			
 		}
-		else if (source == enter) {
+		else*/ if (source == enter) {
 			String[] arr = new String[files.length];
 			for(int i = 0; i < files.length; i++)
 			{
@@ -138,6 +143,9 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			String text = entNumB.getText();
 		    entNumB.selectAll();
 		    numButtons = Integer.parseInt(text);
+		    
+		    this.setVisible(false);
+		    
 		    TalkBoxFrame frame = new TalkBoxFrame(numButtons);
 			frame.pack();
 			frame.setVisible(true);

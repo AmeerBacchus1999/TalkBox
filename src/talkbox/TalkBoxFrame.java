@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
@@ -76,10 +78,13 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton left_arrow;
 	private JButton right_arrow;
 
-	
-	
-	
-	
+	//For Recording
+	private static final int recordTime = 10000; // 10 seconds
+	private JButton recordButton;
+	private JTextField recordFileName;
+	private JFrame recordWin;
+	private JFrame recording;
+	public File recFile;
 	
 	public TalkBoxFrame(int size) {
 		
@@ -391,9 +396,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	}
 	
 	
-	
-	
-	
 	//This method listens for the button to be pressed
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -458,11 +460,73 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		else if (source == B7) {
 			
 			System.out.println("Record");
-			play_sound(button);
+			recordWin = new JFrame ("Record");
+			
+			recordFileName = new JTextField (20);
+			recordFileName.setHorizontalAlignment(JTextField.CENTER);
+			recordFileName.setMargin(new Insets(0, 3, 0, 0));
+			recordFileName.setMaximumSize(recordFileName.getPreferredSize());
+			
+			recordButton = new JButton ("RECORD");
+			
+			
+			recordFileName.addActionListener(this);
+			recordButton.addActionListener(this);
+			
+			JPanel namePan = new JPanel();
+			namePan.setLayout(new BoxLayout(namePan, BoxLayout.Y_AXIS));
+			namePan.add(recordFileName);
+			namePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the new sound: "));
+			
+			
+			JPanel recordPAN = new JPanel();
+			recordPAN.setLayout(new BorderLayout());
+			recordPAN.add(namePan, BorderLayout.NORTH);
+			recordPAN.add(recordButton, BorderLayout.SOUTH);
+			
+			recordWin.setContentPane(recordPAN);
+			recordWin.pack();
+			recordWin.setVisible(true);
 		}
 		
+		else if (source == recordButton) {
+			String text = recordFileName.getText()+".wav";
+			recordWin.setVisible(false);
+			recFile = new File (text);
+			recording = new JFrame ("Recording...");
+			
+			
+			JLabel end = new JLabel("Recording ended...");
+			
+			JPanel recordStart = new JPanel();
+			recordStart.setLayout(new BorderLayout());
+			recordStart.setPreferredSize(new Dimension(100, 75));
+			recordStart.add(end);
+			
+	        recording.setContentPane(recordStart);
+			recording.pack();
+			recording.setVisible(true);
+			
+			Record newRecord = new Record(recFile);
+			
+			Thread stopper = new Thread(new Runnable() {
+				public void run() {
+	                try {
+	                    Thread.sleep(recordTime);
+	                } 
+	                catch (InterruptedException ex) {
+	                    ex.printStackTrace();
+	                }
+	                newRecord.finish();
+	            }
+	        });
+	 
+	        stopper.start();
+	 
+	        // start recording
+	        newRecord.start();
+		}
 		
-	
 		
 		else if (source == right_arrow) {
 			
