@@ -9,6 +9,10 @@ import java.util.List;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
+import com.sun.prism.*;
 
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
@@ -16,10 +20,17 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	//These are the images for the buttons below (B1-B7) (not actual buttons)
 
 	Panel canvas;//This sets up the panel to
-	Panel screen2;
+
 	
-	SetButton test;
+	final static File f = new File(TalkBoxFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	static File AudioSets;
+	final static Desktop PC = Desktop.getDesktop();
 	public JPanel buttonPanel;
+	
+	static String[][] AudioFileNames;
+	static int[] AudioFilesCounter;
+	
+	
 	public JPanel BP;
 	public JPanel[] buttonPanels;
 	public int buttonPanels_counter = 0;
@@ -47,7 +58,9 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
     public JButton[] buttons;
     public int button_counter = 0;
 	
+	public static boolean check;
 	
+	public static File[] Audio_Sets;
 	
 	
 	
@@ -76,15 +89,21 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton left_arrow;
 	private JButton right_arrow;
 
-	
-	
-	
-	
+	//For Recording
+	private static final int recordTime = 10000; // 10 seconds
+	private JButton recordButton;
+	private JTextField recordFileName;
+	private JFrame recordWin;
+	private JFrame recording;
+	public File recFile;
 	
 	public TalkBoxFrame(int size) {
 		
 		super();
 		
+		AudioSets = new File(f.getPath()+"/Audio Sets");
+		AudioSets.mkdir();
+	
 		this.size = size;
 		
 		double panels = (double)size/7;
@@ -92,6 +111,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		size_rounded = (int)Math.ceil(panels);
 		
 		buttonPanels = new JPanel[size_rounded];
+	
 		left_arrows = new JButton[size_rounded];
 		
 		right_arrows = new JButton[size_rounded];
@@ -130,19 +150,31 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		}
 		
 		
-		buttons = new JButton[size_rounded*7];
-		pictures = new JButton[size_rounded*7];
-		setButton = new SetButton[size_rounded*7];
+		buttons = new JButton[size];
+		pictures = new JButton[size];
+		setButton = new SetButton[size];
 		
-		for (int g = 0; g < size_rounded*7;g++) {
+		Audio_Sets = new File[size];
+		
+		AudioFileNames = new String[size][];
+		AudioFilesCounter = new int[size];
+		
+		for (int p = 0; p < size;p++) {
 			
-			buttons[g] = new JButton(createImageIcon("button.jpg"));
-			buttons[g].addActionListener(this);
+			AudioFilesCounter[p] = 0;
+			Audio_Sets[p] = new File(AudioSets.getPath()+"/Audio Set "+(p+1));
+			Audio_Sets[p].mkdirs();
 			
-			pictures[g] = new JButton(createImageIcon("default.jpg"));
-			pictures[g].setBackground(Color.white);
-			setButton[g] = new SetButton(pictures[g]);
-			new DropTarget(pictures[g],setButton[g]);
+			buttons[p] = new JButton(createImageIcon("button.jpg"));
+			buttons[p].addActionListener(this);
+			
+			pictures[p] = new JButton(createImageIcon("default.jpg"));
+			pictures[p].setBackground(Color.white);
+			
+			
+			setButton[p] = new SetButton(pictures[p],p);
+			new DropTarget(pictures[p],setButton[p]);
+			
 		}
 		
 		
@@ -152,6 +184,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		canvas = new Panel();
+		
+		
 		
 		setContentPane(canvas); 
 		setResizable(false);//prevents user from resizing the window
@@ -172,8 +206,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		record_pic = new JButton (createImageIcon("record_pic.jpg"));
 		record_pic.setBackground(Color.WHITE);
 		
-		test = new SetButton(record_pic);
-		new DropTarget(record_pic,test);
+		
 		
 		
 		
@@ -203,6 +236,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		left_arrow.addActionListener(this);
 		right_arrow = new JButton (createImageIcon("right_arrow.jpg"));
 		right_arrow.addActionListener(this);
+		
 		
 		
 		buttonPanel = new JPanel();
@@ -391,18 +425,13 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	}
 	
 	
-	
-	
-	
 	//This method listens for the button to be pressed
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
 		Object source = ae.getSource();
 		//File button = new File("button_sound.wav"); //Creates new file with the sound we want
-		URL url = getClass().getResource("button_sound.wav");
 		
-		File button = new File(url.getPath());
 		
 		
 	
@@ -458,11 +487,73 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		else if (source == B7) {
 			
 			System.out.println("Record");
-			play_sound(button);
+			recordWin = new JFrame ("Record");
+			
+			recordFileName = new JTextField (30);
+			recordFileName.setHorizontalAlignment(JTextField.CENTER);
+			recordFileName.setMargin(new Insets(0, 3, 0, 0));
+			recordFileName.setMaximumSize(recordFileName.getPreferredSize());
+			
+			recordButton = new JButton ("RECORD");
+			
+			
+			recordFileName.addActionListener(this);
+			recordButton.addActionListener(this);
+			
+			JPanel namePan = new JPanel();
+			namePan.setLayout(new BoxLayout(namePan, BoxLayout.Y_AXIS));
+			namePan.add(recordFileName);
+			namePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the new sound: "));
+			
+			
+			JPanel recordPAN = new JPanel();
+			recordPAN.setLayout(new BorderLayout());
+			recordPAN.add(namePan, BorderLayout.NORTH);
+			recordPAN.add(recordButton, BorderLayout.SOUTH);
+			
+			recordWin.setContentPane(recordPAN);
+			recordWin.pack();
+			recordWin.setVisible(true);
 		}
 		
+		else if (source == recordButton) {
+			String text = recordFileName.getText()+".wav";
+			recordWin.setVisible(false);
+			recFile = new File (text);
+			recording = new JFrame ("Recording...");
+			
+			
+			JLabel end = new JLabel("Recording ended...");
+			
+			JPanel recordStart = new JPanel();
+			recordStart.setLayout(new BorderLayout());
+			recordStart.setPreferredSize(new Dimension(100, 75));
+			recordStart.add(end);
+			
+	        recording.setContentPane(recordStart);
+			recording.pack();
+			recording.setVisible(true);
+			
+			Record newRecord = new Record(recFile);
+			
+			Thread stopper = new Thread(new Runnable() {
+				public void run() {
+	                try {
+	                    Thread.sleep(recordTime);
+	                } 
+	                catch (InterruptedException ex) {
+	                    ex.printStackTrace();
+	                }
+	                newRecord.finish();
+	            }
+	        });
+	 
+	        stopper.start();
+	 
+	        // start recording
+	        newRecord.start();
+		}
 		
-	
 		
 		else if (source == right_arrow) {
 			
@@ -481,7 +572,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			play_sound(click);
 		}
-	
+		
+		else if (TalkBoxFrame.check == true) {
 		for (int k = 0; k < size;k++) {
 			
 			if (source==buttons[k]) {
@@ -495,6 +587,29 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			}
 			
 		}
+		}
+		
+		else if (TalkBoxFrame.check == false) {
+			
+			for (int k = 0; k < size;k++) {
+				
+				if (source==buttons[k]) {
+					
+					try {
+						PC.open(new File(AudioSets.getPath()+"/Audio Set "+(k+1)));
+					} catch (IOException e) {
+						System.out.println("File Not Found");
+					}
+					
+					
+				}
+				
+			}
+			
+			
+			
+		}
+		
 		
 		
 		for (int i = 0; i < size_rounded; i++) {

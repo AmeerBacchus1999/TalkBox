@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,14 +34,23 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	private int numButtons;
 	
 	private transient JButton enter;
+	private transient JButton RunSim;
 	private transient JTextField entNumB;
-	private transient JButton openFile;
 	private transient JLabel fileDescrip ;
 	transient JFileChooser fc;
 	private transient Path relativePath;
 	transient File TalkBoxDataFolder;
 	public transient static String PATH = "TalkBoxData"; 
 	transient File[] files = new File[0];
+	
+	public TalkBoxFrame frame;
+	public JButton[] pictures;
+	public SetButton[] SetButtons;
+	
+	
+	
+	
+	
 	
 	
 	public ConfigApp() {
@@ -53,16 +63,10 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		//For the Welcome Screen
 
-		enter = new JButton("ENTER");
+		enter = new JButton("Configure");
+		RunSim = new JButton("Launch Simulator");
+		RunSim.addActionListener(this);
 		
-		openFile = new JButton("Open files");
-		openFile.setAlignmentX(CENTER_ALIGNMENT);//center the button
-		
-		fileDescrip = new JLabel ("*Name picture files and audio files that go together, with the same name");
-		fileDescrip.setLabelFor(openFile);
-		
-		fc = new JFileChooser();
-		fc.setMultiSelectionEnabled(true);
 		
 		//text field for number of buttons 
 		entNumB = new JTextField(10);
@@ -73,74 +77,94 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		//add action listener
 		enter.addActionListener(this);
 		entNumB.addActionListener(this);
-		openFile.addActionListener(this);
+		//openFile.addActionListener(this);
 		
 		//write object and read object to the file ....for serialization object (contains all fields for the object)
 		JPanel numBPanel = new JPanel();
 		numBPanel.setLayout(new BoxLayout(numBPanel, BoxLayout.Y_AXIS));
 	    numBPanel.add(entNumB);
+	    
 	    numBPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of buttons on device:"));
 		
-	    JPanel filePanel = new JPanel();
-	    filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.Y_AXIS));
-	    filePanel.add(openFile);
-	    filePanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter any files you want to use: "));
-		
+	    
 	    JPanel contentPane = new JPanel();
+	    
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(Color.gray);
-		contentPane.setPreferredSize(new Dimension(300, 125));
+		contentPane.setPreferredSize(new Dimension(300, 100));
+	  
 	    contentPane.add(numBPanel, BorderLayout.NORTH);
-	    contentPane.add(filePanel, BorderLayout.CENTER);
-	    contentPane.add(enter, BorderLayout.SOUTH);
+	    contentPane.add(enter, BorderLayout.CENTER);
+	    contentPane.add(RunSim, BorderLayout.SOUTH);
+	    
 		setContentPane(contentPane);
+		setResizable(false);
 		
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//to get the screen size of any screen 
-		int width = dim.width;
-		int height = dim.height;
-		//contentPane.setLocation(width/2, height/2);
-		//this.setSize(width/2, height/2);//to centre on screen
 		this.setLocationRelativeTo(null);
 	}
 		
+	
+	public ConfigApp(int size) {
+		
+	
+		
+		TalkBoxFrame.check = false;
+		
+		frame = new TalkBoxFrame(size);
+		frame.pack();
+		frame.setVisible(true);
+		
+	
+
+		
+	
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
-		if (source == openFile) {
-			int returnFile = fc.showOpenDialog(ConfigApp.this);
-			
-			if (returnFile == JFileChooser.APPROVE_OPTION) {
-				files = fc.getSelectedFiles();
-				
-				//want to create a list of opened files
-				//contentPane.setPreferredSize(new Dimension(300, 125));// To increase the length of the window to see the list
-			}
+		 	if (source == enter) {
 			
 			
-		}
-		else if (source == enter) {
-			String[] arr = new String[files.length];
-			for(int i = 0; i < files.length; i++)
-			{
-				try {
-					Files.copy(files[i].toPath(), new File(PATH + "\\" + files[i].getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-					arr[i] = files[i].getName();
-
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
-			}
-			this.audioFileNames.add(arr);
 			
 			String text = entNumB.getText();
 		    entNumB.selectAll();
 		    numButtons = Integer.parseInt(text);
-		    TalkBoxFrame frame = new TalkBoxFrame(numButtons);
-			frame.pack();
-			frame.setVisible(true);
+		    
+		   
+		    
+		    new ConfigApp(numButtons);
+		    
+		    
 			
 			String filename = PATH + "\\TalkBoxObject.tbc";
 			System.out.println(filename);
@@ -158,10 +182,25 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			catch(IOException ex) {
 				ex.printStackTrace();
 			}
-
+			
 		}
+		
+		
+		
+		
+		
+		else if (source == RunSim) {
+			
+			TalkBoxFrame.check = true;
+			
+			
+			
+		}
+		
 	}
 	
+
+
 	public static void main(String[] args) {
 		
 		
@@ -170,19 +209,9 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		welFrame.setVisible(true);
 		
 		
-		//int size;
-		
-		//test
-		/*Scanner in = new Scanner(System.in);
-		System.out.print("Enter number of buttons: ");
-		size = in.nextInt();
-		in.close();
+	
 		
 		
-		TalkBoxFrame frame = new TalkBoxFrame(numButtons);
-		frame.pack();
-		frame.setVisible(true);
-		*/ 
 		
 		
 	}
@@ -193,7 +222,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioButtons() {
 		// TODO Auto-generated method stub
-		return this.numButtons;
+		return this.numButtons+6;
 	}
 
 
@@ -202,16 +231,19 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioSets() {
 		// TODO Auto-generated method stub
-		return this.getAudioFileNames().length;
+		return TalkBoxFrame.Audio_Sets.length;
 	}
-
 
 
 
 	@Override
 	public int getTotalNumberOfButtons() {
 		// TODO Auto-generated method stub
-		return 18 + (this.numButtons+1)*2 + (9-(this.numButtons+1))*2;
+		int audio_buttons = getNumberOfAudioButtons()+1;
+		
+		int arrows = (int)((double)numButtons/7)*2-2;
+		
+		return audio_buttons+arrows;
 	}
 
 
@@ -220,7 +252,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public Path getRelativePathToAudioFiles() {
 		// TODO Auto-generated method stub
-		return this.pathSer;
+		return TalkBoxFrame.AudioSets.toPath();
 	}
 
 
@@ -229,7 +261,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public String[][] getAudioFileNames() {
 		// TODO Auto-generated method stub
-		return this.audioFileNames.toArray(new String[0][0]);
+		return TalkBoxFrame.AudioFileNames;
 	}
 	
 	
