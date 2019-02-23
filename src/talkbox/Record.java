@@ -43,7 +43,7 @@ public class Record {
 	 
 	            AudioInputStream ais = new AudioInputStream(line);
 	 
-	            System.out.println("Start recording...");
+	            System.out.println("Start recording....");
 	 
 	            // start recording
 	            AudioSystem.write(ais, fileType, recordFile);

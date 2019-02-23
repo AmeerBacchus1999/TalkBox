@@ -34,7 +34,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	
 	private transient JButton enter;
 	private transient JTextField entNumB;
-	private transient JButton openFile;
 	private transient JLabel fileDescrip ;
 	transient JFileChooser fc;
 	private transient Path relativePath;
@@ -55,15 +54,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 
 		enter = new JButton("ENTER");
 		
-		/*openFile = new JButton("Open files");
-		openFile.setAlignmentX(CENTER_ALIGNMENT);//center the button
-		
-		fileDescrip = new JLabel ("*Name picture files and audio files that go together, with the same name");
-		fileDescrip.setLabelFor(openFile);
-		
-		fc = new JFileChooser();
-		fc.setMultiSelectionEnabled(true);
-		*/
 		
 		
 		//text field for number of buttons 
@@ -83,27 +73,15 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	    numBPanel.add(entNumB);
 	    numBPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of buttons on device:"));
 		
-	    /*
-	    JPanel filePanel = new JPanel();
-	    filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.Y_AXIS));
-	    filePanel.add(openFile);
-	    filePanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter any files you want to use: "));
-		*/
 	    
 	    JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(Color.gray);
 		contentPane.setPreferredSize(new Dimension(300, 75));
 	    contentPane.add(numBPanel);
-	    //contentPane.add(filePanel, BorderLayout.CENTER);
 	    contentPane.add(enter, BorderLayout.SOUTH);
 		setContentPane(contentPane);
 		
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();//to get the screen size of any screen 
-		int width = dim.width;
-		int height = dim.height;
-		//contentPane.setLocation(width/2, height/2);
-		//this.setSize(width/2, height/2);//to centre on screen
 		this.setLocationRelativeTo(null);
 	}
 		

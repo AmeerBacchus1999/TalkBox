@@ -462,7 +462,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			System.out.println("Record");
 			recordWin = new JFrame ("Record");
 			
-			recordFileName = new JTextField (20);
+			recordFileName = new JTextField (30);
 			recordFileName.setHorizontalAlignment(JTextField.CENTER);
 			recordFileName.setMargin(new Insets(0, 3, 0, 0));
 			recordFileName.setMaximumSize(recordFileName.getPreferredSize());
