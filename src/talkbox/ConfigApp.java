@@ -118,31 +118,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	public void actionPerformed(ActionEvent e)

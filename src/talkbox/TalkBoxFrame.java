@@ -92,7 +92,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton right_arrow;
 
 	//For Recording
-	private static final int recordTime = 5000; // 10 seconds
+	private static final int recordTime = 7000; // 7 seconds
 	private JButton recordButton;
 	private JTextField recordFileName;
 	private JFrame recordWin;
@@ -554,6 +554,12 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	                    ex.printStackTrace();
 	                }
 	                newRecord.finish();
+	                try {
+						PC.open(recFile.getParentFile());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            }
 	        });
 	 
