@@ -106,7 +106,7 @@ public class SetButton implements DropTargetListener {
 			
 		File Source = new File(arg);
 		File Destination = new File(TalkBoxFrame.Audio_Sets[this.num].getPath()+"/"+Source.getName());
-		File Destination2 = new File(TalkBoxFrame.Audio.getPath()+"/"+Source.getName());
+		File Destination2 = new File("AudioFiles"+"/"+Source.getName());
 		
 		try {
 			Files.copy(Source.toPath(), Destination.toPath(),StandardCopyOption.REPLACE_EXISTING);
