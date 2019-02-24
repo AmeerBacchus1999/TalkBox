@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.io.*;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.*;
@@ -26,12 +28,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 	final static File f = new File(TalkBoxFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 	static File AudioSets;
+	static File Audio;
 	final static Desktop PC = Desktop.getDesktop();
 	public JPanel buttonPanel;
 	
-	static String[][] AudioFileNames;
-	static int[] AudioFilesCounter;
-	
+	public static boolean firstTime = true;
 	
 	public JPanel BP;
 	public JPanel[] buttonPanels;
@@ -60,10 +61,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
     public JButton[] buttons;
     public int button_counter = 0;
 	
-	public static boolean check;
+	public static boolean check = true;
 	
 	public static File[] Audio_Sets;
 	
+	public static ArrayList<ArrayList<String>> AudioFilesSets;
 	
 	
 	CardLayout cdLayout = new CardLayout ();
@@ -101,12 +103,23 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	transient File TalkBoxRecordingFolder;
 	public transient static String recPath = "TalkBoxRecording"; 
 	
-	public TalkBoxFrame(int size) {
+	
+	
+	
+	public TalkBoxFrame(int size,String[][] AudioFileNames) {
 		
 		super();
+		firstTime = false;
+		System.out.println(Arrays.deepToString(AudioFileNames));
+		
+		
+		AudioFilesSets =new ArrayList<ArrayList<String>>(size);
 		
 		AudioSets = new File(f.getPath()+"/Audio Sets");
 		AudioSets.mkdir();
+		
+		Audio = new File(f.getPath()+"/Audio Files");
+		Audio.mkdir();
 	
 		this.size = size;
 		
@@ -160,12 +173,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		Audio_Sets = new File[size];
 		
-		AudioFileNames = new String[size][];
-		AudioFilesCounter = new int[size];
+		
 		
 		for (int p = 0; p < size;p++) {
 			
-			AudioFilesCounter[p] = 0;
+			
 			Audio_Sets[p] = new File(AudioSets.getPath()+"/Audio Set "+(p+1));
 			Audio_Sets[p].mkdirs();
 			
@@ -177,14 +189,58 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			
 			setButton[p] = new SetButton(pictures[p],p);
+			AudioFilesSets.add(setButton[p].AudioFileNames);
+			
+		
+			
+			
+			
+			
+			
 			new DropTarget(pictures[p],setButton[p]);
 			
 		}
 		
+		if (AudioFileNames != null) {
+		
+		for (int y = 0; y < AudioFileNames.length;y++) {
+			
+			
+			if (y == size) {
+				break;
+			}
+			
+			setButton[y].sound = new File(TalkBoxFrame.Audio.getPath()+"/"+AudioFileNames[y][0]);
+			setButton[y].AudioFileNames.add(AudioFileNames[y][0]);
+			
+		}
+		}
 		
 		
-		System.out.println(this.size);
-		System.out.println(size_rounded);
+		
+		/*for (int y = 0; y < AudioFileNames.length;y++) {
+			
+			if (AudioFileNames[y] != null) {
+			System.out.println(AudioFileNames[y][0]);
+			System.out.println("ok");
+			setButton[y].sound = new File(TalkBoxFrame.Audio.getPath()+"/"+AudioFileNames[y][0]);
+			}
+			if (y+1 == size-1) {
+				break;
+			}
+			
+		}
+		
+		*/
+	
+			
+		//setButton[y].sound = new File(TalkBoxFrame.Audio.getPath()+"/"+AudioFileNames[y][0]);
+		
+		
+		
+		
+		
+	
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		canvas = new Panel();
@@ -557,7 +613,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	                try {
 						PC.open(recFile.getParentFile());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 	            }

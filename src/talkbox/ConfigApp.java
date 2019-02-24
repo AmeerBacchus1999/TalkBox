@@ -11,7 +11,10 @@ import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -27,10 +30,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
 public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionListener { 
 	private static final long serialVersionUID = 4L;
 	
-	private ArrayList<String[]> audioFileNames = new ArrayList<String[]>();
+	
 	private Path pathSer;
 	private int numButtons;
 	
@@ -42,13 +46,14 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	private transient Path relativePath;
 	transient File TalkBoxDataFolder;
 	public transient static String PATH = "TalkBoxData"; 
+	public static String destination = PATH + "\\AudioFileNames.tbc";
 	transient File[] files = new File[0];
 	
 	public TalkBoxFrame frame;
 	public JButton[] pictures;
 	public SetButton[] SetButtons;
 	
-	
+	public String[][] AudioFileNames;
 	
 	
 	
@@ -61,6 +66,10 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		new File(PATH).mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
 		this.relativePath = this.TalkBoxDataFolder.toPath();
+		
+		
+		
+		
 		
 		//For the Welcome Screen
 
@@ -105,50 +114,55 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	}
 		
 	
-	public ConfigApp(int size) {
-		
-
-		TalkBoxFrame.check = false;
-		
-		frame = new TalkBoxFrame(size);
-		frame.pack();
-		frame.setVisible(true);
-
-		
-	}
-	
-	
-
-	
 	
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
 		 	if (source == enter) {
+
+		 		try {
+		 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
+		 		
+		 			this.AudioFileNames = (String[][]) is.readObject();
+		 			is.close();
+		 			
+		 			}
+		 			catch (FileNotFoundException ex1) {
+		 				
+		 				System.out.println("File not Found");
+		 			}
+		 			
+		 			catch(IOException ex2) {
+		 				
+		 				System.out.println("IOException");
+		 			}
+		 			
+		 			catch(ClassNotFoundException ex3) {
+		 				
+		 				System.out.println("Class not Found");
+		 			}
 			
 			String text = entNumB.getText();
 		    entNumB.selectAll();
 		    numButtons = Integer.parseInt(text);
-		    
-		    new ConfigApp(numButtons);
-		    
-			String filename = PATH + "\\TalkBoxObject.tbc";
-			System.out.println(filename);
-			FileOutputStream fos = null;
-			ObjectOutputStream out = null;
-			try {
-				fos = new FileOutputStream(filename);
-				out = new ObjectOutputStream(fos);
-				TalkBoxConfiguration t = (TalkBoxConfiguration) this;
-				//ConfigApp t = this;
-				System.out.println(t.getNumberOfAudioButtons());
-				out.writeObject(t);
-				out.close();
-			}
-			catch(IOException ex) {
-				ex.printStackTrace();
-			}
+
+		    TalkBoxFrame.check = false;
 			
+			
+			
+		    String filename = PATH + "\\TalkBoxObject.tbc";
+
+			System.out.println(filename);
+			
+			
+		
+		
+			if (TalkBoxFrame.firstTime == true) {
+				
+			frame = new TalkBoxFrame(numButtons,this.AudioFileNames);
+			frame.pack();
+			frame.setVisible(true);
+			}
 		}
 		
 		
@@ -157,7 +171,117 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		else if (source == RunSim) {
 			
+			
+			String text = entNumB.getText();
+		    entNumB.selectAll();
+		    numButtons = Integer.parseInt(text);
+		    String filename = PATH + "\\TalkBoxObject.tbc";
+			System.out.println(filename);
+			
+			if (TalkBoxFrame.check == false) {
+	
+			
+			ArrayList<ArrayList<String>> audio_files = TalkBoxFrame.AudioFilesSets;
+			this.AudioFileNames = new String[numButtons][];
+			if (audio_files != null) {
+			
+			for (int i = 0; i < numButtons; i++) {
+				
+				Collections.reverse(audio_files.get(i));
+				if (audio_files.get(i).size() == 0) {
+					
+					this.AudioFileNames[i] = new String[1];
+				}
+				else {
+				this.AudioFileNames[i] = new String[audio_files.get(i).size()];
+				}
+				for (int k = 0; k < audio_files.get(i).size();k++) {
+					
+					if (audio_files.get(i).get(k) != null) {
+					
+					this.AudioFileNames[i][k] = audio_files.get(i).get(k);
+					}
+				}
+						
+				
+				
+			}
+			
+			System.out.println(Arrays.deepToString(this.AudioFileNames));
+			
+			
+		
+			
+			try {
+				
+				ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(destination));
+				os.writeObject(this.AudioFileNames);
+				os.close();
+			}
+			
+			catch (FileNotFoundException ex1) {
+				
+				System.out.println("File not Found");
+			}
+			
+			catch(IOException ex2) {
+				
+				System.out.println("IOException");
+			}
+			}
+			}
+			
+			else {
+				
+				
+				
+				try {
+					ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
+				
+					this.AudioFileNames = (String[][]) is.readObject();
+					is.close();
+					
+					}
+					catch (FileNotFoundException ex1) {
+						
+						System.out.println("File not Found");
+					}
+					
+					catch(IOException ex2) {
+						
+						System.out.println("IOException");
+					}
+					
+					catch(ClassNotFoundException ex3) {
+						
+						System.out.println("Class not Found");
+					}
+				
+				
+				if (TalkBoxFrame.firstTime == true) {
+					frame = new TalkBoxFrame(numButtons,this.AudioFileNames);
+					frame.pack();
+					frame.setVisible(true);
+				}
+				
+				
+				
+				
+			
+			}
+			
 			TalkBoxFrame.check = true;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+	
+			
 			
 			
 			
@@ -183,7 +307,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioButtons() {
 		// TODO Auto-generated method stub
-		return this.numButtons+6;
+		return this.numButtons;
 	}
 
 
@@ -200,7 +324,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getTotalNumberOfButtons() {
 		// TODO Auto-generated method stub
-		int audio_buttons = getNumberOfAudioButtons()+1;
+		int audio_buttons = getNumberOfAudioButtons()+7;
 		
 		int arrows = (int)((double)numButtons/7)*2-2;
 		
@@ -213,19 +337,49 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public Path getRelativePathToAudioFiles() {
 		// TODO Auto-generated method stub
-		return TalkBoxFrame.AudioSets.toPath();
+		
+		this.relativePath = TalkBoxFrame.Audio.toPath();
+		
+		return this.relativePath;
 	}
 
-
+	
 
 
 	@Override
 	public String[][] getAudioFileNames() {
 		// TODO Auto-generated method stub
-		return TalkBoxFrame.AudioFileNames;
+		try {
+		ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
+	
+		this.AudioFileNames = (String[][]) is.readObject();
+		is.close();
+		
+		}
+		catch (FileNotFoundException ex1) {
+			
+			System.out.println("File not Found");
+		}
+		
+		catch(IOException ex2) {
+			
+			System.out.println("IOException");
+		}
+		
+		catch(ClassNotFoundException ex3) {
+			
+			System.out.println("Class not Found");
+		}
+		
+		
+		
+		return this.AudioFileNames;
+		
+		
+		
 	}
 	
-	
-
 
 }
+	
+
