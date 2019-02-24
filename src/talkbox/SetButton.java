@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -25,13 +26,14 @@ public class SetButton implements DropTargetListener {
 	JButton pic = new JButton();
 	File sound;
 	int num;
+	public ArrayList<String> AudioFileNames = new ArrayList<String>();
 
 	
 	public SetButton(JButton pic, int num) {
 		
 		this.pic = pic;
 		this.num = num;
-		sound = null;
+		
 	}
 	
 	
@@ -58,8 +60,9 @@ public class SetButton implements DropTargetListener {
 						
 						if (i.getPath().substring(i.getPath().length()-4, i.getPath().length()).equals(".wav")) {
 							
+							AudioFileNames.add(i.getName());
 							
-							changeSound(i);
+							changeSound(i.getPath());
 						}
 						else {
 						display(i.getPath());
@@ -97,23 +100,24 @@ public class SetButton implements DropTargetListener {
 		}
 	}
 	
-	private void changeSound(File arg) {
+	private void changeSound(String arg) {
 		
 		if (TalkBoxFrame.check == false) {
 			
-		File Source = new File(arg.getPath());
+		File Source = new File(arg);
 		File Destination = new File(TalkBoxFrame.Audio_Sets[this.num].getPath()+"/"+Source.getName());
+		File Destination2 = new File(TalkBoxFrame.Audio.getPath()+"/"+Source.getName());
 		
-
 		try {
 			Files.copy(Source.toPath(), Destination.toPath(),StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(Source.toPath(), Destination2.toPath(),StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			System.out.println("File Not Found");
 		}
 		
 		
 		
-		this.sound = new File(arg.getPath());
+		this.sound = new File(arg);
 		}
 	}
 
