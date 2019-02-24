@@ -610,6 +610,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	                    ex.printStackTrace();
 	                }
 	                newRecord.finish();
+	              //opens record folder after recording finished
 	                try {
 						PC.open(recFile.getParentFile());
 					} catch (IOException e) {

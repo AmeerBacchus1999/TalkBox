@@ -68,9 +68,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		this.relativePath = this.TalkBoxDataFolder.toPath();
 		
 		
-		
-		
-		
 		//For the Welcome Screen
 
 		enter = new JButton("Configure");
