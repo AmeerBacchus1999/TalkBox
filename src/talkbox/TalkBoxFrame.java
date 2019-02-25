@@ -690,7 +690,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			if (source == left_arrows[i] && i!=0) {
 				
-				play_sound(click);
+				play_sound2(click_sound);
 				buttonPanels[i].setVisible(false);
 			
 				setContentPane(buttonPanels[i-1]);
@@ -699,7 +699,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			else if(source == right_arrows[i] && i!=size_rounded-1) {
 				
-				play_sound(click);
+				play_sound2(click_sound);
 				buttonPanels[i].setVisible(false);
 				
 				setContentPane(buttonPanels[i+1]);
