@@ -1,0 +1,2 @@
+# TalkBox
+In this release, a runnable jar file, that is both the configurator and the simulator of a TalkBox device, was developed. In this application, the user can indicate the number of buttons they have on their TalkBox device and they will be able to configure those buttons by dragging and dropping audio and picture files from their computer to the app or they can also record new audio files using the record button on the app. To listen to the audio added to the buttons, the user can then launch the simulator.
