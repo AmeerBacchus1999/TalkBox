@@ -504,9 +504,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			
 			URL washroom_sound = getClass().getResource("washroom.wav");
-			
-			
-			
+
 			File washroom = new File(washroom_sound.getPath());
 			
 			play_sound2(washroom_sound);

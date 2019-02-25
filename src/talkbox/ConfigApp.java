@@ -205,8 +205,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 					}
 				}
 						
-				
-				
 			}
 			
 			System.out.println(Arrays.deepToString(this.AudioFileNames));
