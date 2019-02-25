@@ -27,6 +27,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 
 	
 	final static File f = new File(TalkBoxFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+	
 	static File AudioSets;
 	static File Audio;
 	final static Desktop PC = Desktop.getDesktop();
@@ -115,11 +116,11 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		AudioFilesSets =new ArrayList<ArrayList<String>>(size);
 		
-		AudioSets = new File(f.getPath()+"/Audio Sets");
+		/*AudioSets = new File(f.getPath()+"/Audio Sets");
 		AudioSets.mkdir();
 		
 		Audio = new File(f.getPath()+"/Audio Files");
-		Audio.mkdir();
+		Audio.mkdir();*/
 	
 		this.size = size;
 		
@@ -178,7 +179,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		for (int p = 0; p < size;p++) {
 			
 			
-			Audio_Sets[p] = new File(AudioSets.getPath()+"/Audio Set "+(p+1));
+			Audio_Sets[p] = new File("AudioSets"+"/Audio Set "+(p+1));
 			Audio_Sets[p].mkdirs();
 			
 			buttons[p] = new JButton(createImageIcon("button.jpg"));
@@ -210,7 +211,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 				break;
 			}
 			
-			setButton[y].sound = new File(TalkBoxFrame.Audio.getPath()+"/"+AudioFileNames[y][0]);
+			setButton[y].sound = new File("AudioFiles"+"/"+AudioFileNames[y][0]);
 			setButton[y].AudioFileNames.add(AudioFileNames[y][0]);
 			
 		}
@@ -494,7 +495,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		
 		
-	
 		
 		URL click_sound = getClass().getResource("click.wav");
 		File click = new File(click_sound.getPath());
@@ -504,9 +504,10 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			
 			URL washroom_sound = getClass().getResource("washroom.wav");
-			
+
 			File washroom = new File(washroom_sound.getPath());
-			play_sound(washroom);
+			
+			play_sound2(washroom_sound);
 			
 		}
 		else if (source == B2) {
@@ -514,35 +515,36 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			URL hungry_sound = getClass().getResource("hungry.wav");
 			
 			File hungry = new File(hungry_sound.getPath());
-			play_sound(hungry);
+			
+			play_sound2(hungry_sound);
 		}
 		else if (source == B3) {
 			
 			URL thirsty_sound = getClass().getResource("thirsty.wav");
 			
 			File thirsty = new File(thirsty_sound.getPath());
-			play_sound(thirsty);
+			play_sound2(thirsty_sound);
 		}
 		else if (source == B4) {
 			
 			URL play_sound = getClass().getResource("play.wav");
 			
 			File play = new File(play_sound.getPath());
-			play_sound(play);
+			play_sound2(play_sound);
 		}
 		else if (source == B5) {
 			
 			URL sick_sound = getClass().getResource("sick.wav");
 			
 			File sick = new File(sick_sound.getPath());
-			play_sound(sick);
+			play_sound2(sick_sound);
 		}
 		else if (source == B6) {
 			
 			URL tired_sound = getClass().getResource("tired.wav");
 			
 			File tired = new File(tired_sound.getPath());
-			play_sound(tired);
+			play_sound2(tired_sound);
 		}
 		else if (source == B7) {
 			
@@ -632,7 +634,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		    setContentPane(buttonPanels[0]);
 			buttonPanels[0].setVisible(true);
 			
-			play_sound(click);
+			play_sound2(click_sound);
 		}
 		else if (source == left_arrows[0]) {
 			
@@ -641,7 +643,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		    setContentPane(buttonPanel);
 		    buttonPanel.setVisible(true);
 			
-			play_sound(click);
+			play_sound2(click_sound);
 		}
 		
 		else if (TalkBoxFrame.check == true) {
@@ -667,7 +669,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 				if (source==buttons[k]) {
 					
 					try {
-						PC.open(new File(AudioSets.getPath()+"/Audio Set "+(k+1)));
+						PC.open(new File("AudioSets"+"/Audio Set "+(k+1)));
 					} catch (IOException e) {
 						System.out.println("File Not Found");
 					}
@@ -709,6 +711,26 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 		}
 		
+		
+		
+	}
+	
+public static void play_sound2(URL Sound) {
+		
+		
+		try {
+			
+			Clip clip = AudioSystem.getClip();	//Initializes new audio clip to be played
+			clip.open(AudioSystem.getAudioInputStream(Sound));	//Loads the sound we want to play
+			clip.start();	//Starts playing the clip
+			
+		}
+		
+		catch(Exception e){
+			
+			System.out.println("Audio File Not Found");
+			
+		}
 		
 		
 	}

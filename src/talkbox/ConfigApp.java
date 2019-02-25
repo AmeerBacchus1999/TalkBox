@@ -64,6 +64,11 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		new File(PATH).mkdir();
+		new File("AudioFiles").mkdir();
+		
+		
+	
+		new File("AudioSets").mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
 		this.relativePath = this.TalkBoxDataFolder.toPath();
 		
@@ -200,8 +205,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 					}
 				}
 						
-				
-				
 			}
 			
 			System.out.println(Arrays.deepToString(this.AudioFileNames));
