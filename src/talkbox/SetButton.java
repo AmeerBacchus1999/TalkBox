@@ -77,7 +77,6 @@ public class SetButton implements DropTargetListener {
 		}
 		
 	}
-
 	
 	private void display(String arg) {
 	
