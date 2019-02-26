@@ -582,10 +582,13 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 			new File(recPath).mkdir();
 			this.TalkBoxRecordingFolder = new File(recPath);
-			String text = recPath + "\\"+recordFileName.getText()+".wav";
+			
+			String text = this.TalkBoxRecordingFolder.toURI()+recordFileName.getText()+".wav";
+			String filename =  text.substring(5, text.length());
+
 			
 			recordWin.setVisible(false);
-			recFile = new File (text);
+			recFile = new File (filename);
 			recording = new JFrame ("Recording Started...");
 			JLabel start = new JLabel("Recording Started...");
 			recording.add(start);
