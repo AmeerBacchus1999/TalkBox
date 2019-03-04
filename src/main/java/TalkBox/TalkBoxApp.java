@@ -1,4 +1,4 @@
-package talkbox;
+package main.java.TalkBox;
 //where we run the app from
 public class TalkBoxApp {
 

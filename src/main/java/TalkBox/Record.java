@@ -1,4 +1,4 @@
-package talkbox;
+package main.java.TalkBox;
 import java.io.*;
 import javax.sound.sampled.*;
 

@@ -1,4 +1,4 @@
-package talkbox;
+package main.java.TalkBox;
 public class Test {
 	
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package talkbox;
+package main.java.TalkBox;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
