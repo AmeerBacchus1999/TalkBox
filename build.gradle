@@ -32,5 +32,10 @@ test {
 		events "passed", "skipped", "failed"
 	}
 }
+jar {
+	manifest{
+		attributes 'Main-Class': 'main.java.TalkBox.ConfigApp'
+	}
+}
 // Define the main class for the application
 mainClassName = 'TalkBox.ConfigApp'
