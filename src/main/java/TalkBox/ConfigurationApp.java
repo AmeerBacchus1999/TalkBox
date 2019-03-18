@@ -36,41 +36,17 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		this.numButtons = numButtons;
 	}
 	
-	public TalkBoxButton getTalkBoxButton(int location)
-	{
-		for(TalkBoxButton t : this.buttons)
-		{
-			if(t.getLocation() == location && t.getAudioSets().contains(currentAudioSet))
-			{
-				return t;
-			}
-		}
-		return null;
-	}
+	
 	
 	
 	@Override
 	public int getNumberOfAudioButtons() {
-		int counter = 0;
-		for(TalkBoxButton t : this.buttons)
-		{
-			if(t.getClass() == new AudioButton().getClass())
-			{
-				counter++;
-			}
-		}
-		return counter;
+		return 0;
 	}
 
 	@Override
 	public int getNumberOfAudioSets() {
-		Set<Integer> union = new TreeSet<Integer>();
-		union.add(1);
-		for(TalkBoxButton t : this.buttons)
-		{
-			union.addAll(t.getAudioSets());
-		}
-		return union.size();
+		return 0;
 	}
 
 	@Override
