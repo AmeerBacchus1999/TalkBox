@@ -2,15 +2,18 @@ package main.java.TalkBox;
 
 import java.nio.file.Path;
 
-public class AudioButton implements TalkBoxButton{
+public class AudioButton extends TalkBoxButton{
 
 	private Path audio;
 	private Path image;
 	
+
 	public AudioButton()
 	{
-		
+		super();
 	}
+	
+	
 	
 	public AudioButton(Path audio, Path image)
 	{

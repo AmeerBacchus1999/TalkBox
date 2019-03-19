@@ -1,42 +1,47 @@
 package main.java.TalkBox;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.ranges.Range;
-
-
-public class SwapButton implements TalkBoxButton{
-	private int range;
-	private int currentAudioSet;
+public class SwapButton extends TalkBoxButton{
+	private List<Integer> values;
+	private int counter;
 	
-	public SwapButton(int range, int currentAudioSet)
+	
+	public SwapButton()
 	{
-		this.setCurrentAudioSet(currentAudioSet);
-		this.setRange(1);
+		super();
 	}
 	
-	public int getRange() {
-		return range;
-	}
-
-	public void setRange(int range) {
-		this.range = range;
-	}
-
-	public int getCurrentAudioSet() {
-		return currentAudioSet;
-	}
-
-	public void setCurrentAudioSet(int currentAudioSet) {
-		this.currentAudioSet = currentAudioSet;
-	}
 	
-	public void alternateAudioSet()
+	
+	private int getCounter() {
+		return counter;
+	}
+
+	private void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	private int range()
 	{
-		this.setCurrentAudioSet((currentAudioSet + 1)% range);
+		return values.size();
 	}
-
 	
-
+	public void addValue(int value)
+	{
+		values.add(value);
+	}
+	
+	public void removeValue(int i)
+	{
+		values.remove(i);
+		this.setCounter(0);
+	}
+	
+	
+	public int next()
+	{
+		return values.get(counter++ % range());
+	}
+	
 }

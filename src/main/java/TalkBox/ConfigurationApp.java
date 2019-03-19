@@ -8,35 +8,14 @@ import java.util.TreeSet;
 
 public class ConfigurationApp implements TalkBoxConfiguration {
 
+	public static int numAudioSets = 1;
 	private int numButtons;
 	private int currentAudioSet;
-	private List<TalkBoxButton> buttons;
 	
-	public ConfigurationApp(int numButtons)
+	ConfigurationApp()
 	{
-		this.setNumButtons(numButtons);
-		this.setCurrentAudioSet(1);
-		this.buttons = new ArrayList<TalkBoxButton>();
+		
 	}
-	
-	public int getCurrentAudioSet() {
-		return currentAudioSet;
-	}
-
-	public void setCurrentAudioSet(int currentAudioSet) {
-		this.currentAudioSet = currentAudioSet;
-	}
-
-	public int getNumButtons() {
-		return numButtons;
-	}
-	
-	private void setNumButtons(int numButtons)
-	{
-		this.numButtons = numButtons;
-	}
-	
-	
 	
 	
 	@Override
