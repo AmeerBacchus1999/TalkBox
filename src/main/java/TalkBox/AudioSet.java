@@ -1,6 +1,7 @@
 package main.java.TalkBox;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AudioSet {
@@ -26,43 +27,54 @@ public class AudioSet {
 		this.swapButtons.add(new SwapButton());
 	}
 	
-	private void removeAudioButton(int location)
+	private void removeTalkBoxButton(int location)
 	{
-		boolean updateLocation = false;
-		for(AudioButton a : audioButtons)
+		for (Iterator<AudioButton> iter = audioButtons.iterator(); iter.hasNext(); ) 
 		{
-			if(a.getLocation() == location)
+			AudioButton next = iter.next();
+			if(next.getLocation() == location)
 			{
-				audioButtons.remove(location);
-				updateLocation = true;
-			}
-			if(updateLocation)
-			{
-				a.setLocation(location);
+				iter.remove();
+				decrementLocations(location);
+				return;
 			}
 		}
-	}
-	
-	private void removeSwapButton(int location)
-	{
 		s = SwapNormalized.NO;
-		for(SwapButton sw : swapButtons)
+		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); ) 
 		{
-			if(sw.getLocation() == location)
+			SwapButton next = iter.next();
+			
+			if(next.getLocation() == location)
 			{
-				swapButtons.remove(location);
+				iter.remove();
+				decrementLocations(location);
+				return;
 			}
 		}
-		
 	}
 	
-	public void removeButton(int location)
+	private void decrementLocations(int location)
 	{
-		removeAudioButton(location);
-		removeSwapButton(location);
+		for (Iterator<AudioButton> iter = audioButtons.iterator(); iter.hasNext(); ) 
+		{
+			AudioButton next = iter.next();
+			if(next.getLocation() > location)
+			{
+				next.setLocation(next.getLocation() - 1);
+			}
+		}
+		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); ) 
+		{
+			SwapButton next = iter.next();
+			
+			if(next.getLocation() > location)
+			{
+				next.setLocation(next.getLocation() - 1);
+			}
+		}
 	}
 	
-	public void normalizeSwapButtons()
+	public void normalizeSwapButtons(int numAudioSets)
 	{
 		if(s == SwapNormalized.NO)
 		{
@@ -70,16 +82,16 @@ public class AudioSet {
 			for(int i = 0; i < swapButtons.size(); i++) 
 			{
 				SwapButton sw = swapButtons.get(i);
-				if(i == swapButtons.size()-1 && i < ConfigurationApp.numAudioSets)
+				if(i == swapButtons.size()-1 && i < numAudioSets)
 				{
-					for(; i < ConfigurationApp.numAudioSets; i++)
+					for(; i < numAudioSets; i++)
 					{
 						sw.addValue(i + 1);
 					}
 				}
 				else
 				{
-					sw.addValue((i % ConfigurationApp.numAudioSets) + 1 );
+					sw.addValue((i % numAudioSets) + 1 );
 				}
 				
 				
