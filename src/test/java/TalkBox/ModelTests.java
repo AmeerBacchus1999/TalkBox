@@ -6,6 +6,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ AudioButtonTest.class, AudioSetTest.class, ConfigurationAppTest.class, SwapButtonTest.class })
-public class AllTests {
+public class ModelTests {
 
 }
