@@ -1,43 +1,37 @@
 package main.java.TalkBox;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class AudioButton extends TalkBoxButton{
 
-	private Path audio;
-	private Path image;
+	private File audio;
+	private File image;
 	
 
-	public AudioButton()
+	public AudioButton(int location)
 	{
-		super();
+		super(location);
 	}
 	
-	
-	
-	public AudioButton(Path audio, Path image)
-	{
-		this.setAudio(audio);
-		this.setImage(image);
-	}
 
 
-	public Path getAudio() {
+	public File getAudio() {
 		return audio;
 	}
 
 
-	public void setAudio(Path audio) {
+	public void setAudio(File audio) {
 		this.audio = audio;
 	}
 
 
-	public Path getImage() {
+	public File getImage() {
 		return image;
 	}
 
 
-	public void setImage(Path image) {
+	public void setImage(File image) {
 		this.image = image;
 	}
 

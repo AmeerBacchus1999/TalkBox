@@ -1,5 +1,6 @@
 package main.java.TalkBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SwapButton extends TalkBoxButton{
@@ -7,15 +8,11 @@ public class SwapButton extends TalkBoxButton{
 	private int counter;
 	
 	
-	public SwapButton()
+	public SwapButton(int location)
 	{
-		super();
-	}
-	
-	
-	
-	private int getCounter() {
-		return counter;
+		super(location);
+		this.setCounter(0);
+		resetValues();
 	}
 
 	private void setCounter(int counter) {
@@ -38,9 +35,18 @@ public class SwapButton extends TalkBoxButton{
 		this.setCounter(0);
 	}
 	
+	public void resetValues()
+	{
+		this.values = new ArrayList<Integer>();
+	}
+	
 	
 	public int next()
 	{
+		if(counter == range())
+		{
+			this.setCounter(0);
+		}
 		return values.get(counter++ % range());
 	}
 	
