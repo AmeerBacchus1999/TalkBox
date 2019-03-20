@@ -1,20 +1,15 @@
 package test.java.TalkBox;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import main.java.TalkBox.AudioButton;
 
-public class AudioButtonTest {
+class AudioButtonTest {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
-	
 	@Test
 	void location()
 	{
