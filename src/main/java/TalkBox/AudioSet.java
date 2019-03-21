@@ -10,11 +10,17 @@ import java.util.List;
 public class AudioSet implements Comparable<AudioSet> {
 	private List<AudioButton> audioButtons;
 	private List<SwapButton> swapButtons;
+	private List<TalkBoxButton> talkBoxButtons;
+	private int size;
 	private int audioSetNum;
 
-	AudioSet(int audioSetNum)
+	public AudioSet(int audioSetNum)
 	{
 		this.audioSetNum = audioSetNum;
+		this.audioButtons = new ArrayList<AudioButton>();
+		this.swapButtons = new ArrayList<SwapButton>();
+		this.talkBoxButtons = new ArrayList<TalkBoxButton>();
+		this.size = 0;
 	}
 	
 	public int numAudioButtons()
@@ -48,16 +54,15 @@ public class AudioSet implements Comparable<AudioSet> {
 	}
 	
 	
-	public void addAudioButton(int location)
+	public void addAudioButton()
 	{
-		this.audioButtons.add(new AudioButton(location));
-		Collections.sort(this.audioButtons);
+		this.audioButtons.add(new AudioButton(++this.size));
 	}
 	
-	public void addSwapButton(int location)
+	public void addSwapButton()
 	{
-		this.swapButtons.add(new SwapButton(location));
-		Collections.sort(this.swapButtons);
+		
+		this.swapButtons.add(new SwapButton(++this.size));
 		normalizeSwapButtons();
 	}
 	
@@ -107,41 +112,35 @@ public class AudioSet implements Comparable<AudioSet> {
 	
 	public void removeTalkBoxButton(int location)
 	{
-		Collections.sort(this.audioButtons);
-		Collections.sort(this.swapButtons);
-		boolean decrementLocation = false;
-		boolean normalize;
+		
+		boolean normalize = true;
 		for (Iterator<AudioButton> iter = audioButtons.iterator(); iter.hasNext(); ) 
 		{
 			AudioButton ab = iter.next();
-			if(decrementLocation == true)
+			if(ab.getLocation() == location)
+			{
+				iter.remove();
+				normalize = false;
+			}
+			if(ab.getLocation() > location)
 			{
 				ab.setLocation(ab.getLocation() - 1);
 			}
-			if(ab.getLocation() == location && decrementLocation == false)
-			{
-				iter.remove();
-				decrementLocation = true;
-			}
+			
 			
 		}
-		normalize = decrementLocation;
-		decrementLocation = false;
-		
 		
 		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); ) 
 		{
 			SwapButton sw = iter.next();
-			if(decrementLocation == true)
+			if(sw.getLocation() == location)
+			{
+				iter.remove();
+			}
+			if(sw.getLocation() > location)
 			{
 				sw.setLocation(sw.getLocation() - 1);
 			}
-			if(sw.getLocation() == location && decrementLocation == false)
-			{
-				iter.remove();
-				decrementLocation = true;
-			}
-			
 		}
 		if(normalize)
 		{
@@ -156,6 +155,7 @@ public class AudioSet implements Comparable<AudioSet> {
 		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); )
 		{
 			SwapButton sw = iter.next();
+			sw.resetValues();
 			if(swapButtons.size() >  ConfigurationApp.totalNumAudioSets)
 			{
 				sw.addValue(((currentAudioSet - 1) % ConfigurationApp.totalNumAudioSets) + 1);
@@ -168,6 +168,7 @@ public class AudioSet implements Comparable<AudioSet> {
 					{
 						sw.addValue(currentAudioSet);
 					}
+					return;
 				}
 				else
 				{
@@ -180,6 +181,44 @@ public class AudioSet implements Comparable<AudioSet> {
 		
 
 	}
+	
+	public int getNewAudioSet(int location)
+	{
+		return this.getSwapButton(location).next();
+	}
+	
+	/*
+	public boolean validAudioSet()
+	{
+		this.talkBoxButtons = new ArrayList<TalkBoxButton>();
+		this.talkBoxButtons.addAll(this.audioButtons);
+		this.talkBoxButtons.addAll(this.swapButtons);
+		Collections.sort(this.talkBoxButtons);
+		if(this.talkBoxButtons.size() == 0)
+		{
+			return true;
+		}
+		else
+		{
+			if(this.audioButtons.size() == 0)
+			{
+				return false;
+			}
+		}
+			
+		int i = 1;
+		
+		for(TalkBoxButton t : this.talkBoxButtons)
+		{
+			if(t.getLocation() != i)
+			{
+				return false;
+			}
+			i++;
+		}
+		return true;
+	}
+	*/
 
 	@Override
 	public int compareTo(AudioSet o) {
@@ -220,9 +259,6 @@ public class AudioSet implements Comparable<AudioSet> {
 		}
 		return true;
 	}
-	
-	
-	
 	
 	
 }

@@ -18,12 +18,23 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private List<AudioSet> audioSets;
 	private int currentAudioSet;
 	public static int totalNumAudioSets = 0;
+	private int size = 0;
 	private static File fileTalkBoxData = new File("TalkBoxData");
 	public static String dirTalkBoxData = ConfigurationApp.fileTalkBoxData.getName();
 	
 	ConfigurationApp()
 	{
 		fileTalkBoxData.mkdir();
+	}
+	
+	private AudioSet getAudioSet()
+	{
+		return this.audioSets.get(currentAudioSet - 1);
+	}
+	
+	public void swapButtonPress(int location)
+	{
+		this.setCurrentAudioSet(getAudioSet().getNewAudioSet(location));
 	}
 		
 	public int getCurrentAudioSet() {
@@ -36,43 +47,33 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 
 	public void addAudioSet()
 	{
-		ConfigurationApp.totalNumAudioSets++;
-		audioSets.add(new AudioSet(ConfigurationApp.totalNumAudioSets));
-		currentAudioSet = ConfigurationApp.totalNumAudioSets;
+		
+		audioSets.add(new AudioSet(++size));
+		ConfigurationApp.totalNumAudioSets = size;
+		currentAudioSet = size;
 	}
 	
 	public void removeAudioSet(int audioSet)
 	{
-		Collections.sort(this.audioSets);
-		boolean removed = false;
+		/*
 		for (Iterator<AudioSet> iter = audioSets.iterator(); iter.hasNext(); )
 		{
 			AudioSet as = iter.next();
-			if(removed == true)
+			if(as.getAudioSetNum() == audioSet)
+			{
+				iter.remove();
+			}
+			if(as.getAudioSetNum() > audioSet)
 			{
 				as.setAudioSetNum(as.getAudioSetNum() - 1);
 			}
-			if(as.getAudioSetNum() == audioSet && removed == false)
-			{
-				iter.remove();
-				removed = true;
-			}
+			
 		}
+		*/
+		this.removeAudioSet(audioSet - 1);
 		this.doDefaultAudioSetBehaviour();
 	}
 	
-	public AudioSet getAudioSet(int audioSetNum)
-	{
-		for (Iterator<AudioSet> iter = audioSets.iterator(); iter.hasNext(); )
-		{
-			AudioSet as = iter.next();
-			if(as.getAudioSetNum() == audioSetNum)
-			{
-				return as;
-			}
-		}
-		return null;
-	}
 	
 	public void serialize()
 	{

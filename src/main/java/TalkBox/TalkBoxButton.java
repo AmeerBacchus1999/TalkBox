@@ -1,6 +1,6 @@
 package main.java.TalkBox;
 
-public abstract class TalkBoxButton implements Comparable<TalkBoxButton> {
+public class TalkBoxButton implements Comparable<TalkBoxButton> {
 	private int location;
 	
 	TalkBoxButton(int location)

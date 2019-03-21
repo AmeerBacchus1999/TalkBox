@@ -7,7 +7,6 @@ public class SwapButton extends TalkBoxButton{
 	private List<Integer> values;
 	private int counter;
 	
-	
 	public SwapButton(int location)
 	{
 		super(location);
