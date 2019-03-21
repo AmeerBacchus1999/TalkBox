@@ -46,7 +46,13 @@ class AudioSetTest {
 		c.addAudioSet();
 		c.addAudioSet();
 		c.addAudioSet();
-		AudioSet audioSet = new AudioSet(1);
+		c.setCurrentAudioSet(1);
+		c.addAudioButton();
+		c.addAudioButton();
+		c.addSwapButton();
+		c.addSwapButton();
+		c.addSwapButton();
+		c.removeSwapButton(4);
 		
 		
 		

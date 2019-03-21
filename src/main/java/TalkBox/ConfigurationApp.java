@@ -23,7 +23,8 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	
 	public ConfigurationApp()
 	{
-		fileTalkBoxData.mkdir();
+		ConfigurationApp.fileTalkBoxData.mkdir();
+		this.audioSets = new ArrayList<AudioSet>();
 		this.size = 0;
 	}
 	private AudioSet getAudioSet()
@@ -42,7 +43,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		currentAudioSet = size;
 	}
 	
-	private void setCurrentAudioSet(int currentAudioSet)
+	public void setCurrentAudioSet(int currentAudioSet)
 	{
 		this.currentAudioSet = currentAudioSet;
 	}
@@ -84,6 +85,16 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		{
 			ex.printStackTrace();
 		}
+	}
+	
+	public void addAudioButton()
+	{
+		getAudioSet().addAudioButton();
+	}
+	
+	public void addSwapButton()
+	{
+		getAudioSet().addSwapButton();
 	}
 	
 	public void setAudioForButton(int location, File audio)
