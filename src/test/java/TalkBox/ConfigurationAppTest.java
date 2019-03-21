@@ -12,7 +12,7 @@ class ConfigurationAppTest {
 	@BeforeEach
 	void setUp()
 	{
-		ConfigurationApp.totalNumAudioSets = 0;
+		
 	}
 	
 

@@ -17,40 +17,39 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 
 	private List<AudioSet> audioSets;
 	private int currentAudioSet;
-	public static int totalNumAudioSets = 0;
-	private int size = 0;
+	private int size;
 	private static File fileTalkBoxData = new File("TalkBoxData");
 	public static String dirTalkBoxData = ConfigurationApp.fileTalkBoxData.getName();
 	
-	ConfigurationApp()
+	public ConfigurationApp()
 	{
 		fileTalkBoxData.mkdir();
+		this.size = 0;
+	}
+	public AudioSet getAudioSet()
+	{
+		return this.audioSets.get(currentAudioSet);
 	}
 	
-	private AudioSet getAudioSet()
+	public static int getTotalNumAudioSets()
 	{
-		return this.audioSets.get(currentAudioSet - 1);
+		return ConfigurationApp.getTotalNumAudioSets();
 	}
 	
 	public void swapButtonPress(int location)
 	{
 		this.setCurrentAudioSet(getAudioSet().getNewAudioSet(location));
 	}
-		
-	public int getCurrentAudioSet() {
-		return currentAudioSet;
-	}
-
-	public void setCurrentAudioSet(int currentAudioSet) {
-		this.currentAudioSet = currentAudioSet;
-	}
 
 	public void addAudioSet()
 	{
-		
 		audioSets.add(new AudioSet(++size));
-		ConfigurationApp.totalNumAudioSets = size;
 		currentAudioSet = size;
+	}
+	
+	private void setCurrentAudioSet(int currentAudioSet)
+	{
+		this.currentAudioSet = currentAudioSet;
 	}
 	
 	public void removeAudioSet(int audioSet)
@@ -70,8 +69,8 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 			
 		}
 		*/
-		this.removeAudioSet(audioSet - 1);
-		this.doDefaultAudioSetBehaviour();
+		this.audioSets.remove(audioSet - 1);
+		this.normalizeAllAudioSets();
 	}
 	
 	
@@ -92,11 +91,42 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
-	private void doDefaultAudioSetBehaviour()
+	public void setAudioForButton(int location, File audio)
+	{
+		getAudioSet().setAudioForButton(location, audio);
+	}
+	
+	public void setImageForButton(int location, File image)
+	{
+		getAudioSet().setImageForButton(location, image);
+	}
+	
+	public void resetValuesSwapButton(int location)
+	{
+		getAudioSet().resetValuesSwapButton(location);
+	}
+	
+	public void addValueSwapButton(int location, int value)
+	{
+		getAudioSet().addValueSwapButton(location, value);
+	}
+	
+	public void removeAudioButton(int location)
+	{
+		getAudioSet().removeAudioButton(location);
+	}
+	
+	public void removeSwapButton(int location)
+	{
+		getAudioSet().removeSwapButton(location);
+		getAudioSet().normalizeSwapButtons(size);
+	}
+	
+	public void normalizeAllAudioSets()
 	{
 		for(AudioSet a : this.audioSets)
 		{
-			a.normalizeSwapButtons();
+			a.normalizeSwapButtons(size);
 		}
 	}
 
