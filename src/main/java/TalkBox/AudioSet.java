@@ -61,7 +61,10 @@ public class AudioSet implements Comparable<AudioSet> {
 	
 	public void addSwapButton()
 	{
-		
+		if(!AudioSet.isValidAudioSet(this.audioButtons.size(), this.numSwapButtons() + 1))
+		{
+			return;
+		}
 		this.swapButtons.add(new SwapButton(++this.size));
 		
 	}
@@ -171,6 +174,10 @@ public class AudioSet implements Comparable<AudioSet> {
 	
 	public void removeSwapButton(int location)
 	{
+		if(!AudioSet.isValidAudioSet(this.audioButtons.size(), this.numSwapButtons() - 1))
+		{
+			return;
+		}
 		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); ) 
 		{
 			SwapButton sw = iter.next();
@@ -256,6 +263,15 @@ public class AudioSet implements Comparable<AudioSet> {
 		return true;
 	}
 	*/
+	
+	private static boolean isValidAudioSet(int audioButtonsSize, int swapButtonsSize)
+	{
+		if(swapButtonsSize > 0 && audioButtonsSize == 0)
+		{
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public int compareTo(AudioSet o) {

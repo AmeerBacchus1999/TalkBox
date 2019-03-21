@@ -26,14 +26,9 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		fileTalkBoxData.mkdir();
 		this.size = 0;
 	}
-	public AudioSet getAudioSet()
+	private AudioSet getAudioSet()
 	{
 		return this.audioSets.get(currentAudioSet);
-	}
-	
-	public static int getTotalNumAudioSets()
-	{
-		return ConfigurationApp.getTotalNumAudioSets();
 	}
 	
 	public void swapButtonPress(int location)

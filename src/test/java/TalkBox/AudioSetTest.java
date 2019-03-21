@@ -25,6 +25,7 @@ class AudioSetTest {
 		assertEquals(audioSet.numAudioButtons(), 3);
 	}
 	
+	
 	@Test
 	void getAudioButton()
 	{
@@ -48,7 +49,6 @@ class AudioSetTest {
 		AudioSet audioSet = new AudioSet(1);
 		
 		
-		//audioSet.normalizeSwapButtons();
 		
 	}
 	
