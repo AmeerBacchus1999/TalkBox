@@ -16,7 +16,7 @@ class AudioSetTest {
 	@Test
 	void addAudioButton()
 	{
-		AudioSet audioSet = new AudioSet(1);
+		AudioSet audioSet = new AudioSet();
 		
 		audioSet.addAudioButton();
 		audioSet.addAudioButton();
@@ -29,7 +29,7 @@ class AudioSetTest {
 	@Test
 	void getAudioButton()
 	{
-		AudioSet audioSet = new AudioSet(1);
+		AudioSet audioSet = new AudioSet();
 		
 		audioSet.addAudioButton();
 		audioSet.addAudioButton();
@@ -40,21 +40,31 @@ class AudioSetTest {
 	@Test
 	void normalize()
 	{
-		ConfigurationApp c = new ConfigurationApp();
-		c.addAudioSet();
-		c.addAudioSet();
-		c.addAudioSet();
-		c.addAudioSet();
-		c.addAudioSet();
-		c.setCurrentAudioSet(1);
-		c.addAudioButton();
-		c.addAudioButton();
-		c.addSwapButton();
-		c.addSwapButton();
-		c.addSwapButton();
-		c.removeSwapButton(4);
-		
-		
+		try
+		{
+			ConfigurationApp c = new ConfigurationApp();
+			c.addAudioSet();
+			c.addAudioSet();
+			c.addAudioSet();
+			c.addAudioSet();
+			c.addAudioSet();
+			c.setCurrentAudioSet(1);
+			c.addAudioButton();
+			c.addAudioButton();
+			c.addSwapButton();
+			c.addSwapButton();
+			c.addSwapButton();
+			//c.removeSwapButton(4);
+			c.removeAudioButton(1);
+			c.swapButtonPress(4);
+			c.swapButtonPress(4);
+			c.swapButtonPress(3);
+			c.swapButtonPress(4);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 		
 	}
 	

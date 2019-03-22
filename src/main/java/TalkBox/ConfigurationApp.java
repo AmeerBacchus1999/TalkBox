@@ -17,7 +17,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 
 	private List<AudioSet> audioSets;
 	private int currentAudioSet;
-	private int size;
 	private static File fileTalkBoxData = new File("TalkBoxData");
 	public static String dirTalkBoxData = ConfigurationApp.fileTalkBoxData.getName();
 	
@@ -25,22 +24,32 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	{
 		ConfigurationApp.fileTalkBoxData.mkdir();
 		this.audioSets = new ArrayList<AudioSet>();
-		this.size = 0;
 	}
+	
 	private AudioSet getAudioSet()
 	{
-		return this.audioSets.get(currentAudioSet);
+		return this.audioSets.get(currentAudioSet - 1);
 	}
 	
 	public void swapButtonPress(int location)
 	{
 		this.setCurrentAudioSet(getAudioSet().getNewAudioSet(location));
 	}
+	
+	public void swapButtonPressAll(int location)
+	{
+		for(AudioSet a : this.audioSets)
+		{
+			this.setCurrentAudioSet(a.getNewAudioSet(location));
+		}
+	}
+	
 
 	public void addAudioSet()
 	{
-		audioSets.add(new AudioSet(++size));
-		currentAudioSet = size;
+		audioSets.add(new AudioSet());
+		currentAudioSet = this.getNumberOfAudioSets();
+		this.normalizeAllAudioSets();
 	}
 	
 	public void setCurrentAudioSet(int currentAudioSet)
@@ -50,21 +59,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	
 	public void removeAudioSet(int audioSet)
 	{
-		/*
-		for (Iterator<AudioSet> iter = audioSets.iterator(); iter.hasNext(); )
-		{
-			AudioSet as = iter.next();
-			if(as.getAudioSetNum() == audioSet)
-			{
-				iter.remove();
-			}
-			if(as.getAudioSetNum() > audioSet)
-			{
-				as.setAudioSetNum(as.getAudioSetNum() - 1);
-			}
-			
-		}
-		*/
 		this.audioSets.remove(audioSet - 1);
 		this.normalizeAllAudioSets();
 	}
@@ -92,29 +86,38 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		getAudioSet().addAudioButton();
 	}
 	
+	public void addSwapButtonToAllSets()
+	{
+		for(AudioSet a : this.audioSets)
+		{
+			a.addSwapButton();
+		}
+		this.normalizeAllAudioSets();
+	}
+	
+	public void addAudioButtonToAllSets()
+	{
+		for(AudioSet a : this.audioSets)
+		{
+			a.addAudioButton();
+		}
+
+	}
+	
 	public void addSwapButton()
 	{
 		getAudioSet().addSwapButton();
+		getAudioSet().normalizeSwapButtons(this.getNumberOfAudioSets());
 	}
 	
-	public void setAudioForButton(int location, File audio)
+	public AudioButton getAudioButton(int location)
 	{
-		getAudioSet().setAudioForButton(location, audio);
+		return getAudioSet().getAudioButton(location);
 	}
 	
-	public void setImageForButton(int location, File image)
+	public SwapButton getSwapButton(int location)
 	{
-		getAudioSet().setImageForButton(location, image);
-	}
-	
-	public void resetValuesSwapButton(int location)
-	{
-		getAudioSet().resetValuesSwapButton(location);
-	}
-	
-	public void addValueSwapButton(int location, int value)
-	{
-		getAudioSet().addValueSwapButton(location, value);
+		return getAudioSet().getSwapButton(location);
 	}
 	
 	public void removeAudioButton(int location)
@@ -122,17 +125,34 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		getAudioSet().removeAudioButton(location);
 	}
 	
-	public void removeSwapButton(int location)
-	{
-		getAudioSet().removeSwapButton(location);
-		getAudioSet().normalizeSwapButtons(size);
-	}
-	
-	public void normalizeAllAudioSets()
+	public void removeAudioButtonAllSets(int location)
 	{
 		for(AudioSet a : this.audioSets)
 		{
-			a.normalizeSwapButtons(size);
+			a.removeAudioButton(location);
+		}
+	}
+	
+	public void removeSwapButton(int location)
+	{
+		getAudioSet().removeSwapButton(location);
+		getAudioSet().normalizeSwapButtons(this.getNumberOfAudioSets());
+	}
+	
+	public void removeSwapButtonAllSets(int location)
+	{
+		for(AudioSet a : this.audioSets)
+		{
+			a.removeSwapButton(location);
+		}
+		this.normalizeAllAudioSets();
+	}
+	
+	private void normalizeAllAudioSets()
+	{
+		for(AudioSet a : this.audioSets)
+		{
+			a.normalizeSwapButtons(this.getNumberOfAudioSets());
 		}
 	}
 
