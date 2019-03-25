@@ -18,6 +18,32 @@ public class AudioSet {
 		this.swapButtons = new ArrayList<SwapButton>();
 	}
 	
+	public AudioSet(List<AudioButton> audioButtons, List<SwapButton> swapButtons)
+	{
+		this.audioButtons = new ArrayList<AudioButton>(audioButtons);
+		this.swapButtons = new ArrayList<SwapButton>(swapButtons);
+	}
+	
+	public List<AudioButton> getAudioButtons()
+	{
+		List<AudioButton> list = new ArrayList<AudioButton>();
+		for(AudioButton a : this.audioButtons)
+		{
+			list.add(new AudioButton(a));
+		}
+		return list;
+	}
+	
+	public List<SwapButton> getSwapButtons()
+	{
+		List<SwapButton> list = new ArrayList<SwapButton>();
+		for(SwapButton s : this.swapButtons)
+		{
+			list.add(new SwapButton(s));
+		}
+		return list;
+	}
+	
 	private int size()
 	{
 		return numAudioButtons() + numSwapButtons();
@@ -152,7 +178,7 @@ public class AudioSet {
 		for (Iterator<SwapButton> iter = swapButtons.iterator(); iter.hasNext(); )
 		{
 			SwapButton sw = iter.next();
-			sw.resetValues();
+			sw.reset();
 			if(swapButtons.size() >  totalNumAudioSets)
 			{
 				sw.addValue(((currentAudioSet - 1) % totalNumAudioSets) + 1);

@@ -10,8 +10,14 @@ public class SwapButton extends TalkBoxButton{
 	public SwapButton(int location)
 	{
 		super(location);
-		this.setCounter(0);
-		resetValues();
+		this.reset();
+	}
+	
+	public SwapButton(SwapButton s)
+	{
+		super(s.getLocation());
+		this.values = new ArrayList<Integer>(s.values);
+		this.setCounter(counter);
 	}
 
 	private void setCounter(int counter) {
@@ -28,12 +34,7 @@ public class SwapButton extends TalkBoxButton{
 		values.add(value);
 	}
 	
-	public void removeValue(int i)
-	{
-		values.remove(i);
-		this.setCounter(0);
-	}
-	
+
 	public void resetValues()
 	{
 		this.values = new ArrayList<Integer>();
@@ -49,4 +50,9 @@ public class SwapButton extends TalkBoxButton{
 		return values.get(counter++ % range());
 	}
 	
+	public void reset()
+	{
+		this.setCounter(0);
+		this.resetValues();
+	}
 }

@@ -38,42 +38,21 @@ class AudioSetTest {
 	}
 	
 	@Test
-	void normalize()
+	void test()
 	{
 		try
 		{
-			ConfigurationApp c = new ConfigurationApp();
-			c.addAudioSet();
-			c.addAudioSet();
-			c.addAudioSet();
-			c.addAudioSet();
-			c.addAudioSet();
-			c.setCurrentAudioSet(1);
-			c.addAudioButton();
-			c.addAudioButton();
-			c.addSwapButton();
-			c.addSwapButton();
-			c.addSwapButton();
-			//c.removeSwapButton(4);
-			c.removeAudioButton(1);
-			c.swapButtonPress(4);
-			c.swapButtonPress(4);
-			c.swapButtonPress(3);
-			c.swapButtonPress(4);
+			
 		}
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
 		}
-		
 	}
 	
 	@Test
-	void normalize2()
+	void testMultiple()
 	{
-		
-		
-		//audioSet.normalizeSwapButtons();
 		
 	}
 	

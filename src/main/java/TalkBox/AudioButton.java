@@ -12,6 +12,14 @@ public class AudioButton extends TalkBoxButton{
 	public AudioButton(int location)
 	{
 		super(location);
+		this.reset();
+	}
+	
+	public AudioButton(AudioButton a)
+	{
+		super(a.getLocation());
+		this.audio = a.audio;
+		this.image = a.image;
 	}
 	
 
@@ -34,5 +42,10 @@ public class AudioButton extends TalkBoxButton{
 	public void setImage(File image) {
 		this.image = image;
 	}
-
+	
+	public void reset()
+	{
+		this.audio = null;
+		this.image = null;
+	}
 }
