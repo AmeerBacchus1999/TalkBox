@@ -3,56 +3,28 @@ package main.java.TalkBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwapButton extends TalkBoxButton{
+public class SwapButton {
 	private List<Integer> values;
 	private int counter;
 	
-	public SwapButton(int location)
+	public SwapButton(List<Integer> values)
 	{
-		super(location);
-		this.reset();
-	}
-	
-	public SwapButton(SwapButton s)
-	{
-		super(s.getLocation());
-		this.values = new ArrayList<Integer>(s.values);
-		this.setCounter(counter);
-	}
-
-	private void setCounter(int counter) {
-		this.counter = counter;
+		this.values = values;
+		this.counter = 0;
 	}
 
 	private int range()
 	{
 		return values.size();
 	}
-	
-	public void addValue(int value)
-	{
-		values.add(value);
-	}
-	
-
-	public void resetValues()
-	{
-		this.values = new ArrayList<Integer>();
-	}
-	
-	
+		
 	public int next()
 	{
 		if(counter == range())
 		{
-			this.setCounter(0);
+			this.counter = 0;
 		}
 		return values.get(counter++ % range());
 	}
 	
-	public void reset()
-	{
-		this.setCounter(0);
-		this.resetValues();
-	}
 }

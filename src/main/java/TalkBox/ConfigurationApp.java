@@ -16,165 +16,66 @@ import java.util.TreeSet;
 
 public class ConfigurationApp implements TalkBoxConfiguration {
 
-	private List<AudioSet> audioSets;
+	private AudioButton[][] audioButtons;
+	private SwapButton[] swapButtons;
 	private int currentAudioSet;
 	private static File fileTalkBoxData = new File("TalkBoxData");
 	public static String dirTalkBoxData = ConfigurationApp.fileTalkBoxData.getName();
 	
-	
-	
-	public ConfigurationApp()
+	public ConfigurationApp(int numAudioSets, int numAudioButtons, int numSwapButtons)
 	{
+		if(numAudioSets < 1 || numAudioButtons < 1)
+		{
+			throw new IllegalArgumentException();
+		}
 		ConfigurationApp.fileTalkBoxData.mkdir();
-		this.audioSets = new ArrayList<AudioSet>();
-	}
-	
-	private AudioSet getAudioSet()
-	{
-		return this.audioSets.get(currentAudioSet - 1);
-	}
-	
-	public void swapButtonPress(int location)
-	{
-		for(AudioSet a : this.audioSets)
+		this.audioButtons = new AudioButton[numAudioSets][numAudioButtons];
+		this.swapButtons = new SwapButton[numSwapButtons];
+		int currentAudioSet = 1;
+		for(int i = 0; i < swapButtons.length; i++)
 		{
-			this.setCurrentAudioSet(a.getNewAudioSet(location));
+			
 		}
 	}
 	
-	public List<AudioButton> getAudioButtons()
+	public AudioButton[] getAudioButtons()
 	{
-		return this.getAudioSet().getAudioButtons();
-	}
-	
-	public void addAudioSetWithSameStructure()
-	{
-		if(audioSets.size() == 0)
-		{
-			audioSets.add(new AudioSet());
-			currentAudioSet = this.getNumberOfAudioSets();
-
-		}
-		else
-		{
-			AudioSet a = this.audioSets.get(0);
-			List<AudioButton> audioButtons = a.getAudioButtons();
-			List<SwapButton> swapButtons = a.getSwapButtons();
-			
-			
-			
-			for (ListIterator<SwapButton> iter = swapButtons.listIterator(); iter.hasNext(); )
-			{
-				SwapButton next = iter.next();
-				next = new SwapButton(next);
-				iter.set(next);
-			}
-			
-			for (ListIterator<AudioButton> iter = audioButtons.listIterator(); iter.hasNext(); )
-			{
-				AudioButton next = iter.next();
-				next = new AudioButton(next);
-				next.reset();
-				iter.set(next);
-			}
-				
-			this.audioSets.add(new AudioSet(audioButtons, swapButtons));
-		}
-		this.normalizeAllAudioSets();
-	}
-	
-	public void setSwapButtonValuesAll()
-	{
-		
+		return audioButtons[currentAudioSet - 1];
 	}
 	
 	public void setCurrentAudioSet(int currentAudioSet)
 	{
+		if(currentAudioSet > this.getNumberOfAudioSets() ||
+				currentAudioSet < 1)
+		{
+			throw new IllegalArgumentException();
+		}
 		this.currentAudioSet = currentAudioSet;
 	}
 	
-	public void removeAudioSet(int audioSet)
+	
+	
+	public int getCurrentAudioSet()
 	{
-		this.audioSets.remove(audioSet - 1);
-		this.normalizeAllAudioSets();
+		return this.currentAudioSet;
 	}
 	
 	
-	public void serialize()
-	{
-		FileOutputStream fos = null;
-		ObjectOutputStream out = null;
-		try
-		{
-			fos = new FileOutputStream(ConfigurationApp.dirTalkBoxData);
-			out = new ObjectOutputStream(fos);
-			out.writeObject(this);
-			out.close();
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public void addSwapButtonToAllSets()
-	{
-		for(AudioSet a : this.audioSets)
-		{
-			a.addSwapButton();
-		}
-		this.normalizeAllAudioSets();
-	}
-	
-	public void addAudioButtonToAllSets()
-	{
-		for(AudioSet a : this.audioSets)
-		{
-			a.addAudioButton();
-		}
-
-	}
-	
-	public void removeAudioButtonAllSets(int location)
-	{
-		for(AudioSet a : this.audioSets)
-		{
-			a.removeAudioButton(location);
-		}
-	}
-	
-	public void removeSwapButtonAllSets(int location)
-	{
-		for(AudioSet a : this.audioSets)
-		{
-			a.removeSwapButton(location);
-		}
-		this.normalizeAllAudioSets();
-	}
-	
-	public void normalizeAllAudioSets()
-	{
-		for(AudioSet a : this.audioSets)
-		{
-			a.normalizeSwapButtons(this.getNumberOfAudioSets());
-		}
-	}
-
 	
 	@Override
 	public int getNumberOfAudioButtons() {
-		return this.audioSets.get(0).numAudioButtons();
+		return this.audioButtons[0].length;
 	}
 
 	@Override
 	public int getNumberOfAudioSets() {
-		return this.audioSets.size();
+		return this.audioButtons.length;
 	}
 
 	@Override
 	public int getTotalNumberOfButtons() {
 		// TODO Auto-generated method stub
-		return this.audioSets.get(0).numAudioButtons() + this.audioSets.get(0).numSwapButtons();
+		return this.getNumberOfAudioButtons() + this.swapButtons.length; 
 	}
 
 	@Override
@@ -186,13 +87,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	@Override
 	public String[][] getAudioFileNames() {
 		// TODO Auto-generated method stub
-		String[][] return_ = new String[this.audioSets.size()][];
-		int i = 0;
-		for(AudioSet a : this.audioSets)
-		{
-			return_[i] = a.getAudioFileNames();
-		}
-		return return_;
+		return null;
 	}
 	
 }
