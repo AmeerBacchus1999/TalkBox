@@ -28,7 +28,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 	final static File f = new File(TalkBoxFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 	
-	static File AudioSets;
+	static File audioButtonsFromAudioSet;
 	static File Audio;
 	final static Desktop PC = Desktop.getDesktop();
 	public JPanel buttonPanel;
@@ -116,8 +116,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		AudioFilesSets =new ArrayList<ArrayList<String>>(size);
 		
-		/*AudioSets = new File(f.getPath()+"/Audio Sets");
-		AudioSets.mkdir();
+		/*audioButtonsFromAudioSet = new File(f.getPath()+"/Audio Sets");
+		audioButtonsFromAudioSet.mkdir();
 		
 		Audio = new File(f.getPath()+"/Audio Files");
 		Audio.mkdir();*/
@@ -179,7 +179,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		for (int p = 0; p < size;p++) {
 			
 			
-			Audio_Sets[p] = new File("AudioSets"+"/Audio Set "+(p+1));
+			Audio_Sets[p] = new File("audioButtonsFromAudioSet"+"/Audio Set "+(p+1));
 			Audio_Sets[p].mkdirs();
 			
 			buttons[p] = new JButton(createImageIcon("button.jpg"));
@@ -672,7 +672,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 				if (source==buttons[k]) {
 					
 					try {
-						PC.open(new File("AudioSets"+"/Audio Set "+(k+1)));
+						PC.open(new File("audioButtonsFromAudioSet"+"/Audio Set "+(k+1)));
 					} catch (IOException e) {
 						System.out.println("File Not Found");
 					}

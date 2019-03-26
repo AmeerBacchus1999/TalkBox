@@ -68,7 +68,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		
 	
-		new File("AudioSets").mkdir();
+		new File("audioButtonsFromAudioSet").mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
 		this.relativePath = this.TalkBoxDataFolder.toPath();
 		
@@ -307,17 +307,11 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioButtons() {
 		// TODO Auto-generated method stub
-		return this.numButtons;
-	}
-
-
-
-
-	@Override
-	public int getNumberOfAudioSets() {
-		// TODO Auto-generated method stub
 		return TalkBoxFrame.Audio_Sets.length;
 	}
+
+
+
 
 
 
@@ -377,6 +371,14 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		
 		
+	}
+
+
+
+	@Override
+	public int getNumberOfAudioSets() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

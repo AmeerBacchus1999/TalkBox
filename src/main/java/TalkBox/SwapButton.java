@@ -3,7 +3,7 @@ package main.java.TalkBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwapButton {
+public class SwapButton implements Iterator{
 	private List<Integer> values;
 	private int counter;
 	
@@ -18,6 +18,7 @@ public class SwapButton {
 		return values.size();
 	}
 		
+	@Override
 	public int next()
 	{
 		if(counter == range())

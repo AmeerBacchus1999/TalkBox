@@ -5,8 +5,8 @@ import java.io.File;
 
 public class AudioButton {
 
-	private File audio;
-	private File image;
+	private String audio;
+	private String image;
 	
 
 	public AudioButton(int location)
@@ -14,33 +14,32 @@ public class AudioButton {
 		this.reset();
 	}
 	
-	public AudioButton(AudioButton a)
-	{
-		this.audio = a.audio;
-		this.image = a.image;
-	}
 	
-
-
-	public File getAudio() {
+	
+	public String getAudio() {
 		return audio;
 	}
 
 
-	public void setAudio(File audio) {
+
+	public void setAudio(String audio) {
 		this.audio = audio;
 	}
 
 
-	public File getImage() {
+
+	public String getImage() {
 		return image;
 	}
 
 
-	public void setImage(File image) {
+
+	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
+
+
 	public void reset()
 	{
 		this.audio = null;
