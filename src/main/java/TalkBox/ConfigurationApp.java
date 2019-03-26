@@ -7,12 +7,10 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.TreeSet;
+
 
 public class ConfigurationApp implements TalkBoxConfiguration {
 
@@ -30,7 +28,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		
 		this.audioSets = new AudioButton[numaudioSetsOfButtons][numAudioButtons];
 		this.swapButtons = new SwapButton[numSwapButtons];
-		int currentAudioSet = 1;
+		this.currentAudioSet = 1;
 		this.instantiateSwapButtons();
 		
 	}
@@ -40,9 +38,9 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		return audioSets[currentAudioSet - 1];
 	}
 	
-	public Iterator[] getIterators()
+	public Iterator<Integer>[] getIterators()
 	{
-		return (Iterator[]) this.swapButtons;
+		return (Iterator<Integer>[]) this.swapButtons;
 	}
 	
 	public void setCurrentAudioSet(int currentAudioSet)

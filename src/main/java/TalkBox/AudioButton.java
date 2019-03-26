@@ -9,7 +9,7 @@ public class AudioButton {
 	private String image;
 	
 
-	public AudioButton(int location)
+	public AudioButton()
 	{
 		this.reset();
 	}

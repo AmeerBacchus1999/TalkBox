@@ -2,31 +2,51 @@ package test.java.TalkBox;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 
+import main.java.TalkBox.Iterator;
 import main.java.TalkBox.SwapButton;
 
 class SwapButtonTest {
-
+/*
+	
+	
+	
+	
 	@Test
 	void test()
 	{
-		int slocation = 15;
-		SwapButton sw = new SwapButton(slocation);
-		sw.addValue(3);
-		sw.addValue(4);
-		sw.addValue(5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
+		try
+		{
+			
+		}
 		
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
-
+	
+	
+	 */
+	
+	@Test
+	void testIterator()
+	{
+		try
+		{
+			SwapButton s = new SwapButton(
+					new ArrayList<Integer>(
+							Arrays.asList(1,2,3)));
+		}
+		
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 }
