@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import java.util.Iterator;
+
 import java.util.List;
 
 
@@ -38,9 +38,9 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		return audioSets[currentAudioSet - 1];
 	}
 	
-	public Iterator<Integer>[] getIterators()
+	public IteratorNoRemovals<Integer>[] getIterators()
 	{
-		return (Iterator<Integer>[]) this.swapButtons;
+		return (IteratorNoRemovals<Integer>[]) this.swapButtons;
 	}
 	
 	public void setCurrentAudioSet(int currentAudioSet)
@@ -87,6 +87,22 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
+	public void serialize()
+	{
+		FileOutputStream fos = null;
+		ObjectOutputStream out = null;
+		try
+		{
+			fos = new FileOutputStream(ConfigurationApp.dir);
+			out = new ObjectOutputStream(fos);
+			out.writeObject(this);
+			out.close();
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 	
 	
 	

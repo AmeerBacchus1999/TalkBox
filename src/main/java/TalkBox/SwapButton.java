@@ -3,7 +3,7 @@ package main.java.TalkBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwapButton implements SimpleIterator<Integer>{
+public class SwapButton implements IteratorNoRemovals<Integer>{
 	private List<Integer> values;
 	private int counter;
 	

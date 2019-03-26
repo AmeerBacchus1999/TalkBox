@@ -1,5 +1,5 @@
 package main.java.TalkBox;
 
-public interface SimpleIterator<L> {
+public interface IteratorNoRemovals<L> {
 	L next();
 }

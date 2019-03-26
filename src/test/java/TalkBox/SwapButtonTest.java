@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import main.java.TalkBox.Iterator;
+import main.java.TalkBox.IteratorNoRemovals;
 import main.java.TalkBox.SwapButton;
 
 class SwapButtonTest {
@@ -42,6 +42,7 @@ class SwapButtonTest {
 			SwapButton s = new SwapButton(
 					new ArrayList<Integer>(
 							Arrays.asList(1,2,3)));
+			
 		}
 		
 		catch(Exception ex)
