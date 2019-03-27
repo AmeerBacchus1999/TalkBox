@@ -1,23 +1,17 @@
 package test.java.TalkBox;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import main.java.TalkBox.AudioButton;
 import main.java.TalkBox.ConfigurationApp;
-import main.java.TalkBox.SwapButton;
 
-class ConfigurationAppTest {
+
+public class ConfigurationAppTest {
 	
 	@Test
-	void test()
+	public void test()
 	{
 		try
 		{
@@ -47,7 +41,7 @@ class ConfigurationAppTest {
 	}
 	
 	@Test
-	void test2()
+	public void test2()
 	{
 		try
 		{
@@ -80,7 +74,7 @@ class ConfigurationAppTest {
 	}
 	
 	@Test
-	void test3()
+	public void test3()
 	{
 		try
 		{

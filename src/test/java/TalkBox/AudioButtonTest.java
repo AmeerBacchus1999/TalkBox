@@ -1,18 +1,21 @@
 package test.java.TalkBox;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import main.java.TalkBox.AudioButton;
 
-class AudioButtonTest {
+public class AudioButtonTest {
 	
 	@Test
-	void test1()
+	public void test()
+	{
+		fail();
+	}
+	
+	@Test
+	public void test1()
 	{
 		try
 		{
@@ -21,6 +24,7 @@ class AudioButtonTest {
 			assertEquals(a.getAudio(), "ABC");
 			a.setImage("DEF");
 			assertEquals(a.getAudio(), "DEF");
+			fail();
 		}
 		
 		catch(Exception ex)
@@ -31,7 +35,7 @@ class AudioButtonTest {
 	}
 	
 	@Test
-	void test2()
+	public void test2()
 	{
 		try
 		{
