@@ -19,16 +19,17 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private int currentAudioSet;
 	public static String dir = "TalkBoxData";
 	
-	public ConfigurationApp(int numaudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
+	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
-		if(numaudioSetsOfButtons < 1 || numAudioButtons < 1)
+		if(numAudioSetsOfButtons < 1 || numAudioButtons < 1)
 		{
 			throw new IllegalArgumentException();
 		}
 		
-		this.audioSets = new AudioButton[numaudioSetsOfButtons][numAudioButtons];
+		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
 		this.swapButtons = new SwapButton[numSwapButtons];
 		this.currentAudioSet = 1;
+		this.instantiateAudioButtons();
 		this.instantiateSwapButtons();
 		
 	}
@@ -38,9 +39,9 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		return audioSets[currentAudioSet - 1];
 	}
 	
-	public IteratorNoRemovals<Integer>[] getIterators()
+	public void updateAudioSetSwapButton(int i)
 	{
-		return (IteratorNoRemovals<Integer>[]) this.swapButtons;
+		this.setCurrentAudioSet(this.swapButtons[i-1].next());
 	}
 	
 	public void setCurrentAudioSet(int currentAudioSet)
@@ -64,6 +65,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	{
 		for(int i = 0; i < swapButtons.length; i++)
 		{
+			int iTopLoop = i;
 			List<Integer> values = new ArrayList<Integer>();
 			if(swapButtons.length > this.getNumberOfAudioSets())
 			{
@@ -73,17 +75,25 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 			{
 				if(i == swapButtons.length - 1)
 				{
-					for(; i < this.getNumberOfAudioSets(); i++)
+					for(; i < this.getNumberOfAudioSets() - 1; i++)
 					{
 						values.add(i+1);
 					}
 				}
-				else
-				{
-					values.add(i + 1);
-				}
+				values.add(i + 1);
 			}
-			this.swapButtons[i] = new SwapButton(values);
+			this.swapButtons[iTopLoop] = new SwapButton(values);
+		}
+	}
+	
+	private void instantiateAudioButtons()
+	{
+		for(int i = 0; i < this.getNumberOfAudioSets(); i++)
+		{
+			for(int j = 0; j < this.getNumberOfAudioButtons(); j++)
+			{
+				this.audioSets[i][j] = new AudioButton();
+			}
 		}
 	}
 	

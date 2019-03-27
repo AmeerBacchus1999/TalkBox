@@ -9,13 +9,28 @@ import org.junit.jupiter.api.Test;
 import main.java.TalkBox.AudioButton;
 
 class AudioButtonTest {
-	/*
-	
-	
-	
 	
 	@Test
-	void test()
+	void test1()
+	{
+		try
+		{
+			AudioButton a = new AudioButton();
+			a.setAudio("ABC");
+			assertEquals(a.getAudio(), "ABC");
+			a.setImage("DEF");
+			assertEquals(a.getAudio(), "DEF");
+		}
+		
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	void test2()
 	{
 		try
 		{
@@ -25,25 +40,7 @@ class AudioButtonTest {
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-		}
-	}
-	
-	
-	
-	 */
-	@Test
-	void test()
-	{
-		try
-		{
-			AudioButton a = new AudioButton();
-			a.setAudio("ABC");
-			assertEquals(a.getAudio(), "ABC");
-		}
-		
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
+			fail();
 		}
 	}
 }
