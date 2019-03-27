@@ -95,16 +95,14 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton right_arrow;
 
 	//For Recording
-	private static final int recordTime = 7000; // 7 seconds
 	private JButton recordButton;
 	private JTextField recordFileName;
 	private JFrame recordWin;
-	private JFrame recording;
 	public File recFile;
 	transient File TalkBoxRecordingFolder;
 	public transient static String recPath = "TalkBoxRecording"; 
-	
-	
+	private transient boolean isRecording = false;
+	private transient Record newRecord;
 	
 	
 	public TalkBoxFrame(int size,String[][] AudioFileNames) {
@@ -250,6 +248,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		setContentPane(canvas); 
 		setResizable(false);//prevents user from resizing the window
+		
 		
 		washroom = new JButton (createImageIcon("washroom.jpg"));
 		washroom.setBackground(Color.WHITE);
@@ -485,6 +484,49 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 	}
 	
+	//start recording
+	public void startRecording() {
+		new File(recPath).mkdir();
+		this.TalkBoxRecordingFolder = new File(recPath);
+		
+		String text = this.TalkBoxRecordingFolder.toURI()+recordFileName.getText()+".wav";
+		String filename =  text.substring(5, text.length());
+
+		
+		recFile = new File (filename);
+		newRecord = new Record(recFile);
+		
+		Thread stopper = new Thread(new Runnable() {
+			public void run() {
+            	recordButton.setText("STOP");
+            	isRecording = true;
+            	// start recording
+    	        newRecord.start();
+            }
+        });
+ 
+        stopper.start();
+ 
+	}
+	
+	//stop recording
+	public void stopRecording() {
+		
+		  isRecording = false;
+		  recordButton.setText("RECORD");
+		  newRecord.finish();
+		  
+          //opens record folder after recording finished
+            try {
+				PC.open(recFile.getParentFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	
+	
+	
 	
 	//This method listens for the button to be pressed
 	@Override
@@ -549,6 +591,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		else if (source == B7) {
 			
 			System.out.println("Record");
+			//Opens the recording window
 			recordWin = new JFrame ("Record");
 			
 			recordFileName = new JTextField (30);
@@ -576,58 +619,14 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			recordWin.setContentPane(recordPAN);
 			recordWin.pack();
 			recordWin.setVisible(true);
+			recordWin.setLocationRelativeTo(null);
 		}
 		
 		else if (source == recordButton) {
-			
-			new File(recPath).mkdir();
-			this.TalkBoxRecordingFolder = new File(recPath);
-			
-			String text = this.TalkBoxRecordingFolder.toURI()+recordFileName.getText()+".wav";
-			String filename =  text.substring(5, text.length());
-
-			
-			recordWin.setVisible(false);
-			recFile = new File (filename);
-			recording = new JFrame ("Recording Started...");
-			JLabel start = new JLabel("Recording Started...");
-			recording.add(start);
-			JLabel end = new JLabel("...Recording ended");
-			
-			JPanel recordStart = new JPanel();
-			recordStart.setLayout(new BorderLayout());
-			recordStart.setPreferredSize(new Dimension(275, 75));
-			recording.remove(start);
-			recordStart.add(end);
-			
-	        recording.setContentPane(recordStart);
-			recording.pack();
-			recording.setVisible(true);
-			
-			Record newRecord = new Record(recFile);
-			
-			Thread stopper = new Thread(new Runnable() {
-				public void run() {
-	                try {
-	                    Thread.sleep(recordTime);
-	                } 
-	                catch (InterruptedException ex) {
-	                    ex.printStackTrace();
-	                }
-	                newRecord.finish();
-	              //opens record folder after recording finished
-	                try {
-						PC.open(recFile.getParentFile());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-	            }
-	        });
-	 
-	        stopper.start();
-	 
-	        // start recording
-	        newRecord.start();
+			if (!isRecording) 
+				startRecording();
+			else
+				stopRecording();       
 		}
 		
 		
@@ -722,7 +721,6 @@ public static void play_sound2(URL Sound) {
 		
 		
 		try {
-			
 			Clip clip = AudioSystem.getClip();	//Initializes new audio clip to be played
 			clip.open(AudioSystem.getAudioInputStream(Sound));	//Loads the sound we want to play
 			clip.start();	//Starts playing the clip
