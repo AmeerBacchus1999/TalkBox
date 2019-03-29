@@ -21,19 +21,32 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private int currentAudioSet;
 	public static String dir = "TalkBoxData";
 	
-	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
+	public void setUp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
 		if(numAudioSetsOfButtons < 1 || numAudioButtons < 1)
 		{
 			throw new IllegalArgumentException();
 		}
 		
-		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
+		
 		this.swapButtons = new SwapButton[numSwapButtons];
 		this.currentAudioSet = 1;
-		this.instantiateAudioButtons();
+		
 		this.instantiateSwapButtons();
 		
+	}
+	
+	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
+	{
+		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
+		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
+		this.instantiateAudioButtons();
+	}
+	
+	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons, String[][] filenames)
+	{
+		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
+		this.setAudioButtons(filenames);
 	}
 	
 	public AudioButton[] getAudioButtons()
@@ -162,6 +175,20 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void setAudioButtons(String[][] filenames)
+	{
+		this.audioSets = new AudioButton[filenames.length][filenames[0].length];
+		for(int i = 0; i < filenames.length; i++)
+		{
+			for(int j = 0; j < filenames[0].length; j++)
+			{
+				AudioButton a = new AudioButton();
+				a.setAudio(filenames[i][j]);
+				this.audioSets[i][j] = a; 
+			}
+		}
 	}
 	
 	
