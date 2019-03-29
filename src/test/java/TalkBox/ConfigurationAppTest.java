@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import main.java.TalkBox.ConfigurationApp;
+import main.java.TalkBox.TalkBoxConfiguration;
 
 
 public class ConfigurationAppTest {
@@ -87,6 +88,25 @@ public class ConfigurationAppTest {
 			assertEquals(c.getAudioButtons()[0].getAudio(), "A");
 		}		
 		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			fail();
+		}
+	}
+	
+	@Test
+	public void test4()
+	{
+		try
+		{
+			ConfigurationApp c = new ConfigurationApp(1,2,3);
+			c.serialize("ABC");
+			ConfigurationApp mainclass = ConfigurationApp.unserializeMainClass("ABC.ser");
+			TalkBoxConfiguration interface_ = ConfigurationApp.unserializeInterface("ABC.ser");
+			mainclass.getCurrentAudioSet();
+			interface_.getAudioFileNames();
+		}
+		catch (Exception ex)
 		{
 			ex.printStackTrace();
 			fail();

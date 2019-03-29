@@ -1,8 +1,10 @@
 package main.java.TalkBox;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,13 +99,13 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
-	public void serialize()
+	public void serialize(String filename)
 	{
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try
 		{
-			fos = new FileOutputStream(ConfigurationApp.dir);
+			fos = new FileOutputStream(ConfigurationApp.dir + "\\" + filename +".tbc");
 			out = new ObjectOutputStream(fos);
 			out.writeObject(this);
 			out.close();
@@ -114,6 +116,53 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
+	public static ConfigurationApp unserializeMainClass(String filename)
+	{
+		ConfigurationApp c = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try
+		{
+			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			in = new ObjectInputStream(fis);
+			c = (ConfigurationApp)in.readObject();
+			in.close();
+			return c;
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(ClassNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static TalkBoxConfiguration unserializeInterface(String filename)
+	{
+		TalkBoxConfiguration t = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try
+		{
+			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			in = new ObjectInputStream(fis);
+			t = (TalkBoxConfiguration)in.readObject();
+			in.close();
+			return t;
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(ClassNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	@Override
