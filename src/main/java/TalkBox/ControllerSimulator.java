@@ -65,14 +65,14 @@ public class ControllerSimulator implements ActionListener {
 	{
 		if(this.buttons.contains(e.getSource()))
 		{
-			int index = this.buttons.indexOf(e.getSource()) + 1;
-			if(index < configApp.getNumberOfAudioButtons())
+			int buttonNumber = this.buttons.indexOf(e.getSource()) + 1;
+			if(buttonNumber < configApp.getNumberOfAudioButtons())
 			{
 				AudioButton[] audioSet = configApp.getAudioButtons();
 			}
 			else
 			{
-				configApp.updateAudioSetSwapButton(index - configApp.getNumberOfAudioButtons());
+				configApp.updateAudioSetSwapButton(buttonNumber - configApp.getNumberOfAudioButtons());
 			}
 		}
 	}
