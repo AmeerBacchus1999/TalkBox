@@ -19,7 +19,11 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private AudioButton[][] audioSets;
 	private SwapButton[] swapButtons;
 	private int currentAudioSet;
+	private int numAudioSets;
+	private int numAudioButtons;
+	private int numSwapButtons;
 	public static String dir = "TalkBoxData";
+	public static String extension = ".tbc";
 	
 	public void setUp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
@@ -27,8 +31,9 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		{
 			throw new IllegalArgumentException();
 		}
-		
-		
+		this.numAudioSets = numAudioSetsOfButtons;
+		this.numAudioButtons = numAudioButtons;
+		this.numSwapButtons = numSwapButtons;
 		this.swapButtons = new SwapButton[numSwapButtons];
 		this.currentAudioSet = 1;
 		
@@ -78,19 +83,19 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	
 	private void instantiateSwapButtons()
 	{
-		for(int i = 0; i < swapButtons.length; i++)
+		for(int i = 0; i < numSwapButtons; i++)
 		{
 			int iTopLoop = i;
 			List<Integer> values = new ArrayList<Integer>();
-			if(swapButtons.length > this.getNumberOfAudioSets())
+			if(this.numSwapButtons > this.numAudioSets)
 			{
-				values.add(i % this.getNumberOfAudioSets() + 1);	
+				values.add(i % this.numAudioSets + 1);	
 			}
 			else
 			{
 				if(i == swapButtons.length - 1)
 				{
-					for(; i < this.getNumberOfAudioSets() - 1; i++)
+					for(; i < this.numAudioSets - 1; i++)
 					{
 						values.add(i+1);
 					}
@@ -118,7 +123,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		ObjectOutputStream out = null;
 		try
 		{
-			fos = new FileOutputStream(ConfigurationApp.dir + "\\" + filename +".tbc");
+			fos = new FileOutputStream(ConfigurationApp.dir + "\\" + filename + ConfigurationApp.extension);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(this);
 			out.close();

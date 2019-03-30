@@ -101,8 +101,8 @@ public class ConfigurationAppTest {
 		{
 			ConfigurationApp c = new ConfigurationApp(1,2,3);
 			c.serialize("ABC");
-			ConfigurationApp mainclass = ConfigurationApp.unserializeMainClass("ABC.ser");
-			TalkBoxConfiguration interface_ = ConfigurationApp.unserializeInterface("ABC.ser");
+			ConfigurationApp mainclass = ConfigurationApp.unserializeMainClass("ABC" + ConfigurationApp.extension);
+			TalkBoxConfiguration interface_ = ConfigurationApp.unserializeInterface("ABC" + ConfigurationApp.extension);
 			mainclass.getCurrentAudioSet();
 			interface_.getAudioFileNames();
 		}
