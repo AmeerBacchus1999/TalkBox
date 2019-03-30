@@ -21,7 +21,7 @@ import com.sun.prism.*;
 
 public class TalkBoxFrame extends JFrame implements ActionListener {
 	
-	//test
+
 	//These are the images for the buttons below (B1-B7) (not actual buttons)
 
 	Panel canvas;//This sets up the panel

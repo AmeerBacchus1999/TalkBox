@@ -44,7 +44,8 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 
 	private final int WIDTH = 350;// width of welcome screen
 	private final int HEIGHT = 220;// height of welcome screen
-
+	
+	
 	private transient JButton configure;
 	private transient JButton RunSim;
 	private transient JButton record;

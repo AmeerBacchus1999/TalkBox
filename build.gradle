@@ -34,8 +34,8 @@ test {
 }
 jar {
 	manifest{
-		attributes 'Main-Class': 'main.java.TalkBox.ConfigApp'
+		attributes 'Main-Class': 'main.java.TalkBox.Main'
 	}
 }
 // Define the main class for the application
-mainClassName = 'TalkBox.ConfigApp'
+mainClassName = 'TalkBox.Main'
