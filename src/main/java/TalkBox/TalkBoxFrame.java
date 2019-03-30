@@ -1,3 +1,4 @@
+
 package main.java.TalkBox;
 import java.awt.*;
 import java.awt.dnd.DropTarget;
@@ -28,7 +29,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	
 	final static File f = new File(TalkBoxFrame.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 	
-	static File AudioSets;
+	static File audioButtonsFromAudioSet;
 	static File Audio;
 	final static Desktop PC = Desktop.getDesktop();
 	public JPanel buttonPanel;
@@ -94,15 +95,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 	private JButton left_arrow;
 	private JButton right_arrow;
 
-	//For Recording
-	private JButton recordButton;
-	private JTextField recordFileName;
-	private JFrame recordWin;
-	public File recFile;
-	transient File TalkBoxRecordingFolder;
-	public transient static String recPath = "TalkBoxRecording"; 
-	private transient boolean isRecording = false;
-	private transient Record newRecord;
+	
 	
 	
 	public TalkBoxFrame(int size,String[][] AudioFileNames) {
@@ -114,8 +107,8 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		AudioFilesSets =new ArrayList<ArrayList<String>>(size);
 		
-		/*AudioSets = new File(f.getPath()+"/Audio Sets");
-		AudioSets.mkdir();
+		/*audioButtonsFromAudioSet = new File(f.getPath()+"/Audio Sets");
+		audioButtonsFromAudioSet.mkdir();
 		
 		Audio = new File(f.getPath()+"/Audio Files");
 		Audio.mkdir();*/
@@ -143,14 +136,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		}
 		
 		
-		sound_gif = new JButton[size_rounded*2];
-		
-		for (int t = 0; t < size_rounded*2; t++) {
-			
-			
-			sound_gif[t] = new JButton(createImageIcon("sound.gif"));
-			
-		}
 		
 		
 		
@@ -167,7 +152,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		
 		buttons = new JButton[size];
-		pictures = new JButton[size];
+		pictures = new JButton[size+7];
 		setButton = new SetButton[size];
 		
 		Audio_Sets = new File[size];
@@ -177,7 +162,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		for (int p = 0; p < size;p++) {
 			
 			
-			Audio_Sets[p] = new File("AudioSets"+"/Audio Set "+(p+1));
+			Audio_Sets[p] = new File("audioButtonsFromAudioSet"+"/Audio Set "+(p+1));
 			Audio_Sets[p].mkdirs();
 			
 			buttons[p] = new JButton(createImageIcon("button.jpg"));
@@ -249,7 +234,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		setContentPane(canvas); 
 		setResizable(false);//prevents user from resizing the window
 		
-		
 		washroom = new JButton (createImageIcon("washroom.jpg"));
 		washroom.setBackground(Color.WHITE);
 		food = new JButton (createImageIcon("food.jpg"));
@@ -285,10 +269,6 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		B6.addActionListener(this);
 		B7 = new JButton (createImageIcon("button.jpg"));
 		B7.addActionListener(this);
-		
-		sound1 = new JButton (createImageIcon("sound.gif"));
-		sound2 = new JButton (createImageIcon("sound.gif"));
-		
 	
 		
 	
@@ -301,35 +281,30 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		buttonPanel = new JPanel();
 		
-		buttonPanel.setLayout(new GridLayout(2,9));
-		buttonPanel.setPreferredSize(new Dimension(1200,300));
-		
-		buttonPanel.add(sound1);
-		buttonPanel.add(B1);
-		buttonPanel.add(B2);
-		buttonPanel.add(B3);
-		buttonPanel.add(B4);
-		buttonPanel.add(B5);
-		buttonPanel.add(B6);
-		buttonPanel.add(B7);
-		buttonPanel.add(sound2);
+		buttonPanel.setLayout(new GridLayout(1,9));
+		buttonPanel.setPreferredSize(new Dimension(1200,150));
 		
 		buttonPanel.add(left_arrow);
-		buttonPanel.add(washroom);
-		buttonPanel.add(food);
-		buttonPanel.add(drink);
-		buttonPanel.add(play);
-		buttonPanel.add(sick);
-		buttonPanel.add(tired);
-		buttonPanel.add(record_pic);
+		
+		for (int i = 0; i < 7;i++) {
+			
+			pictures[pictures_counter] = new JButton(createImageIcon("default.jpg"));
+			pictures[pictures_counter].setBackground(Color.white);
+			pictures_counter++;
+			buttonPanel.add(pictures[i]);
+			
+		}
+		
 		buttonPanel.add(right_arrow);
+	
+		buttonPanels[0] = buttonPanel;
+		
+		
+		setContentPane(buttonPanels[0]);//adds this panel to the window	
 		
 
-		setContentPane(buttonPanel);//adds this panel to the window	
 		
-
-		
-		for (int k = 0; k < size_rounded; k++) {
+		/*for (int k = 0; k < size_rounded; k++) {
 			
 			
 			if (k == size_rounded-1) {
@@ -345,7 +320,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 			
 		}
 	
-
+*/
 		
 	
 	}
@@ -358,22 +333,22 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		
 		buttonPanels[buttonPanels_counter] = new JPanel();
-		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(2,9));
-		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,300));
+		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(1,9));
+		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,150));
 		
 		
-		buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
-		sound_counter++;
+		buttonPanels[buttonPanels_counter].add(left_arrows[left_counter]);
+		left_counter++;
 		int left_over = size-(size_rounded-1)*7;
 	
 		for (int i = 0; i < left_over;i++) {
 			
-			buttonPanels[buttonPanels_counter].add(buttons[button_counter]);
-			button_counter++;
+			buttonPanels[buttonPanels_counter].add(pictures[pictures_counter]);
+			pictures_counter++;
 			
 		}
-	
-		int rest = 15 - left_over;
+		
+		/*int rest = 15 - left_over;
 		
 		for (int j = 0; j < rest;j++) {
 			
@@ -417,7 +392,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		buttonPanels[buttonPanels_counter].setVisible(false);
 		
-		
+		*/
 		
 		
 		
@@ -432,101 +407,32 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		
 		
 		buttonPanels[buttonPanels_counter] = new JPanel();
-		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(2,9));
-		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,300));
+		buttonPanels[buttonPanels_counter].setLayout(new GridLayout(1,9));
+		buttonPanels[buttonPanels_counter].setPreferredSize(new Dimension(1200,150));
 		
 		
-		buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
-		sound_counter++;
+		buttonPanels[buttonPanels_counter].add(left_arrows[left_counter]);
+		left_counter++;
 		
 		for (int i = 0; i < 7;i++) {
 			
-			buttonPanels[buttonPanels_counter].add(buttons[button_counter]);
-			button_counter++;
+			buttonPanels[buttonPanels_counter].add(pictures[pictures_counter]);
+			pictures_counter++;
 			
 		}
 	
 		
-		
-		for (int j = 0; j < 8;j++) {
-			
-			if (j == 0) {
-				
-				buttonPanels[buttonPanels_counter].add(sound_gif[sound_counter]);
-				sound_counter++;
-			
-				buttonPanels[buttonPanels_counter].add(left_arrows[left_counter]);
-				left_counter++;
-				
-			}
-			
-			
-			else {
-			 
-			 buttonPanels[buttonPanels_counter].add(pictures[pictures_counter]);
-			 pictures_counter++;
-			}
-			
-
-		}
-		
-		
-			
-	
 		buttonPanels[buttonPanels_counter].add(right_arrows[right_counter]);
 		right_counter++;
-		
 		buttonPanels[buttonPanels_counter].setVisible(false);
 		buttonPanels_counter++;
+
+		}
+		
 	
-		
-		
-		
-	}
-	
-	//start recording
-	public void startRecording() {
-		new File(recPath).mkdir();
-		this.TalkBoxRecordingFolder = new File(recPath);
-		
-		String text = this.TalkBoxRecordingFolder.toURI()+recordFileName.getText()+".wav";
-		String filename =  text.substring(5, text.length());
 
 		
-		recFile = new File (filename);
-		newRecord = new Record(recFile);
 		
-		Thread stopper = new Thread(new Runnable() {
-			public void run() {
-            	recordButton.setText("STOP");
-            	isRecording = true;
-            	// start recording
-    	        newRecord.start();
-            }
-        });
- 
-        stopper.start();
- 
-	}
-	
-	//stop recording
-	public void stopRecording() {
-		
-		  isRecording = false;
-		  recordButton.setText("RECORD");
-		  newRecord.finish();
-		  
-          //opens record folder after recording finished
-            try {
-				PC.open(recFile.getParentFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	}
-	
-	
-	
-	
 	
 	//This method listens for the button to be pressed
 	@Override
@@ -590,43 +496,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 		}
 		else if (source == B7) {
 			
-			System.out.println("Record");
-			//Opens the recording window
-			recordWin = new JFrame ("Record");
 			
-			recordFileName = new JTextField (30);
-			recordFileName.setHorizontalAlignment(JTextField.CENTER);
-			recordFileName.setMargin(new Insets(0, 3, 0, 0));
-			recordFileName.setMaximumSize(recordFileName.getPreferredSize());
-			
-			recordButton = new JButton ("RECORD");
-			
-			
-			recordFileName.addActionListener(this);
-			recordButton.addActionListener(this);
-			
-			JPanel namePan = new JPanel();
-			namePan.setLayout(new BoxLayout(namePan, BoxLayout.Y_AXIS));
-			namePan.add(recordFileName);
-			namePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the new sound: "));
-			
-			
-			JPanel recordPAN = new JPanel();
-			recordPAN.setLayout(new BorderLayout());
-			recordPAN.add(namePan, BorderLayout.NORTH);
-			recordPAN.add(recordButton, BorderLayout.SOUTH);
-			
-			recordWin.setContentPane(recordPAN);
-			recordWin.pack();
-			recordWin.setVisible(true);
-			recordWin.setLocationRelativeTo(null);
-		}
-		
-		else if (source == recordButton) {
-			if (!isRecording) 
-				startRecording();
-			else
-				stopRecording();       
 		}
 		
 		
@@ -671,7 +541,7 @@ public class TalkBoxFrame extends JFrame implements ActionListener {
 				if (source==buttons[k]) {
 					
 					try {
-						PC.open(new File("AudioSets"+"/Audio Set "+(k+1)));
+						PC.open(new File("audioButtonsFromAudioSet"+"/Audio Set "+(k+1)));
 					} catch (IOException e) {
 						System.out.println("File Not Found");
 					}
@@ -721,6 +591,7 @@ public static void play_sound2(URL Sound) {
 		
 		
 		try {
+			
 			Clip clip = AudioSystem.getClip();	//Initializes new audio clip to be played
 			clip.open(AudioSystem.getAudioInputStream(Sound));	//Loads the sound we want to play
 			clip.start();	//Starts playing the clip
@@ -769,4 +640,5 @@ public static void play_sound2(URL Sound) {
 			return null;
 		}
 	}
+
 }
