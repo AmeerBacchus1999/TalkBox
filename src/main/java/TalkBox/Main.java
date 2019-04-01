@@ -46,9 +46,11 @@ public class Main extends JFrame implements ActionListener {
 	private JButton load;
 	private JButton log;
 	private JButton saveButton;
+	private JFrame saveProfile;
 		
 	public ConfigurationApp config;
 	public TalkBoxConfiguration talkbox;
+	public ControllerConfig figControl;
 	
 	public File TalkBoxDataFolder;
 	public static String loadPath = "TalkBoxData"; 
@@ -193,7 +195,7 @@ public class Main extends JFrame implements ActionListener {
 				return;
 			}
 			
-			JFrame saveProfile = new JFrame("Save Profile");
+			saveProfile = new JFrame("Save Profile");
 			
 			saveFileName = new JTextField (30);
 			saveFileName.setHorizontalAlignment(JTextField.CENTER);
@@ -226,18 +228,31 @@ public class Main extends JFrame implements ActionListener {
 		else if (source == saveButton) {
 			String text = saveFileName.getText();
 			config.serialize(text);
+			saveProfile.dispose();
 		}
 
 		else if (source == configure) {
 			
 			//Gives warnings if any of the textfields are blank or if they are <= 0 and only creates the config
-			if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets))
+			if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets)) {
+				String text = entNumB.getText().toString();
+				numAudButtons = Integer.parseInt(text);
+				
+				String text2 = entSwap.getText().toString();
+				numSwapButtons = Integer.parseInt(text2);
+				
+				String text3 = entAudSet.getText().toString();
+				numAudSets = Integer.parseInt(text3);
+				
 				config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
-			
+				figControl = new ControllerConfig(config);
+				
+			}
 		}
 
 		else if (source == RunSim) {
 			
+			ControllerSimulator co = new ControllerSimulator(config);
 			
 		}
 		else if (source == log) {
@@ -249,12 +264,11 @@ public class Main extends JFrame implements ActionListener {
 		String empty = "";
 		String text = field.getText().toString();
 		field.selectAll();
-		if (!(text.equals(empty)))
-			number = Integer.parseInt(text);
-		else {
+		if (text.equals(empty)) {
 			JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
 			return false;
 		}
+		number = Integer.parseInt(text);
 		if (number <= 0) {
 			JOptionPane.showMessageDialog(null, "Invaild Entry!", "Warning", JOptionPane.WARNING_MESSAGE );
 			return false;
