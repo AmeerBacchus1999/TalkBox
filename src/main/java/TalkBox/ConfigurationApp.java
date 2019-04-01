@@ -42,7 +42,7 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	}
 	
 	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
-	{
+	{	
 		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
 		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
 		this.instantiateAudioButtons();

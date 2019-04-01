@@ -43,7 +43,8 @@ public class ControllerConfig implements ActionListener {
 	private CardLayout cl;
 	
 	
-	private Clip[][] clips;
+
+	private Clip clip;
 	private SetButton[][] data;
 	private JButton[][] AudioButtons;
 	private JButton[] AudioSets;
@@ -67,7 +68,13 @@ public class ControllerConfig implements ActionListener {
 		
 		AudioButtons = new JButton[num_AudioSets][num_AudioButtons];
 		data = new SetButton[num_AudioSets][num_AudioButtons];
-		clips = new Clip[num_AudioSets][num_AudioButtons];
+
+		try {
+			clip = AudioSystem.getClip();
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		ScrollPanes = new JScrollPane[num_AudioSets];
 		
@@ -91,13 +98,6 @@ public class ControllerConfig implements ActionListener {
 			data[i][j] = new SetButton(AudioButtons[i][j],this.TalkBox.audioSets[i][j]);
 
 			new DropTarget(AudioButtons[i][j],data[i][j]);
-			
-			try {
-				clips[i][j] = AudioSystem.getClip();
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 			}
 			
@@ -188,36 +188,32 @@ public class ControllerConfig implements ActionListener {
 		
 		
 	}
+	
+	
 
 	private void play_sound(URL Sound,int i1,int i2) {
 
-		for (int i = 0; i < this.num_AudioSets;i++) {
+		
+		if (clip.isOpen()) {
 			
-			
-			for (int j = 0; j < this.num_AudioButtons;j++) {
-			
-			if (clips[i][j].isOpen()) {
+			if (clip.isRunning() == true) {
 				
-				if (clips[i][j].isRunning() == true) {
+				clip.stop();
 				
-				clips[i][j].stop();
 				try {
-					clips[i][j] = AudioSystem.getClip();
+					clip = AudioSystem.getClip();
 				} catch (LineUnavailableException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				}
-			}
-		
 			}
 		}
 		
-		try {
 		
-			clips[i1][i2].open(AudioSystem.getAudioInputStream(Sound));
-			clips[i1][i2].start();
+		try {
+			
+			clip.open(AudioSystem.getAudioInputStream(Sound));
+			clip.start();
 		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -229,6 +225,7 @@ public class ControllerConfig implements ActionListener {
 			e.printStackTrace();
 		}
 
+		
 	}
 
 
@@ -258,9 +255,10 @@ public void actionPerformed(ActionEvent ae) {
 					
 					try {
 					
+						clip.stop();
 						
-						clips[i][j].stop();
-						clips[i][j] = AudioSystem.getClip();
+						clip = AudioSystem.getClip();
+					
 					
 						play_sound(data[i][j].sound.toURL(),i,j);
 						}
@@ -299,7 +297,16 @@ public void actionPerformed(ActionEvent ae) {
 		
 		
 }
-	
+	public static void main(String[] args) {
+		
+		
+		ConfigurationApp c = new ConfigurationApp(2,2,2);
+		
+		new ControllerConfig(c);
+		
+		
+		
+	}
 	
 
 }
