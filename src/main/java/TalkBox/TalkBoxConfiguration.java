@@ -3,6 +3,7 @@ package main.java.TalkBox;
 import java.io.Serializable;
 import java.nio.file.Path;
 
+
 /**
  * This interface represents the configuration of a particular TalkBox device.
  * Each TalkBox device has a number of audio buttons, followed by a number of swap buttons.

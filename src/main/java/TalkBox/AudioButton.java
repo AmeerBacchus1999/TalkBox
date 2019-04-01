@@ -1,38 +1,53 @@
 package main.java.TalkBox;
+import java.io.Serializable;
 
-import java.io.File;
+public class AudioButton implements Serializable {
 
-
-public class AudioButton extends TalkBoxButton{
-
-	private File audio;
-	private File image;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2565554560368818811L;
+	/**
+	 * 
+	 */
+	private String audio;
+	private String image;
 	
 
-	public AudioButton(int location)
+	public AudioButton()
 	{
-		super(location);
+		this.reset();
 	}
 	
-
-
-	public File getAudio() {
+	
+	
+	public String getAudio() {
 		return audio;
 	}
 
 
-	public void setAudio(File audio) {
+
+	public void setAudio(String audio) {
 		this.audio = audio;
 	}
 
 
-	public File getImage() {
+
+	public String getImage() {
 		return image;
 	}
 
 
-	public void setImage(File image) {
+
+	public void setImage(String image) {
 		this.image = image;
 	}
 
+
+
+	public void reset()
+	{
+		this.audio = null;
+		this.image = null;
+	}
 }

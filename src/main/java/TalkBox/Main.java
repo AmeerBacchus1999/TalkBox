@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,11 +37,13 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Main extends JFrame implements TalkBoxConfiguration, ActionListener {
+public class Main extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 4L;
 
 	private Path pathSer;
-	private int numButtons;
+	private int numAudButtons;
+	private int numSwapButtons;
+	private int numAudSets;
 
 	private final int WIDTH = 350;// width of welcome screen
 	private final int HEIGHT = 220;// height of welcome screen
@@ -55,20 +58,14 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 	private transient JButton save;
 	private transient JButton load;
 	private transient JButton log;
-	private transient JLabel fileDescrip;
-	private transient RecordButton rec_button;
-	// transient JFileChooser loadFile;
+	
+	public ConfigurationApp config;
 	private transient Path relativePath;
 	transient File TalkBoxDataFolder;
 	public transient static String PATH = "TalkBoxData";
 	public static String destination = PATH + "\\AudioFileNames.tbc";
-	transient File[] files = new File[0];
 	transient File loaded;
-	public TalkBoxFrame frame;
-	public JButton[] pictures;
-	public SetButton[] SetButtons;
-
-	public String[][] AudioFileNames;
+	
 
 	public Main() {
 		super("Welcome");
@@ -183,8 +180,10 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 
 		if (source == load) {
 			JFileChooser loadFile = new JFileChooser();
+			loadFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
+			
 			loadFile.setDialogTitle("Load Profile");
-
+			
 			int returnFile = loadFile.showOpenDialog(this);
 			if (returnFile == JFileChooser.APPROVE_OPTION)
 				loaded = loadFile.getSelectedFile();
@@ -206,16 +205,17 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 		}
 
 		else if (source == record) {
-			rec_button = new RecordButton();
+			RecordButton rec_button = new RecordButton();
 		}
 
 		else if (source == save) {
 			JFileChooser saveFile = new JFileChooser();
+			saveFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
 			saveFile.setDialogTitle("Save Profile");
 
 			int file = saveFile.showSaveDialog(this);
 			if (file == JFileChooser.APPROVE_OPTION) {
-				// contents of the file
+				//should this save directly to the config folder
 
 			}
 
@@ -224,137 +224,54 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 		}
 
 		else if (source == configure) {
-
-			try {
-				ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
-
-				this.AudioFileNames = (String[][]) is.readObject();
-				is.close();
-
-			} catch (FileNotFoundException ex1) {
-
-				System.out.println("File not Found");
-			}
-
-			catch (IOException ex2) {
-
-				System.out.println("IOException");
-			}
-
-			catch (ClassNotFoundException ex3) {
-
-				System.out.println("Class not Found");
-			}
-
-			String text = entNumB.getText();
+			
+			String empty = "";
+			
+			//Gives warnings if any of the textfields are blank or if they are <= 0 
+			String text = entNumB.getText().toString();
 			entNumB.selectAll();
-			numButtons = Integer.parseInt(text);
-
-			TalkBoxFrame.check = false;
-
-			String filename = PATH + "\\TalkBoxObject.tbc";
-
-			System.out.println(filename);
-
-			if (TalkBoxFrame.firstTime == true) {
-
-				frame = new TalkBoxFrame(numButtons, this.AudioFileNames);
-				frame.pack();
-				frame.setVisible(true);
+			if (!(text.equals(empty)))
+				numAudButtons = Integer.parseInt(text);
+			else {
+				JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
+				return;
 			}
+				
+			String text2 = entSwap.getText();
+			entSwap.selectAll();
+			if (!(text2.equals(empty)))
+				numSwapButtons = Integer.parseInt(text2);
+			else {
+				JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
+				return;
+			}
+			
+			String text3 = entAudSet.getText();
+			entAudSet.selectAll();
+			if (!(text3.equals(empty)))
+				numAudSets = Integer.parseInt(text3);
+			else {
+				JOptionPane.showMessageDialog(null, "Fill in All 3 Parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
+				return;
+			}
+			
+			if (numAudSets <= 0 || numAudButtons <= 0 || numSwapButtons <= 0) {
+				JOptionPane.showMessageDialog(null, "Invaild Entry!", "Warning", JOptionPane.WARNING_MESSAGE );
+				return;
+			}
+			
+			config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
+			
 		}
 
 		else if (source == RunSim) {
 
-			String text = entNumB.getText();
-			entNumB.selectAll();
-			numButtons = Integer.parseInt(text);
-			String filename = PATH + "\\TalkBoxObject.tbc";
-			System.out.println(filename);
-
-			if (TalkBoxFrame.check == false) {
-
-				ArrayList<ArrayList<String>> audio_files = TalkBoxFrame.AudioFilesSets;
-				this.AudioFileNames = new String[numButtons][];
-				if (audio_files != null) {
-
-					for (int i = 0; i < numButtons; i++) {
-
-						Collections.reverse(audio_files.get(i));
-						if (audio_files.get(i).size() == 0) {
-
-							this.AudioFileNames[i] = new String[1];
-						} else {
-							this.AudioFileNames[i] = new String[audio_files.get(i).size()];
-						}
-						for (int k = 0; k < audio_files.get(i).size(); k++) {
-
-							if (audio_files.get(i).get(k) != null) {
-
-								this.AudioFileNames[i][k] = audio_files.get(i).get(k);
-							}
-						}
-
-					}
-
-					System.out.println(Arrays.deepToString(this.AudioFileNames));
-
-					try {
-
-						ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(destination));
-						os.writeObject(this.AudioFileNames);
-						os.close();
-					}
-
-					catch (FileNotFoundException ex1) {
-
-						System.out.println("File not Found");
-					}
-
-					catch (IOException ex2) {
-
-						System.out.println("IOException");
-					}
-				}
-			}
-
-			else {
-
-				try {
-					ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
-
-					this.AudioFileNames = (String[][]) is.readObject();
-					is.close();
-
-				} catch (FileNotFoundException ex1) {
-
-					System.out.println("File not Found");
-				}
-
-				catch (IOException ex2) {
-
-					System.out.println("IOException");
-				}
-
-				catch (ClassNotFoundException ex3) {
-
-					System.out.println("Class not Found");
-				}
-
-				if (TalkBoxFrame.firstTime == true) {
-					frame = new TalkBoxFrame(numButtons, this.AudioFileNames);
-					frame.pack();
-					frame.setVisible(true);
-				}
-
-			}
-
-			TalkBoxFrame.check = true;
-
+			
 		}
-
+		else if (source == log) {
+			
+		}
 	}
-
 	public static void main(String[] args) {
 
 		Main welFrame = new Main();
@@ -363,63 +280,4 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 
 	}
 
-	@Override
-	public int getNumberOfAudioButtons() {
-		// TODO Auto-generated method stub
-		return TalkBoxFrame.Audio_Sets.length;
 	}
-
-	@Override
-	public int getTotalNumberOfButtons() {
-		// TODO Auto-generated method stub
-		int audio_buttons = getNumberOfAudioButtons() + 7;
-
-		int arrows = (int) ((double) numButtons / 7) * 2 - 2;
-
-		return audio_buttons + arrows;
-	}
-
-	@Override
-	public Path getRelativePathToAudioFiles() {
-		// TODO Auto-generated method stub
-
-		this.relativePath = TalkBoxFrame.Audio.toPath();
-
-		return this.relativePath;
-	}
-
-	@Override
-	public String[][] getAudioFileNames() {
-		// TODO Auto-generated method stub
-		try {
-			ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
-
-			this.AudioFileNames = (String[][]) is.readObject();
-			is.close();
-
-		} catch (FileNotFoundException ex1) {
-
-			System.out.println("File not Found");
-		}
-
-		catch (IOException ex2) {
-
-			System.out.println("IOException");
-		}
-
-		catch (ClassNotFoundException ex3) {
-
-			System.out.println("Class not Found");
-		}
-
-		return this.AudioFileNames;
-
-	}
-
-	@Override
-	public int getNumberOfAudioSets() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-}
