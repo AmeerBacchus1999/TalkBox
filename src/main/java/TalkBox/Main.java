@@ -1,28 +1,14 @@
 
 package main.java.TalkBox;
 
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;

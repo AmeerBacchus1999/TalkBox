@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ConfigurationApp implements TalkBoxConfiguration {
 
-	private AudioButton[][] audioSets;
+	public AudioButton[][] audioSets;
 	private SwapButton[] swapButtons;
 	private int currentAudioSet;
 	private int numAudioSets;
@@ -26,7 +26,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	public static String dir = "TalkBoxData";
 	public static String extension = ".tbc";
 	public static File TalkBoxDataFolder;
-	
 	
 	public void setUp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
@@ -55,6 +54,15 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	{
 		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
 		this.setAudioButtons(filenames);
+	}
+	
+	public ConfigurationApp(TalkBoxConfiguration tbc)
+	{
+		this(tbc.getNumberOfAudioSets(), 
+				tbc.getNumberOfAudioButtons(),
+				tbc.getTotalNumberOfButtons() - 
+				tbc.getNumberOfAudioButtons(), 
+				tbc.getAudioFileNames());
 	}
 	
 	public AudioButton[] getAudioButtons()
@@ -126,7 +134,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		ObjectOutputStream out = null;
 		new File(dir).mkdir();
 		TalkBoxDataFolder = new File(dir);
-		
 		try
 		{
 			String text = TalkBoxDataFolder.toURI() + filename + ConfigurationApp.extension;
@@ -149,7 +156,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		ObjectInputStream in = null;
 		new File(dir).mkdir();
 		TalkBoxDataFolder = new File(dir);
-		
 		try
 		{
 			String text = TalkBoxDataFolder.toURI() + filename;
@@ -178,7 +184,6 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		ObjectInputStream in = null;
 		new File(dir).mkdir();
 		TalkBoxDataFolder = new File(dir);
-		
 		try
 		{
 			String text = TalkBoxDataFolder.toURI() + filename;
