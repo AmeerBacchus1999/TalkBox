@@ -2,19 +2,23 @@ package main.java.TalkBox;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -78,8 +82,44 @@ public class ControllerSimulator implements ActionListener {
 			this.panel.add(jb);
 			if(i < configApp.getNumberOfAudioButtons())
 			{
+				
+				
+				if (configApp.getAudioButtons()[i].getImage() == null) {
+				
+				
 				jb.setText("<html>AUDIO<br />"+"&nbsp;&nbsp;&nbsp;&nbsp;"+(i+1)+"<br/></html>");
-			}
+				}
+				
+				else {
+					
+					BufferedImage picture = null;
+					
+					try {
+						
+						
+						picture = ImageIO.read(new File(configApp.getAudioButtons()[i].getImage()));
+						
+					}
+					
+					catch(Exception e) {
+						
+					}
+					
+					ImageIcon icon = new ImageIcon(picture);
+					
+					Image image = icon.getImage();
+					Image newImage = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH);
+					
+					icon = new ImageIcon(newImage);
+					this.buttons.get(i).setText("");
+					this.buttons.get(i).setIcon(icon);
+					}
+					
+	
+					
+					
+				}
+			
 			else
 			{
 				jb.setText("<html>SWAP<br />"+"&nbsp;&nbsp;&nbsp;&nbsp;"+(i+1-configApp.getNumberOfAudioButtons())+"<br/></html>");
@@ -196,6 +236,50 @@ public class ControllerSimulator implements ActionListener {
 				else
 				{
 					configApp.updateAudioSetSwapButton(buttonNumber - configApp.getNumberOfAudioButtons());
+					
+					for (int p = 0; p < configApp.getNumberOfAudioButtons();p++) {
+						
+						
+						
+						if (configApp.getAudioButtons()[p].getImage() != null) {
+						
+						BufferedImage picture = null;
+						
+						try {
+							
+							
+							picture = ImageIO.read(new File(configApp.getAudioButtons()[p].getImage()));
+							
+						}
+						
+						catch(Exception e2) {
+							System.out.println("Picture Error");
+						}
+						
+						ImageIcon icon = new ImageIcon(picture);
+						
+						Image image = icon.getImage();
+						Image newImage = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH);
+						
+						icon = new ImageIcon(newImage);
+						this.buttons.get(p).setText("");
+						this.buttons.get(p).setIcon(icon);
+						}
+						
+						
+						else {
+							
+							
+						this.buttons.get(p).setIcon(null);
+				
+					    this.buttons.get(p).setText("<html>AUDIO<br />"+"&nbsp;&nbsp;&nbsp;&nbsp;"+(p+1)+"<br/></html>");
+						}
+						
+					}
+						
+						
+					
+					
 				}
 			}
 			
@@ -208,21 +292,6 @@ public class ControllerSimulator implements ActionListener {
 			
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-	
-	
 	
 	public static void main(String[] args)
 	{
