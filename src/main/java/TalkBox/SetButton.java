@@ -43,6 +43,7 @@ public SetButton(JButton pic,AudioButton button) {
 		if (this.button.getAudio() !=null) {
 			
 			this.sound = new File(button.getAudio());
+			this.pic.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
 		}
 
 		
