@@ -38,9 +38,10 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	private Path pathSer;
 	private int numButtons;
 	
-	private transient JButton enter;
+	private transient JButton configure;
 	private transient JButton RunSim;
 	private transient JTextField entNumB;
+	private transient JTextField entSwap;
 	private transient JLabel fileDescrip ;
 	transient JFileChooser fc;
 	private transient Path relativePath;
@@ -61,58 +62,84 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	
 	public ConfigApp() {
 		super ("Welcome");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		new File(PATH).mkdir();
 		new File("AudioFiles").mkdir();
 		
 		
 	
-		new File("audioButtonsFromAudioSet").mkdir();
+		new File("AudioSets").mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
 		this.relativePath = this.TalkBoxDataFolder.toPath();
 		
 		
 		//For the Welcome Screen
 
-		enter = new JButton("Configure");
+		configure = new JButton("Configure");
 		RunSim = new JButton("Launch Simulator");
 		RunSim.addActionListener(this);
 		
 		
-		//text field for number of buttons 
+		//text field for number of Audio buttons 
 		entNumB = new JTextField(10);
 		entNumB.setHorizontalAlignment(JTextField.CENTER);
 		entNumB.setMargin(new Insets(0, 3, 0, 0));
 		entNumB.setMaximumSize(entNumB.getPreferredSize());
 		
-		//add action listener
-		enter.addActionListener(this);
-		entNumB.addActionListener(this);
-		//openFile.addActionListener(this);
+		//text field for number of Swap buttons 
+		entSwap = new JTextField(10);
+		entSwap.setHorizontalAlignment(JTextField.CENTER);
+		entSwap.setMargin(new Insets(0, 3, 0, 0));
+		entSwap.setMaximumSize(entSwap.getPreferredSize());
 		
-		//write object and read object to the file ....for serialization object (contains all fields for the object)
+		
+		//add action listener
+		configure.addActionListener(this);
+		entNumB.addActionListener(this);
+		entSwap.addActionListener(this);
+		
+		
+		//Label for the Audio Buttons
 		JPanel numBPanel = new JPanel();
 		numBPanel.setLayout(new BoxLayout(numBPanel, BoxLayout.Y_AXIS));
 	    numBPanel.add(entNumB);
-	    
-	    numBPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of buttons on device:"));
+	    numBPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of audio buttons on device:"));
 		
-	    
-	    JPanel contentPane = new JPanel();
+		//Label for the Audio Buttons
+		JPanel swapPanel = new JPanel();
+		swapPanel.setLayout(new BoxLayout(swapPanel, BoxLayout.Y_AXIS));
+		swapPanel.add(entSwap);
+		swapPanel.setBorder(new TitledBorder(new EtchedBorder(), "Enter the number of swap buttons on device:"));
+		  		
+		JPanel qPanel = new JPanel();
+		qPanel.setLayout(new BorderLayout());
+		qPanel.add(numBPanel, BorderLayout.NORTH);
+		qPanel.add(swapPanel, BorderLayout.CENTER);
+		 
+		 
+		JPanel contentPane = new JPanel();
 	    
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(Color.gray);
-		contentPane.setPreferredSize(new Dimension(300, 100));
+		contentPane.setPreferredSize(new Dimension(300, 140));
 	  
-	    contentPane.add(numBPanel, BorderLayout.NORTH);
-	    contentPane.add(enter, BorderLayout.CENTER);
+	    contentPane.add(qPanel, BorderLayout.NORTH);
+	    contentPane.add(configure, BorderLayout.CENTER);
 	    contentPane.add(RunSim, BorderLayout.SOUTH);
 	    
 		setContentPane(contentPane);
-		setResizable(false);
+		pack();
 		
-		this.setLocationRelativeTo(null);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int h = screenSize.height;
+		int w = screenSize.width;
+		setSize(w/2,h/2);
+		
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 		
 	
@@ -120,7 +147,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	public void actionPerformed(ActionEvent e)
 	{
 		Object source = e.getSource();
-		 	if (source == enter) {
+		 	if (source == configure) {
 
 		 		try {
 		 			ObjectInputStream is = new ObjectInputStream(new FileInputStream(destination));
@@ -272,19 +299,7 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 			
 			TalkBoxFrame.check = true;
 			
-			
-			
-			
-			
-			
-			
-			
-			
-	
-			
-			
-			
-			
+		
 		}
 		
 	}
@@ -307,11 +322,17 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 	@Override
 	public int getNumberOfAudioButtons() {
 		// TODO Auto-generated method stub
-		return TalkBoxFrame.Audio_Sets.length;
+		return this.numButtons;
 	}
 
 
 
+
+	@Override
+	public int getNumberOfAudioSets() {
+		// TODO Auto-generated method stub
+		return TalkBoxFrame.Audio_Sets.length;
+	}
 
 
 
@@ -371,14 +392,6 @@ public class ConfigApp extends JFrame implements TalkBoxConfiguration, ActionLis
 		
 		
 		
-	}
-
-
-
-	@Override
-	public int getNumberOfAudioSets() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 

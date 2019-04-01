@@ -1,8 +1,10 @@
 package main.java.TalkBox;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,21 +19,39 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private AudioButton[][] audioSets;
 	private SwapButton[] swapButtons;
 	private int currentAudioSet;
+	private int numAudioSets;
+	private int numAudioButtons;
+	private int numSwapButtons;
 	public static String dir = "TalkBoxData";
+	public static String extension = ".tbc";
 	
-	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
+	public void setUp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
 		if(numAudioSetsOfButtons < 1 || numAudioButtons < 1)
 		{
 			throw new IllegalArgumentException();
 		}
-		
-		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
+		this.numAudioSets = numAudioSetsOfButtons;
+		this.numAudioButtons = numAudioButtons;
+		this.numSwapButtons = numSwapButtons;
 		this.swapButtons = new SwapButton[numSwapButtons];
 		this.currentAudioSet = 1;
-		this.instantiateAudioButtons();
+		
 		this.instantiateSwapButtons();
 		
+	}
+	
+	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
+	{
+		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
+		this.audioSets = new AudioButton[numAudioSetsOfButtons][numAudioButtons];
+		this.instantiateAudioButtons();
+	}
+	
+	public ConfigurationApp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons, String[][] filenames)
+	{
+		this.setUp(numAudioSetsOfButtons, numAudioButtons, numSwapButtons);
+		this.setAudioButtons(filenames);
 	}
 	
 	public AudioButton[] getAudioButtons()
@@ -63,19 +83,19 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	
 	private void instantiateSwapButtons()
 	{
-		for(int i = 0; i < swapButtons.length; i++)
+		for(int i = 0; i < numSwapButtons; i++)
 		{
 			int iTopLoop = i;
 			List<Integer> values = new ArrayList<Integer>();
-			if(swapButtons.length > this.getNumberOfAudioSets())
+			if(this.numSwapButtons > this.numAudioSets)
 			{
-				values.add(i % this.getNumberOfAudioSets() + 1);	
+				values.add(i % this.numAudioSets + 1);	
 			}
 			else
 			{
 				if(i == swapButtons.length - 1)
 				{
-					for(; i < this.getNumberOfAudioSets() - 1; i++)
+					for(; i < this.numAudioSets - 1; i++)
 					{
 						values.add(i+1);
 					}
@@ -97,13 +117,13 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
-	public void serialize()
+	public void serialize(String filename)
 	{
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
 		try
 		{
-			fos = new FileOutputStream(ConfigurationApp.dir);
+			fos = new FileOutputStream(ConfigurationApp.dir + "\\" + filename + ConfigurationApp.extension);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(this);
 			out.close();
@@ -114,6 +134,67 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		}
 	}
 	
+	public static ConfigurationApp unserializeMainClass(String filename)
+	{
+		ConfigurationApp c = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try
+		{
+			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			in = new ObjectInputStream(fis);
+			c = (ConfigurationApp)in.readObject();
+			in.close();
+			return c;
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(ClassNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static TalkBoxConfiguration unserializeInterface(String filename)
+	{
+		TalkBoxConfiguration t = null;
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try
+		{
+			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			in = new ObjectInputStream(fis);
+			t = (TalkBoxConfiguration)in.readObject();
+			in.close();
+			return t;
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		catch(ClassNotFoundException ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	private void setAudioButtons(String[][] filenames)
+	{
+		this.audioSets = new AudioButton[filenames.length][filenames[0].length];
+		for(int i = 0; i < filenames.length; i++)
+		{
+			for(int j = 0; j < filenames[0].length; j++)
+			{
+				AudioButton a = new AudioButton();
+				a.setAudio(filenames[i][j]);
+				this.audioSets[i][j] = a; 
+			}
+		}
+	}
 	
 	
 	@Override

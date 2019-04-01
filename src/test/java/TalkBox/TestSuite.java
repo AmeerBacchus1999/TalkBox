@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 @SuiteClasses({
     AudioButtonTest.class,
     ConfigurationAppTest.class,
-    SwapButtonTest.class
+    SwapButtonTest.class,
+    ControllerSimulatorTest.class
 })
 
 public class TestSuite {

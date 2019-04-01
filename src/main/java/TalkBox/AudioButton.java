@@ -1,10 +1,15 @@
 package main.java.TalkBox;
+import java.io.Serializable;
 
-import java.io.File;
+public class AudioButton implements Serializable {
 
-
-public class AudioButton {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2565554560368818811L;
+	/**
+	 * 
+	 */
 	private String audio;
 	private String image;
 	
