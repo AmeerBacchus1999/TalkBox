@@ -21,11 +21,18 @@ public class ControllerSimulator implements ActionListener {
 	
 	public ControllerSimulator(TalkBoxConfiguration tbc)
 	{
-		this.configApp = new ConfigurationApp(tbc.getNumberOfAudioSets(), 
-				tbc.getNumberOfAudioButtons(),
-				tbc.getTotalNumberOfButtons() - 
-				tbc.getNumberOfAudioButtons(), 
-				tbc.getAudioFileNames());
+		this.configApp = new ConfigurationApp(tbc);
+		this.setUpView();
+	}
+	
+	public ControllerSimulator(ConfigurationApp c)
+	{
+		this.configApp = c;
+		this.setUpView();
+	}
+	
+	private void setUpView()
+	{
 		this.panel = new JPanel();
 		//this.panel.setPreferredSize(new Dimension(500, 500));
 		this.frame = new JFrame();
@@ -33,7 +40,7 @@ public class ControllerSimulator implements ActionListener {
 		this.frame.setLayout(new FlowLayout());
 		this.panel.setLayout(
 				new FlowLayout());
-		this.buttons = new ArrayList<JButton>(tbc.getTotalNumberOfButtons());
+		this.buttons = new ArrayList<JButton>(this.configApp.getTotalNumberOfButtons());
 		for(int i = 0; i < configApp.getTotalNumberOfButtons(); i++)
 		{
 			JButton jb = new JButton();

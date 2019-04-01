@@ -54,6 +54,15 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		this.setAudioButtons(filenames);
 	}
 	
+	public ConfigurationApp(TalkBoxConfiguration tbc)
+	{
+		this(tbc.getNumberOfAudioSets(), 
+				tbc.getNumberOfAudioButtons(),
+				tbc.getTotalNumberOfButtons() - 
+				tbc.getNumberOfAudioButtons(), 
+				tbc.getAudioFileNames());
+	}
+	
 	public AudioButton[] getAudioButtons()
 	{
 		return audioSets[currentAudioSet - 1];
