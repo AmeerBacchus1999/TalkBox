@@ -127,9 +127,10 @@ public class ControllerConfig implements ActionListener {
 			
 		}
 		
-		window = new JFrame("                                    Audio Buttons                                                                                                                 Audio Sets");
+		window = new JFrame("Configurator");
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		window.setSize(800,500);
+		
 		
 		
 		JPanel AudioButtonsPanel = new JPanel(new FlowLayout());
@@ -170,11 +171,12 @@ public class ControllerConfig implements ActionListener {
 	
 	
 		
+		
+		
 		GridLayout layout = new GridLayout(0,2);
 		window.setLayout(layout);
 		
 		window.add(BorderLayout.EAST,screens);
-	
 		window.add(BorderLayout.WEST,AudioSets_Scroll);
 		
 		
