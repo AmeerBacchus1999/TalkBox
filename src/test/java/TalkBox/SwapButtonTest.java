@@ -1,32 +1,39 @@
 package test.java.TalkBox;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.TalkBox.SwapButton;
 
-class SwapButtonTest {
 
-	@Test
-	void test()
-	{
-		int slocation = 15;
-		SwapButton sw = new SwapButton(slocation);
-		sw.addValue(3);
-		sw.addValue(4);
-		sw.addValue(5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
-		assertEquals(sw.next(), 3);
-		assertEquals(sw.next(), 4);
-		assertEquals(sw.next(), 5);
-		
-	}
+public class SwapButtonTest {
 	
-
+	@Test
+	public void testIterator()
+	{
+		try
+		{
+			SwapButton s = new SwapButton(
+					new ArrayList<Integer>(
+							Arrays.asList(1,2,3)));
+			assertEquals(1, (int) s.next());
+			assertEquals(2, (int) s.next());
+			assertEquals(3, (int) s.next());
+			assertEquals(1, (int) s.next());
+			assertEquals(2, (int) s.next());
+			assertEquals(3, (int) s.next());
+		}
+		
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			fail();
+		}
+	}
 }

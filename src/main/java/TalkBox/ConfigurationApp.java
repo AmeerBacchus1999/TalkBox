@@ -1,3 +1,4 @@
+
 package main.java.TalkBox;
 
 import java.io.File;
@@ -24,6 +25,8 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	private int numSwapButtons;
 	public static String dir = "TalkBoxData";
 	public static String extension = ".tbc";
+	public static File TalkBoxDataFolder;
+	
 	
 	public void setUp(int numAudioSetsOfButtons, int numAudioButtons, int numSwapButtons)
 	{
@@ -121,9 +124,14 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	{
 		FileOutputStream fos = null;
 		ObjectOutputStream out = null;
+		new File(dir).mkdir();
+		TalkBoxDataFolder = new File(dir);
+		
 		try
 		{
-			fos = new FileOutputStream(ConfigurationApp.dir + "\\" + filename + ConfigurationApp.extension);
+			String text = TalkBoxDataFolder.toURI() + filename + ConfigurationApp.extension;
+			String name =  text.substring(5, text.length());
+			fos = new FileOutputStream(name);
 			out = new ObjectOutputStream(fos);
 			out.writeObject(this);
 			out.close();
@@ -139,9 +147,14 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		ConfigurationApp c = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
+		new File(dir).mkdir();
+		TalkBoxDataFolder = new File(dir);
+		
 		try
 		{
-			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			String text = TalkBoxDataFolder.toURI() + filename;
+			String name =  text.substring(5, text.length());
+			fis = new FileInputStream(name);
 			in = new ObjectInputStream(fis);
 			c = (ConfigurationApp)in.readObject();
 			in.close();
@@ -163,9 +176,14 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 		TalkBoxConfiguration t = null;
 		FileInputStream fis = null;
 		ObjectInputStream in = null;
+		new File(dir).mkdir();
+		TalkBoxDataFolder = new File(dir);
+		
 		try
 		{
-			fis = new FileInputStream(ConfigurationApp.dir + "\\" + filename);
+			String text = TalkBoxDataFolder.toURI() + filename;
+			String name =  text.substring(5, text.length());
+			fis = new FileInputStream(name);
 			in = new ObjectInputStream(fis);
 			t = (TalkBoxConfiguration)in.readObject();
 			in.close();
@@ -239,3 +257,4 @@ public class ConfigurationApp implements TalkBoxConfiguration {
 	
 	
 }
+

@@ -94,14 +94,14 @@ public class SetButton implements DropTargetListener {
 		}
 		
 		ImageIcon icon = new ImageIcon(pic);
-		if (TalkBoxFrame.check == false) {
+		/*if (TalkBoxFrame.check == false) {
 		this.pic.setIcon(icon);
-		}
+		}*/
 	}
 	
 	private void changeSound(String arg) {
 		
-		if (TalkBoxFrame.check == false) {
+		/*if (TalkBoxFrame.check == false) {
 			
 		File Source = new File(arg);
 		File Destination = new File(TalkBoxFrame.Audio_Sets[this.num].getPath()+"/"+Source.getName());
@@ -117,7 +117,7 @@ public class SetButton implements DropTargetListener {
 		
 		
 		this.sound = new File(arg);
-		}
+		}*/
 	}
 
 

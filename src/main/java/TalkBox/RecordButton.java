@@ -22,10 +22,10 @@ public class RecordButton implements ActionListener {
 	private JTextField recordFileName;
 	private JFrame recordWin;
 	public File recFile;
-	transient File TalkBoxRecordingFolder;
-	public transient static String recPath = "TalkBoxRecording"; 
-	private transient boolean isRecording = false;
-	private transient Record newRecord;
+	public File TalkBoxRecordingFolder;
+	public static String recPath = "TalkBoxRecording"; 
+	private boolean isRecording = false;
+	private Record newRecord;
 	
 	public RecordButton() {
 		

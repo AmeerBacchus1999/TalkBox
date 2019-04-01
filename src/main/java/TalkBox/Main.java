@@ -49,33 +49,34 @@ public class Main extends JFrame implements ActionListener {
 	private final int HEIGHT = 220;// height of welcome screen
 	
 	
-	private transient JButton configure;
-	private transient JButton RunSim;
-	private transient JButton record;
-	private transient JTextField entNumB;
-	private transient JTextField entSwap;
-	private transient JTextField entAudSet;
-	private transient JButton save;
-	private transient JButton load;
-	private transient JButton log;
-	
+	private JButton configure;
+	private JButton RunSim;
+	private JButton record;
+	private JTextField entNumB;
+	private JTextField entSwap;
+	private JTextField entAudSet;
+	private JTextField saveFileName;
+	private JButton save;
+	private JButton load;
+	private JButton log;
+	private JButton saveButton;
+		
 	public ConfigurationApp config;
-	private transient Path relativePath;
-	transient File TalkBoxDataFolder;
-	public transient static String PATH = "TalkBoxData";
-	public static String destination = PATH + "\\AudioFileNames.tbc";
-	transient File loaded;
+	public TalkBoxConfiguration talkbox;
+	
+	public File TalkBoxDataFolder;
+	public static String loadPath = "TalkBoxData"; 
 	
 
 	public Main() {
 		super("Welcome");
 
-		new File(PATH).mkdir();
+		/*new File(PATH).mkdir();
 		new File("AudioFiles").mkdir();
 
 		new File("AudioSets").mkdir();
 		this.TalkBoxDataFolder = new File(PATH);
-		this.relativePath = this.TalkBoxDataFolder.toPath();
+		this.relativePath = this.TalkBoxDataFolder.toPath();*/
 
 		// For the Welcome Screen
 		configure = new JButton("Configure");
@@ -84,13 +85,8 @@ public class Main extends JFrame implements ActionListener {
 		load = new JButton("Load");
 		record = new JButton("Record");
 		log = new JButton("Logs");
-
-		RunSim.setLayout(new BorderLayout());
-		JLabel l1 = new JLabel("Launch");
-		JLabel l2 = new JLabel("Simulator");
-		RunSim.add(BorderLayout.NORTH, l1);
-		RunSim.add(BorderLayout.SOUTH, l2);
-
+		RunSim = new JButton ("<html><center>Launch<br>Simulator</center></html>");
+		
 		// text field for number of Audio buttons
 		entNumB = new JTextField(10);
 		entNumB.setHorizontalAlignment(JTextField.CENTER);
@@ -153,8 +149,8 @@ public class Main extends JFrame implements ActionListener {
 		JPanel launchPanel = new JPanel();
 		launchPanel.setLayout(new BorderLayout());
 		launchPanel.add(configure, BorderLayout.WEST);
-		launchPanel.add(log);
-		launchPanel.add(RunSim, BorderLayout.EAST);
+		launchPanel.add(RunSim);
+		launchPanel.add(log, BorderLayout.EAST);
 
 		JPanel contentPane = new JPanel();
 
@@ -182,26 +178,23 @@ public class Main extends JFrame implements ActionListener {
 			JFileChooser loadFile = new JFileChooser();
 			loadFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
 			
+			new File(loadPath).mkdir();
+			this.TalkBoxDataFolder = new File(loadPath);
+			
+			loadFile.setCurrentDirectory(TalkBoxDataFolder);
+			
 			loadFile.setDialogTitle("Load Profile");
 			
 			int returnFile = loadFile.showOpenDialog(this);
-			if (returnFile == JFileChooser.APPROVE_OPTION)
-				loaded = loadFile.getSelectedFile();
+			if (returnFile == JFileChooser.APPROVE_OPTION) {
+				 String fileLoadName = loadFile.getSelectedFile().getName();
+				 talkbox = ConfigurationApp.unserializeInterface(fileLoadName);//CHECK NEED TO BE PASSED IN AS A TALK 
+				 ControllerSimulator loaded = new ControllerSimulator(talkbox);
+			}
+				
 			if (returnFile == JFileChooser.CANCEL_OPTION)
 				return;
 
-			if (!Desktop.isDesktopSupported()) {
-				System.out.print("Desktop is not supported");
-				return;
-			}
-
-			Desktop desktop = Desktop.getDesktop();
-			if (loaded.exists())
-				try {
-					desktop.open(loaded);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
 		}
 
 		else if (source == record) {
@@ -209,69 +202,80 @@ public class Main extends JFrame implements ActionListener {
 		}
 
 		else if (source == save) {
-			JFileChooser saveFile = new JFileChooser();
-			saveFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
-			saveFile.setDialogTitle("Save Profile");
-
-			int file = saveFile.showSaveDialog(this);
-			if (file == JFileChooser.APPROVE_OPTION) {
-				//should this save directly to the config folder
-
-			}
-
-			if (file == JFileChooser.CANCEL_OPTION)
+			if (config == null) {
+				JOptionPane.showMessageDialog(null, "No Profile opened!", "Warning", JOptionPane.WARNING_MESSAGE );
 				return;
+			}
+			
+			JFrame saveProfile = new JFrame("Save Profile");
+			
+			saveFileName = new JTextField (30);
+			saveFileName.setHorizontalAlignment(JTextField.CENTER);
+			saveFileName.setMargin(new Insets(0, 3, 0, 0));
+			saveFileName.setMaximumSize(saveFileName.getPreferredSize());
+			
+			saveButton = new JButton ("Save");
+			
+			saveFileName.addActionListener(this);
+			saveButton.addActionListener(this);
+			
+			JPanel savePan = new JPanel();
+			savePan.setLayout(new BoxLayout(savePan, BoxLayout.Y_AXIS));
+			savePan.add(saveFileName);
+			savePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the new sound: "));
+			
+			
+			JPanel savePAN = new JPanel();
+			savePAN.setLayout(new BorderLayout());
+			savePAN.add(savePan, BorderLayout.NORTH);
+			savePAN.add(saveButton, BorderLayout.SOUTH);
+			
+			saveProfile.setContentPane(savePAN);
+			saveProfile.pack();
+			saveProfile.setVisible(true);
+			saveProfile.setLocationRelativeTo(null);
+			
+		}
+		
+		else if (source == saveButton) {
+			String text = saveFileName.getText();
+			config.serialize(text);
 		}
 
 		else if (source == configure) {
 			
-			String empty = "";
-			
-			//Gives warnings if any of the textfields are blank or if they are <= 0 
-			String text = entNumB.getText().toString();
-			entNumB.selectAll();
-			if (!(text.equals(empty)))
-				numAudButtons = Integer.parseInt(text);
-			else {
-				JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
-				return;
-			}
-				
-			String text2 = entSwap.getText();
-			entSwap.selectAll();
-			if (!(text2.equals(empty)))
-				numSwapButtons = Integer.parseInt(text2);
-			else {
-				JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
-				return;
-			}
-			
-			String text3 = entAudSet.getText();
-			entAudSet.selectAll();
-			if (!(text3.equals(empty)))
-				numAudSets = Integer.parseInt(text3);
-			else {
-				JOptionPane.showMessageDialog(null, "Fill in All 3 Parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
-				return;
-			}
-			
-			if (numAudSets <= 0 || numAudButtons <= 0 || numSwapButtons <= 0) {
-				JOptionPane.showMessageDialog(null, "Invaild Entry!", "Warning", JOptionPane.WARNING_MESSAGE );
-				return;
-			}
-			
-			config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
+			//Gives warnings if any of the textfields are blank or if they are <= 0 and only creates the config
+			if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets))
+				config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
 			
 		}
 
 		else if (source == RunSim) {
-
+			
 			
 		}
 		else if (source == log) {
 			
 		}
 	}
+	
+	public boolean configWarning (JTextField field, int number) {
+		String empty = "";
+		String text = field.getText().toString();
+		field.selectAll();
+		if (!(text.equals(empty)))
+			number = Integer.parseInt(text);
+		else {
+			JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
+			return false;
+		}
+		if (number <= 0) {
+			JOptionPane.showMessageDialog(null, "Invaild Entry!", "Warning", JOptionPane.WARNING_MESSAGE );
+			return false;
+		}
+		return true;
+	}
+	
 	public static void main(String[] args) {
 
 		Main welFrame = new Main();
