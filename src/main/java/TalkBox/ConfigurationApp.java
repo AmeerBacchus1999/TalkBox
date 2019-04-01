@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ConfigurationApp implements TalkBoxConfiguration {
 
-	private AudioButton[][] audioSets;
+	public AudioButton[][] audioSets;
 	private SwapButton[] swapButtons;
 	private int currentAudioSet;
 	private int numAudioSets;

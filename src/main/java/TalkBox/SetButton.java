@@ -1,6 +1,10 @@
 package main.java.TalkBox;
 
 
+
+
+import java.awt.Color;
+import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,18 +30,52 @@ public class SetButton implements DropTargetListener {
 
 	JButton pic = new JButton();
 	File sound;
-	int num;
-	public ArrayList<String> AudioFileNames = new ArrayList<String>();
 
+	AudioButton button;
 	
-	public SetButton(JButton pic, int num) {
-		
+	
+	
+public SetButton(JButton pic,AudioButton button) {
+	
+	
 		this.pic = pic;
-		this.num = num;
+		this.button = button;
+		
+		if (this.button.getAudio() !=null) {
+			
+			this.sound = new File(button.getAudio());
+		}
+
+		
+		if (this.button.getImage()!=null) {
+		
+		BufferedImage picture = null;
+		
+		try {
+			
+			
+			picture = ImageIO.read(new File(button.getImage()));
+			
+		}
+		
+		catch(Exception e) {
+			
+		}
+		
+		ImageIcon icon = new ImageIcon(picture);
+		
+		Image image = icon.getImage();
+		Image newImage = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH);
+		
+		icon = new ImageIcon(newImage);
+		this.pic.setText("");
+		this.pic.setIcon(icon);
+		}
+		
+		
 		
 	}
-	
-	
+
 
 	@Override
 	public void drop(DropTargetDropEvent arg) {
@@ -60,7 +99,7 @@ public class SetButton implements DropTargetListener {
 						
 						if (i.getPath().substring(i.getPath().length()-4, i.getPath().length()).equals(".wav")) {
 							
-							AudioFileNames.add(i.getName());
+						
 							
 							changeSound(i.getPath());
 						}
@@ -79,7 +118,9 @@ public class SetButton implements DropTargetListener {
 	}
 	
 	private void display(String arg) {
-	
+		
+		button.setImage(arg);
+		
 		BufferedImage pic = null;
 		
 		try {
@@ -94,30 +135,27 @@ public class SetButton implements DropTargetListener {
 		}
 		
 		ImageIcon icon = new ImageIcon(pic);
-		if (TalkBoxFrame.check == false) {
+		
+		Image image = icon.getImage();
+		Image newImage = image.getScaledInstance(100, 100,  java.awt.Image.SCALE_SMOOTH);
+		
+		icon = new ImageIcon(newImage);
+		this.pic.setText("");
 		this.pic.setIcon(icon);
-		}
+		
+
 	}
 	
 	private void changeSound(String arg) {
 		
-		if (TalkBoxFrame.check == false) {
-			
-		File Source = new File(arg);
-		File Destination = new File(TalkBoxFrame.Audio_Sets[this.num].getPath()+"/"+Source.getName());
-		File Destination2 = new File("AudioFiles"+"/"+Source.getName());
 		
-		try {
-			Files.copy(Source.toPath(), Destination.toPath(),StandardCopyOption.REPLACE_EXISTING);
-			Files.copy(Source.toPath(), Destination2.toPath(),StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			System.out.println("File Not Found");
-		}
+	
 		
-		
-		
+		button.setAudio(arg);
 		this.sound = new File(arg);
-		}
+		this.pic.setBorder(BorderFactory.createLineBorder(Color.ORANGE,4));
+	
+		
 	}
 
 

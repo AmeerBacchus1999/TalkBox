@@ -36,7 +36,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Main extends JFrame implements TalkBoxConfiguration, ActionListener {
+/*public class Main extends JFrame implements TalkBoxConfiguration, ActionListener {
 	private static final long serialVersionUID = 4L;
 
 	private Path pathSer;
@@ -422,4 +422,4 @@ public class Main extends JFrame implements TalkBoxConfiguration, ActionListener
 		return 0;
 	}
 
-}
+}*/
