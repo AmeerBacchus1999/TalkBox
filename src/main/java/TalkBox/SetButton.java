@@ -1,6 +1,5 @@
+
 package main.java.TalkBox;
-
-
 
 
 import java.awt.Color;
@@ -190,5 +189,6 @@ public SetButton(JButton pic,AudioButton button) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
