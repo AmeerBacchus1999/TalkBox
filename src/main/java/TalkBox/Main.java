@@ -34,7 +34,7 @@ public class Main extends JFrame implements ActionListener {
 	private final int WIDTH = 350;// width of welcome screen
 	private final int HEIGHT = 220;// height of welcome screen
 	
-	
+	private boolean firstTime = true;
 	private JButton configure;
 	private JButton RunSim;
 	private JButton record;
@@ -210,7 +210,7 @@ public class Main extends JFrame implements ActionListener {
 			JPanel savePan = new JPanel();
 			savePan.setLayout(new BoxLayout(savePan, BoxLayout.Y_AXIS));
 			savePan.add(saveFileName);
-			savePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the new sound: "));
+			savePan.setBorder(new TitledBorder(new EtchedBorder(), "Enter the name of the profile: "));
 			
 			
 			JPanel savePAN = new JPanel();
@@ -243,18 +243,43 @@ public class Main extends JFrame implements ActionListener {
 				
 				String text3 = entAudSet.getText().toString();
 				numAudSets = Integer.parseInt(text3);
-				
+				if (firstTime == true) {
 				config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
 				figControl = new ControllerConfig(config);
+				firstTime = false;
+				}
 				
+				else {
+					
+					figControl = new ControllerConfig(config);
+					
+				}
 			}
 		}
 
 		else if (source == RunSim) {
 			
+			if (firstTime == true) {
+				
+				if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets)) {
+					String text = entNumB.getText().toString();
+					numAudButtons = Integer.parseInt(text);
+					
+					String text2 = entSwap.getText().toString();
+					numSwapButtons = Integer.parseInt(text2);
+					
+					String text3 = entAudSet.getText().toString();
+					numAudSets = Integer.parseInt(text3);
+					config = new ConfigurationApp(numAudSets, numAudButtons, numSwapButtons);
+				
+					firstTime = false;
+
+				}
+	
+			}
 			ControllerSimulator co = new ControllerSimulator(config);
-			
 		}
+		
 		else if (source == log) {
 			
 		}
