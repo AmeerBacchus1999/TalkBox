@@ -53,7 +53,7 @@ public class ControllerSimulator implements ActionListener {
 	{
 		this.panel = new JPanel();
 		//this.panel.setPreferredSize(new Dimension(500, 500));
-		this.frame = new JFrame();
+		this.frame = new JFrame("Simulator");
 		this.frame.setPreferredSize(new Dimension(1000, 175));
 		this.frame.setLayout(new FlowLayout());
 		this.panel.setLayout(
