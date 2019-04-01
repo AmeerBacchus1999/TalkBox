@@ -1,3 +1,4 @@
+
 package main.java.TalkBox;
 
 import java.awt.Dimension;
@@ -98,3 +99,4 @@ public class ControllerSimulator implements ActionListener {
 	}
 	
 }
+
