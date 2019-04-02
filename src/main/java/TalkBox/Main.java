@@ -3,6 +3,7 @@ package main.java.TalkBox;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -26,7 +28,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 4L;
-
+	final static Desktop PC = Desktop.getDesktop();
+	
 	private Path pathSer;
 	private int numAudButtons;
 	private int numSwapButtons;
@@ -287,7 +290,27 @@ public class Main extends JFrame implements ActionListener {
 		
 		else if (source == log) {
 			Log.getLogger().log(Level.FINE, "log");
-			this.openFileInNotepad("myLogger.log");
+			JFrame logger = new JFrame ("Log");
+			JTextArea logInfo = new JTextArea();
+			try{
+			   FileInputStream logInput = new FileInputStream("mylogger.log");
+			   BufferedReader br = new BufferedReader(new InputStreamReader(logInput));
+			   String strLine;
+			   
+			   while ((strLine = br.readLine()) != null){
+			     logInfo.append(strLine + '\n');
+			   }
+			   logInput.close();
+			   
+			   logger.add(logInfo);
+			   logger.pack();
+			   logger.setVisible(true);
+			   logger.setLocationRelativeTo(null);
+			   logger.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			} 
+			catch (Exception le) {
+				System.err.println("Error: " + le.getMessage());
+			}
 		}
 	}
 	
@@ -299,9 +322,9 @@ public class Main extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Fill in all 3 parameters!", "Warning", JOptionPane.WARNING_MESSAGE );
 			return false;
 		}
-		number = Integer.parseInt(text);
-		if (number <= 0) {
-			JOptionPane.showMessageDialog(null, "Invaild Entry!", "Warning", JOptionPane.WARNING_MESSAGE );
+		
+		if (!(text.matches("[1-9][0-9]*"))) {
+			JOptionPane.showMessageDialog(null, "Invaild Entry!\nEnter a number 1 or greater.", "Warning", JOptionPane.WARNING_MESSAGE );
 			return false;
 		}
 		return true;
