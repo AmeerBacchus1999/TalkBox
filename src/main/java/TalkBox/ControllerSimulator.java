@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
@@ -192,7 +193,7 @@ public class ControllerSimulator implements ActionListener {
 				
 				int buttonNumber = this.buttons.indexOf(e.getSource()) + 1;
 		
-				
+				Log.getLogger().log(Level.FINE, "Simulator - Button " + (k + 1) + " clicked.");
 				if(k < configApp.getNumberOfAudioButtons())
 				{
 					

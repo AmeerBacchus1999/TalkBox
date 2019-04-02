@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -274,6 +275,9 @@ public void actionPerformed(ActionEvent ae) {
 			
 			
 			if (source == AudioSets[i]) {
+				
+				
+				Log.getLogger().log(Level.FINE, "Configurator - Audio Set " + (i + 1) + " clicked.");
 				
 				for (int k = 0; k < this.num_AudioSets;k++) {
 					
