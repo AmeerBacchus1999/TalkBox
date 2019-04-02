@@ -7,9 +7,10 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.nio.file.Path;
-
+import java.util.logging.Level;
+import java.util.*;
+import java.io.*;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -163,6 +164,7 @@ public class Main extends JFrame implements ActionListener {
 		Object source = e.getSource();
 
 		if (source == load) {
+			Log.getLogger().log(Level.FINE, "load");
 			JFileChooser loadFile = new JFileChooser();
 			loadFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
 			
@@ -187,6 +189,7 @@ public class Main extends JFrame implements ActionListener {
 
 		else if (source == record) {
 			RecordButton rec_button = new RecordButton();
+			Log.getLogger().log(Level.FINE, "record");
 		}
 
 		else if (source == save) {
@@ -226,13 +229,15 @@ public class Main extends JFrame implements ActionListener {
 		}
 		
 		else if (source == saveButton) {
+			
 			String text = saveFileName.getText();
+			Log.getLogger().log(Level.FINE, "saved - "+text);
 			config.serialize(text);
 			saveProfile.dispose();
 		}
 
 		else if (source == configure) {
-			
+			Log.getLogger().log(Level.FINE, "configure");
 			//Gives warnings if any of the textfields are blank or if they are <= 0 and only creates the config
 			if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets)) {
 				String text = entNumB.getText().toString();
@@ -258,7 +263,7 @@ public class Main extends JFrame implements ActionListener {
 		}
 
 		else if (source == RunSim) {
-			
+			Log.getLogger().log(Level.FINE, "launch simulator");
 			if (firstTime == true) {
 				
 				if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets)) {
@@ -281,7 +286,8 @@ public class Main extends JFrame implements ActionListener {
 		}
 		
 		else if (source == log) {
-			
+			Log.getLogger().log(Level.FINE, "log");
+			this.openFileInNotepad("myLogger.log");
 		}
 	}
 	
@@ -301,8 +307,24 @@ public class Main extends JFrame implements ActionListener {
 		return true;
 	}
 	
+	private void openFileInNotepad(String filename)
+	{
+	    
+	     
+		ProcessBuilder pb = new ProcessBuilder("Notepad.exe", filename);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	      
+	    
+	}
+	
+	
 	public static void main(String[] args) {
-
+		Log.resetLogger();
 		Main welFrame = new Main();
 		welFrame.pack();
 		welFrame.setVisible(true);

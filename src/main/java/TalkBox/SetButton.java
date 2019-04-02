@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -119,6 +120,11 @@ public SetButton(JButton pic,AudioButton button) {
 	
 	private void display(String arg) {
 		
+		
+		
+		Log.getLogger().log(Level.FINE, "Dropped Picture - "+ arg);
+		
+		
 		button.setImage(arg);
 		
 		BufferedImage pic = null;
@@ -149,7 +155,7 @@ public SetButton(JButton pic,AudioButton button) {
 	private void changeSound(String arg) {
 		
 		
-	
+		Log.getLogger().log(Level.FINE, "Dropped sound file - "+ arg);
 		
 		button.setAudio(arg);
 		this.sound = new File(arg);

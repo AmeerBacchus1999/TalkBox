@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -108,9 +110,16 @@ public class RecordButton implements ActionListener {
 		Object source = e.getSource();
 		if (source == recordButton) {
 			if (!isRecording)
+			{
+				Log.getLogger().log(Level.FINE, "start recording");
 				startRecording();
+				
+			}
 			else
+			{
 				stopRecording();
+				Log.getLogger().log(Level.FINE, "stop recording");
+			}
 		}
 		
 	}

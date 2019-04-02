@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.*;
 
 
+
 public class Log {
 	private final static Logger logr = Logger.getLogger(Log.class.getName());
 	
@@ -23,6 +24,7 @@ public class Log {
 		
 		try {
 			FileHandler fh = new FileHandler("myLogger.log");
+			fh.setFormatter(new SimpleFormatter());
 			fh.setLevel(Level.FINE);
 			logr.addHandler(fh);
 			
