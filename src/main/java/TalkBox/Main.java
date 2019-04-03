@@ -169,6 +169,7 @@ public class Main extends JFrame implements ActionListener {
 
 		if (source == load) {
 			Log.getLogger().log(Level.FINE, "load");
+			firstTime = false;
 			JFileChooser loadFile = new JFileChooser();
 			loadFile.setFileFilter(new FileNameExtensionFilter("TBC files", "tbc"));
 			
@@ -184,6 +185,7 @@ public class Main extends JFrame implements ActionListener {
 				 String fileLoadName = loadFile.getSelectedFile().getName();
 				 talkbox = ConfigurationApp.unserializeInterface(fileLoadName);//CHECK NEED TO BE PASSED IN AS A TALK 
 				 loaded = new ConfigurationApp(talkbox);
+				 this.config = loaded;
 				 ControllerConfig openConfig = new ControllerConfig(loaded);
 			}
 				
@@ -270,6 +272,9 @@ public class Main extends JFrame implements ActionListener {
 		else if (source == RunSim) {
 			Log.getLogger().log(Level.FINE, "launch simulator");
 			if (firstTime == true) {
+				
+				
+				
 				
 				if (configWarning(entNumB, numAudButtons) && configWarning(entSwap, numSwapButtons) && configWarning(entAudSet, numAudSets)) {
 					String text = entNumB.getText().toString();
