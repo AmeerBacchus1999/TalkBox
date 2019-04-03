@@ -54,6 +54,7 @@ public class Main extends JFrame implements ActionListener {
 		
 	public ConfigurationApp config;
 	public TalkBoxConfiguration talkbox;
+	public ConfigurationApp loaded;
 	public ControllerConfig figControl;
 	
 	public File TalkBoxDataFolder;
@@ -182,7 +183,8 @@ public class Main extends JFrame implements ActionListener {
 			if (returnFile == JFileChooser.APPROVE_OPTION) {
 				 String fileLoadName = loadFile.getSelectedFile().getName();
 				 talkbox = ConfigurationApp.unserializeInterface(fileLoadName);//CHECK NEED TO BE PASSED IN AS A TALK 
-				 ControllerSimulator loaded = new ControllerSimulator(talkbox);
+				 loaded = new ConfigurationApp(talkbox);
+				 ControllerConfig openConfig = new ControllerConfig(loaded);
 			}
 				
 			if (returnFile == JFileChooser.CANCEL_OPTION)
@@ -330,20 +332,6 @@ public class Main extends JFrame implements ActionListener {
 		return true;
 	}
 	
-	private void openFileInNotepad(String filename)
-	{
-	    
-	     
-		ProcessBuilder pb = new ProcessBuilder("Notepad.exe", filename);
-		try {
-			pb.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	      
-	    
-	}
 	
 	
 	public static void main(String[] args) {
