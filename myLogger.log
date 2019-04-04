@@ -1,26 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE log SYSTEM "logger.dtd">
-<log>
-<record>
-  <date>2019-04-01T15:40:43</date>
-  <millis>1554147643051</millis>
-  <sequence>0</sequence>
-  <logger>main.java.TalkBox.Log</logger>
-  <level>FINE</level>
-  <class>main.java.TalkBox.Log</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>FINE</message>
-</record>
-<record>
-  <date>2019-04-01T15:40:43</date>
-  <millis>1554147643072</millis>
-  <sequence>1</sequence>
-  <logger>main.java.TalkBox.Log</logger>
-  <level>SEVERE</level>
-  <class>main.java.TalkBox.Log</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>SEVERE</message>
-</record>
-</log>
+Apr 03, 2019 9:35:49 PM main.java.TalkBox.Main actionPerformed
+FINE: configure
+Apr 03, 2019 9:38:47 PM main.java.TalkBox.Main actionPerformed
+FINE: saved - 34
+Apr 03, 2019 9:38:48 PM main.java.TalkBox.Main actionPerformed
+FINE: load
